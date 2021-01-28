@@ -8,7 +8,6 @@ import {
 
 export function HelloWorld() {
     const roleResultLoadable = useRecoilValueLoadable(helloWorldSelector);
-    // console.log('roleResultLoadable',roleResultLoadable.contents)
     switch (roleResultLoadable.state) {
       case 'hasValue':
         return <div>{roleResultLoadable.contents}</div>;
