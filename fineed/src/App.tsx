@@ -9,6 +9,7 @@ function App() {
   return (
     <RecoilRoot>
       <div>Fuck the config</div>
+      <div>test the github workflow if it appears, it means it works</div>
       <HelloWorld/>
     </RecoilRoot>
   );
