@@ -5,4 +5,3 @@ export const FirebaseFunction = (name: string) => {
 };
 
 export const helloWorld = FirebaseFunction('helloWorld');
-

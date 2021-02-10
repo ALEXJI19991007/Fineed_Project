@@ -14,3 +14,11 @@ export const helloWorld = functions.https.onCall(async (data, _context) => {
     functions.logger.info("Hello logs!", {structuredData: true});
     return "hello from firebase";
   });
+
+export const helloJiyu = functions.https.onCall(async (data, _context) => {
+    return "hello Jiyu";
+  });
+
+export const helloYuChang = functions.https.onCall(async (data, _context) => {
+    return "hello YuChang";
+  });
