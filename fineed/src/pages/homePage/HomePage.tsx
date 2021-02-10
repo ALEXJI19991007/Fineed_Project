@@ -1,5 +1,5 @@
 import React from 'react';
-import { HomePageImageCard } from '../components/HomePageImageCard';
+import { HomePageImageCard } from './HomePageImageCard';
 
 export function HomePage(){
     return (
