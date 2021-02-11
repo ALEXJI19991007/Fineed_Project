@@ -10,9 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import sampleTeslaNewsImage from '../../imageSrc/homepage/teslaNewsimg.jpg'
 
 export type News = {
+    link: string,
     title: string,
     content: string,
-    imgUrl: string | URL
+    imgUrl: string | URL,
+    pubDate: string,
 }
 
 const useStyles = makeStyles({
@@ -32,16 +34,15 @@ export function NewsCard(props:News) {
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
-                    image={sampleTeslaNewsImage}
-                    title="Tesla Bitcoin"
+                    image={sampleTeslaNewsImage} //need to change to the real url
+                    title={props.title}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                    Tesla
+                    {props.title}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                    Tesla is a transportation and energy company. It sells vehicles under its ‘Tesla Motors’ division and 
-                    stationary battery packs for home, commercial and utility-scale projects under its ‘Tesla Energy’ division.
+                    {props.content}
                     </Typography>
                 </CardContent>
             </CardActionArea>
