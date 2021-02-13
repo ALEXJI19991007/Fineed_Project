@@ -5,7 +5,7 @@ export type Item = {
   link?: string;
   title?: string;
   content?: string;
-  imgUrl?: string | URL;
+  imgUrl?: string;
   date?: string
 }
 

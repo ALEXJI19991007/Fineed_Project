@@ -13,7 +13,7 @@ export type News = {
     link: string,
     title: string,
     content: string,
-    imgUrl: string | URL,
+    imgUrl: string,
     pubDate: string,
 }
 
@@ -28,13 +28,13 @@ const useStyles = makeStyles({
 
 export function NewsCard(props:News) {
     const classes = useStyles();
-
     return (
         <Card className={classes.root}>
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
-                    image={sampleTeslaNewsImage} //need to change to the real url
+                    // TODO - Need to find a new placeholder image in case no image url is present in the feed
+                    image={props.imgUrl ? props.imgUrl : sampleTeslaNewsImage}
                     title={props.title}
                 />
                 <CardContent>

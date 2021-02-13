@@ -13,7 +13,7 @@ type NewsCardGridProps = {
 };
 
 //simualte the backend existed data
-function fakeNews(myNewsFeed: any): List<News> {
+function NewsList(myNewsFeed: any): List<News> {
   const arr = [];
 
   //   const sampleNews = {
@@ -88,7 +88,7 @@ export const NewsCardContainer = () => {
         <>
           <div>
             <NewsListFilter />
-            <NewsCardGrid newsList={fakeNews(myNewsFeed)} />
+            <NewsCardGrid newsList={NewsList(myNewsFeed)} />
           </div>
         </>
       );
