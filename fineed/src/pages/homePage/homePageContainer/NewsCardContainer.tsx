@@ -5,7 +5,7 @@ import { News } from "../NewsCard";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { useRecoilValueLoadable } from "recoil";
-import * as Selectors from "../../../news atoms & selectors/selectors";
+import * as Selectors from "../../../selectors/NewsFeedSelector";
 import { NewsListFilter } from "../../../components/NewsFilter";
 
 type NewsCardGridProps = {

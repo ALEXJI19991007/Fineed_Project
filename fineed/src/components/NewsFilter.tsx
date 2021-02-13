@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import * as Atoms from "../news atoms & selectors/atoms";
+import * as Atoms from "../atoms/NewsListFilterAtom";
 
 export const NewsListFilter = () => {
   const [filter, setFilter] = useRecoilState(Atoms.newsListFilterState);

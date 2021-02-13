@@ -1,5 +1,5 @@
 import { selector } from "recoil";
-import * as Atoms from "./atoms";
+import * as Atoms from "../atoms/NewsListFilterAtom";
 import Parser from "rss-parser";
 
 // The filteredNewsListState internally keeps track of two atom dependencies: newsListFilterState
