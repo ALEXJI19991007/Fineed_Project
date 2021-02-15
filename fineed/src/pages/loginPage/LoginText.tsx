@@ -4,14 +4,15 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = makeStyles({
     txt:{
-        paddingTop:'100px',
-        textAligh:'center'
+        paddingTop:'150px',
+        textAligh:'center',
+        fontFamily: '-apple-system'
     }
 })
 export function LoginText () {
     const classes=styles()
     return (
-        <div className={classes.txt}>
+        <div>
           <Typography variant="h2" gutterBottom className={classes.txt}>
           Feed the financial news you are most interested in
             </Typography>
