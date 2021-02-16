@@ -12,7 +12,7 @@ export function HomePageImageCard() {
         if(scrollY<=500){
             setImgHeight(1000-scrollY);
         }else{
-            setImgHeight(0)
+            setImgHeight(300)
         }
     },[scrollY])
     return (
