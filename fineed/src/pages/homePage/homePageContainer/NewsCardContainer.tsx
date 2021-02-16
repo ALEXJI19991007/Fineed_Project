@@ -95,10 +95,10 @@ function NewsCardGridLoading(){
   const loadingList = [1,1,1,1,1,1,1,1];
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={5}>
         {loadingList.map((news: number, index: number) => {
           return (
-            <Grid item xs={12} sm={6} key={index}>
+            <Grid item xs={3} key={index}>
               <div className={classes.paper}>
                 <NewsCardLoading/>
               </div>
@@ -114,10 +114,10 @@ function NewsCardGrid(props: NewsCardGridProps) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={5}>
         {props.newsList.map((news: News, index: number) => {
           return (
-            <Grid item xs={12} sm={6} key={index}>
+            <Grid item xs={3} key={index}>
               <div className={classes.paper}>
                 <NewsCard
                   link={news.link}

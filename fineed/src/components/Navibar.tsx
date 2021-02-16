@@ -121,7 +121,7 @@ export function NaviBar() {
 
   return (
     <div className={classes.grow}>
-      <AppBar elevation={0} position="static" style={{ background: 'white' }}>
+      <AppBar elevation={0} position="fixed" style={{ background: 'white' }}>
         <Toolbar>
           <IconButton
             edge="start"

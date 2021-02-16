@@ -6,7 +6,7 @@ export function HomePage(){
     return (
     <div>
         <HomePageImageCard/>
-        <div style={{marginTop: '70px',marginLeft:'300px'}}>
+        <div>
             <NewsCardContainer/>
         </div>
         

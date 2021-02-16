@@ -19,10 +19,14 @@ export type News = {
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 400,
+    maxWidth: 300,
+    maxHeight: 600,
+  },
+  content: {
+    maxHeight:200,
   },
   media: {
-    height: 300,
+    height: 200,
   },
 });
 
@@ -42,7 +46,7 @@ export function NewsCard(props: News) {
           image={props.imgUrl ? props.imgUrl : sampleTeslaNewsImage}
           title={props.title}
         />
-        <CardContent>
+        <CardContent className={classes.content}>
           <Typography gutterBottom variant="h5" component="h2">
             {props.title}
           </Typography>
