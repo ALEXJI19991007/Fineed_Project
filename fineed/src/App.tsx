@@ -6,6 +6,7 @@ import { HelloWorld } from './components/HelloWorldExample';
 import logo from './logo.svg';
 import './App.css';
 import { NaviBar } from './components/Navibar';
+import { NaviDrawer } from './components/NaviDrawer';
 import { HomePage } from './pages/homePage/HomePage';
 import { LoginPage } from './pages/loginPage/LoginPage';
 
@@ -16,6 +17,7 @@ function App() {
       <BrowserRouter>
         <Helmet titleTemplate="%s | Fineed" defaultTitle="Fineed" />
         <NaviBar />
+        <NaviDrawer/>
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/login" component={LoginPage} />

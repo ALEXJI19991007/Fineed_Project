@@ -1,9 +1,10 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import { currentUserAtom } from '../atoms/CurrentUserAtom'
+import { NaviDrawerOpenStateAtom } from '../atoms/NaviAtom'
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -88,6 +89,7 @@ export function NaviBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
   const curUser = useRecoilValue(currentUserAtom);
+  const setNaviDrawerState = useSetRecoilState(NaviDrawerOpenStateAtom);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -96,17 +98,8 @@ export function NaviBar() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -135,6 +128,7 @@ export function NaviBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={()=>{setNaviDrawerState(true)}}
           >
             <MenuIcon className={classes.iconColor} />
           </IconButton>
