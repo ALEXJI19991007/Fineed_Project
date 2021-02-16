@@ -1,6 +1,9 @@
 import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import { currentUserAtom } from '../atoms/CurrentUserAtom'
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +18,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('md')]: {
         display: 'flex',
       },
-      
+
     },
     sectionMobile: {
       display: 'flex',
@@ -56,6 +60,10 @@ const useStyles = makeStyles((theme: Theme) =>
     typography: {
       color: 'black',
       fontFamily: '-apple-system'
+    },
+    logInButton: {
+      marginLeft: 10,
+      marginRight: -10,
     }
 
   }),
@@ -63,8 +71,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function NaviBar() {
   const classes = useStyles();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+  const curUser = useRecoilValue(currentUserAtom);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -131,16 +141,23 @@ export function NaviBar() {
                 Coming Soon
               </Typography>
             </Button>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle className={classes.iconColor} />
-            </IconButton>
+            {(curUser ?
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle className={classes.iconColor} />
+              </IconButton> :
+              <Button className={classes.logInButton} color="secondary" onClick={()=>{history.push('/login')}}>
+              <Typography className={classes.typography} variant="subtitle1" noWrap>
+                LOG IN
+              </Typography>
+            </Button>
+            )}
           </div>
         </Toolbar>
       </AppBar>
