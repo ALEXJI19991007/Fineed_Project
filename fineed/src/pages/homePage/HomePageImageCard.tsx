@@ -14,9 +14,6 @@ export function HomePageImageCard() {
         }else{
             setImgHeight(0)
         }
-        
-        console.log(scrollY);
-        
     },[scrollY])
     return (
        
