@@ -35,7 +35,17 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'block',
       },
       color: 'black',
-      fontFamily: '-apple-system'
+      fontFamily: '-apple-system',
+      textTransform: 'lowercase',
+    },
+    titleF: {
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+      },
+      color: 'black',
+      fontFamily: '-apple-system',
+      textTransform: 'uppercase',
     },
     sectionDesktop: {
       display: 'none',
@@ -64,7 +74,10 @@ const useStyles = makeStyles((theme: Theme) =>
     logInButton: {
       marginLeft: 10,
       marginRight: -10,
-    }
+    },
+    fineedLoginButton: {
+      textTransform: 'lowercase',
+    },
 
   }),
 );
@@ -125,9 +138,14 @@ export function NaviBar() {
           >
             <MenuIcon className={classes.iconColor} />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Fineed
+          <Button >
+          <Typography className={classes.titleF} variant="h6" noWrap onClick={()=>{history.push('/')}}>
+            F
+          </Typography> 
+          <Typography className={classes.title} variant="h6" noWrap onClick={()=>{history.push('/')}}>
+            ineed
           </Typography>
+          </Button>
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
