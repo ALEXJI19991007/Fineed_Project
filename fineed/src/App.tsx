@@ -7,6 +7,7 @@ import logo from './logo.svg';
 import './App.css';
 import { NaviBar } from './components/Navibar';
 import { HomePage } from './pages/homePage/HomePage';
+import { LoginPage } from './pages/loginPage/LoginPage';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <NaviBar />
         <Switch>
           <Route exact path="/" component={HomePage} />
+          <Route path="/login" component={LoginPage} />
           
         </Switch>
       </BrowserRouter>
