@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { useRecoilValueLoadable } from "recoil";
 import * as Selectors from "../../../selectors/NewsFeedSelector";
-import { NewsListFilter } from "../../../components/NewsFilter";
+import { NewsListFilter } from "../../homePage/NewsFilter";
 import Skeleton from '@material-ui/lab/Skeleton';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';

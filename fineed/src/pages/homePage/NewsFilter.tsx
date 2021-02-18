@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import * as Atoms from "../atoms/NewsListFilterAtom";
+import * as Atoms from "../../atoms/NewsListFilterAtom";
 import {
   createStyles,
   makeStyles,
