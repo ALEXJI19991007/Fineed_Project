@@ -90,9 +90,6 @@ export const NewsListFilter = () => {
           onChange={updateSourceFilter}
           input={<BootstrapInput />}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
           <MenuItem value="bing">Bing</MenuItem>
           <MenuItem value="google">Google</MenuItem>
           <MenuItem value="yahoo">Yahoo</MenuItem>

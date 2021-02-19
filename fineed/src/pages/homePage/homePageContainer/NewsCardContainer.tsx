@@ -7,11 +7,11 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { useRecoilValueLoadable } from "recoil";
 import * as Selectors from "../../../selectors/NewsFeedSelector";
 import { NewsListFilter } from "../../homePage/NewsFilter";
-import Skeleton from '@material-ui/lab/Skeleton';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+import Skeleton from "@material-ui/lab/Skeleton";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 
 type NewsCardGridProps = {
   newsList: List<News>;
@@ -65,7 +65,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-
 function NewsCardLoading() {
   const classes = useStyles();
   return (
@@ -74,15 +73,45 @@ function NewsCardLoading() {
         title={<Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} />}
         subheader={<Skeleton animation="wave" height={10} width="40%" />}
       /> */}
-      {<Skeleton animation="wave" variant="rect" className={classes.loadingCardMedia} />}
+      {
+        <Skeleton
+          animation="wave"
+          variant="rect"
+          className={classes.loadingCardMedia}
+        />
+      }
       <CardContent>
         {
           <React.Fragment>
-            <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} />
-            <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} />
-            <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} />
-            <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} />
-            <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+            <Skeleton
+              animation="wave"
+              height={10}
+              width="80%"
+              style={{ marginBottom: 6 }}
+            />
+            <Skeleton
+              animation="wave"
+              height={10}
+              width="80%"
+              style={{ marginBottom: 6 }}
+            />
+            <Skeleton
+              animation="wave"
+              height={10}
+              width="80%"
+              style={{ marginBottom: 6 }}
+            />
+            <Skeleton
+              animation="wave"
+              height={10}
+              width="80%"
+              style={{ marginBottom: 6 }}
+            />
+            <Skeleton
+              animation="wave"
+              height={10}
+              style={{ marginBottom: 6 }}
+            />
             <Skeleton animation="wave" height={20} width="80%" />
           </React.Fragment>
         }
@@ -91,10 +120,10 @@ function NewsCardLoading() {
   );
 }
 
-function NewsCardGridLoading(){
+function NewsCardGridLoading() {
   const classes = useStyles();
   //generate 8 loading card to demo on the screen.
-  const loadingList = [1,1,1,1,1,1,1,1];
+  const loadingList = [1, 1, 1, 1, 1, 1, 1, 1];
   return (
     <div className={classes.root}>
       <Grid container spacing={5}>
@@ -102,7 +131,7 @@ function NewsCardGridLoading(){
           return (
             <Grid item xs={3} key={index}>
               <div className={classes.paper}>
-                <NewsCardLoading/>
+                <NewsCardLoading />
               </div>
             </Grid>
           );
@@ -139,7 +168,6 @@ function NewsCardGrid(props: NewsCardGridProps) {
   );
 }
 
-
 export const NewsCardContainer = () => {
   const newsFeedLoadable = useRecoilValueLoadable(
     Selectors.filteredNewsListState
@@ -159,6 +187,11 @@ export const NewsCardContainer = () => {
     case "hasError":
       return <div>damn...</div>;
     case "loading":
-      return (<div><NewsListFilter /><NewsCardGridLoading/></div>);
+      return (
+        <div>
+          <NewsListFilter />
+          <NewsCardGridLoading />
+        </div>
+      );
   }
-}
+};
