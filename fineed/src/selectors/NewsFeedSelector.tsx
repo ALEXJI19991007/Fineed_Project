@@ -38,6 +38,8 @@ export const filteredNewsListState = selector({
       }
 
       newsList.push({
+        companyTag: filter.company,
+        sourceTag: filter.source,
         link: item.link,
         title: item.title,
         content: item.contentSnippet,
