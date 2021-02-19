@@ -8,7 +8,7 @@ export type Item = {
   title?: string;
   content?: string;
   imgUrl?: string;
-  date?: string
+  pubDate?: string
 }
 
 // This atom is the current showing state
