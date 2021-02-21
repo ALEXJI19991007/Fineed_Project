@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
+// import firebase from "firebase/app";
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -43,12 +44,12 @@ export const updateNewsClick = functions.https.onCall(
     try {
       const newsRef = db.collection("news_item");
       const newsTarget = await newsRef.where("link", "==", data.link).get();
-      console.log("It is: ", newsTarget);
+      let newsItem;
       if (newsTarget.empty) {
         console.log("New News Object. Execute Write In");
         try {
           const entry = newsRef.doc();
-          const newsItem = {
+          newsItem = {
             id: entry.id,
             click_count: 1,
             company_tag: data.companyTag,
@@ -60,10 +61,10 @@ export const updateNewsClick = functions.https.onCall(
             source_tag: data.sourceTag,
             title: data.title,
           };
-          entry.set(newsItem);
+          await entry.set(newsItem);
           return newsItem.id;
         } catch (error) {
-          console.log("Add New Item Failed: ", error);
+          console.log("Add New News Item Failed: ", error);
           return null;
         }
       } else {
@@ -72,7 +73,7 @@ export const updateNewsClick = functions.https.onCall(
         // 这边写复杂了，需要修改
         const entry = db.collection("news_item").doc(itemId);
         const currentData = (await entry.get()).data() || {};
-        const entryObject = {
+        newsItem = {
           id: itemId,
           click_count: currentData.click_count + 1,
           company_tag: currentData.company_tag,
@@ -85,15 +86,30 @@ export const updateNewsClick = functions.https.onCall(
           title: currentData.title,
         };
         try {
-          await entry.set(entryObject);
-          return entryObject.id;
+          await entry.set(newsItem);
+          return newsItem.id;
         } catch (error) {
-          console.log("Update Item Failed: ", error);
+          console.log("Update News Item Failed: ", error);
           return null;
         }
       }
     } catch (error) {
-      console.log("Something Went Wrong: ", error);
+      console.log("Get News Target Failed: ", error);
+      return null;
+    }
+  }
+);
+
+export const updateUserHistory = functions.https.onCall(
+  async (data, _context) => {
+    try {
+      const userEntry = db.collection("user").doc(data.userId);
+      const newHistory = userEntry.update({
+        history: admin.firestore.FieldValue.arrayUnion(data.newsId),
+      })
+      return newHistory;
+    } catch (error) {
+      console.log("Get User Failed");
       return null;
     }
   }

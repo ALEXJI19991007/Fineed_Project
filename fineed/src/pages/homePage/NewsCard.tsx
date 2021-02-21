@@ -8,7 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import sampleTeslaNewsImage from "../../imageSrc/homepage/teslaNewsimg.jpg";
-import { updateNewsClick } from "../../firebase/FirebaseFunction";
+import { updateNewsClick, updateUserHistory } from "../../firebase/FirebaseFunction";
 
 export type News = {
   companyTag: string;
@@ -36,9 +36,9 @@ const useStyles = makeStyles({
 export function NewsCard(props: News) {
   const classes = useStyles();
 
-  const redirectToNews = async () => {
+  const newsOnClick = async () => {
     window.open(props.link, "_blank");
-    const data = {
+    const clickData = {
       companyTag: props.companyTag,
       sourceTag: props.sourceTag,
       link: props.link,
@@ -47,16 +47,29 @@ export function NewsCard(props: News) {
       imgUrl: props.imgUrl,
       pubDate: props.pubDate,
     };
-    const response = await updateNewsClick(data);
-    if (response.data === null) {
-      console.log("Firestore Write Failed");
+    // Update click info
+    const updateNewsClickResponse = await updateNewsClick(clickData);
+    if (updateNewsClickResponse.data === null) {
+      console.log("Update News Failed");
+    } else {
+      console.log("News Updated: " + updateNewsClickResponse.data);
     }
-    console.log(response.data);
+    // Update history info
+    const userData = {
+      userId: "ExHvLJq2sPe5aPKfuPSJ",
+      newsId: updateNewsClickResponse.data
+    }
+    const updateUserHistoryResponse = await updateUserHistory(userData);
+    if (updateUserHistoryResponse.data === null) {
+      console.log("Update User History Failed");
+    } else {
+      console.log("User History Updated: " + updateUserHistoryResponse.data);
+    }
   };
 
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={redirectToNews}>
+      <CardActionArea onClick={newsOnClick}>
         <CardMedia
           className={classes.media}
           // TODO - Need to find a new placeholder image in case no image url is present in the feed

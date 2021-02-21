@@ -6,3 +6,4 @@ export const FirebaseFunction = (name: string) => {
 
 export const helloWorld = FirebaseFunction('helloWorld');
 export const updateNewsClick = FirebaseFunction("updateNewsClick");
+export const updateUserHistory = FirebaseFunction("updateUserHistory");
