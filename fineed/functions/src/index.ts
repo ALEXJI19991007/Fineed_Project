@@ -70,20 +70,13 @@ export const updateNewsClick = functions.https.onCall(
       } else {
         console.log("News Object Found. Execute Update");
         let itemId = newsTarget.docs[0].id;
-        // 这边写复杂了，需要修改
+        // 这边写复杂了，需要修改 - Fixed, see below
         const entry = db.collection("news_item").doc(itemId);
         const currentData = (await entry.get()).data() || {};
         newsItem = {
+          ...currentData,
           id: itemId,
           click_count: currentData.click_count + 1,
-          company_tag: currentData.company_tag,
-          content: currentData.content,
-          fav_count: currentData.fav_count,
-          image_url: currentData.image_url,
-          link: currentData.link,
-          pub_date: currentData.pub_date,
-          source_tag: currentData.source_tag,
-          title: currentData.title,
         };
         try {
           await entry.set(newsItem);
@@ -106,7 +99,7 @@ export const updateUserHistory = functions.https.onCall(
       const userEntry = db.collection("user").doc(data.userId);
       const newHistory = userEntry.update({
         history: admin.firestore.FieldValue.arrayUnion(data.newsId),
-      })
+      });
       return newHistory;
     } catch (error) {
       console.log("Get User Failed");
@@ -114,3 +107,4 @@ export const updateUserHistory = functions.https.onCall(
     }
   }
 );
+
