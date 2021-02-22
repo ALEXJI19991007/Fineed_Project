@@ -8,3 +8,4 @@ export const helloWorld = FirebaseFunction('helloWorld');
 export const newsCrawler = FirebaseFunction('newsCrawler');
 export const updateNewsClick = FirebaseFunction("updateNewsClick");
 export const updateUserHistory = FirebaseFunction("updateUserHistory");
+export const getUserHistory = FirebaseFunction("getUserHistory");

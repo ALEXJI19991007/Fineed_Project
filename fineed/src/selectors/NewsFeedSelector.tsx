@@ -49,7 +49,6 @@ export const filteredNewsListState = selector({
         pubDate: item.pubDate,
       });
     });
-    console.log(newsList);
     return {
       title: parsedFeed.description,
       list: newsList,

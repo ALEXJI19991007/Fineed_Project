@@ -1,6 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-const {parse} =require('node-html-parser');
+const { parse } = require("node-html-parser");
 // import firebase from "firebase/app";
 
 // // Start writing Firebase Functions
@@ -109,13 +109,25 @@ export const updateUserHistory = functions.https.onCall(
   }
 );
 
-export const newsCrawler = functions.https.onCall(
-  async (data, _context) => {
-    try{
-      const root = parse('<ul id="list"><li>Hello World</li></ul>');
-      return root.querySelector('#list');
-    }catch (error) {
-      return error
+export const getUserHistory = functions.https.onCall(async (data, _context) => {
+  try {
+    const userEntry = db.collection("user").doc(data.userId);
+    const userData = (await userEntry.get()).data() || null;
+    if (userData === null) {
+      return null;
     }
+    return userData.history;
+  } catch (error) {
+    console.log("Get User Failed");
+    return null;
   }
-);
+});
+
+export const newsCrawler = functions.https.onCall(async (data, _context) => {
+  try {
+    const root = parse('<ul id="list"><li>Hello World</li></ul>');
+    return root.querySelector("#list");
+  } catch (error) {
+    return error;
+  }
+});
