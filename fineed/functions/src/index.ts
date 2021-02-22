@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
+const {parse} =require('node-html-parser');
 // import firebase from "firebase/app";
 
 // // Start writing Firebase Functions
@@ -108,3 +109,13 @@ export const updateUserHistory = functions.https.onCall(
   }
 );
 
+export const newsCrawler = functions.https.onCall(
+  async (data, _context) => {
+    try{
+      const root = parse('<ul id="list"><li>Hello World</li></ul>');
+      return root.querySelector('#list');
+    }catch (error) {
+      return error
+    }
+  }
+);
