@@ -109,14 +109,13 @@ export const updateUserHistory = functions.https.onCall(
   }
 );
 
-export const getUserHistory = functions.https.onCall(
-  async (data, _context) => {
-    try {
-      const userEntry = db.collection("user").doc(data.userId);
-      const userData = (await userEntry.get()).data() || null;
-      if (userData === null) {
-        return null;
-      }
+export const getUserHistory = functions.https.onCall(async (data, _context) => {
+  try {
+    const userEntry = db.collection("user").doc(data.userId);
+    const userData = (await userEntry.get()).data() || null;
+    if (userData === null) {
+      return null;
+    }
     const userHistory = userData.history;
     const newsHistory: FirebaseFirestore.DocumentData[] = [];
     // Get news objects
@@ -126,10 +125,6 @@ export const getUserHistory = functions.https.onCall(
       newsHistory.push(newsData);
     }
     return newsHistory;
-    } catch (error) {
-      console.log("Get User Failed");
-      return null;
-    }
   } catch (error) {
     console.log("Get User Failed");
     return null;
