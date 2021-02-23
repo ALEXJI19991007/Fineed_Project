@@ -71,7 +71,7 @@ export const updateNewsClick = functions.https.onCall(
       } else {
         console.log("News Object Found. Execute Update");
         let itemId = newsTarget.docs[0].id;
-        // 这边写复杂了，需要修改 - Fixed, see below
+        // 这边写复杂了，需要修改
         const entry = db.collection("news_item").doc(itemId);
         const currentData = (await entry.get()).data() || {};
         newsItem = {
@@ -109,18 +109,19 @@ export const updateUserHistory = functions.https.onCall(
   }
 );
 
-export const getUserHistory = functions.https.onCall(async (data, _context) => {
-  try {
-    const userEntry = db.collection("user").doc(data.userId);
-    const userData = (await userEntry.get()).data() || null;
-    if (userData === null) {
+export const getUserHistory = functions.https.onCall(
+  async (data, _context) => {
+    try {
+      const userEntry = db.collection("user").doc(data.userId);
+      const userData = (await userEntry.get()).data() || null;
+      if (userData === null) {
+        return null;
+      }
+      return userData.history;
+    } catch (error) {
+      console.log("Get User Failed");
       return null;
     }
-    return userData.history;
-  } catch (error) {
-    console.log("Get User Failed");
-    return null;
-  }
 });
 
 export const newsCrawler = functions.https.onCall(async (data, _context) => {
