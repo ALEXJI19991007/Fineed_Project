@@ -116,7 +116,15 @@ export const getUserHistory = functions.https.onCall(async (data, _context) => {
     if (userData === null) {
       return null;
     }
-    return userData.history;
+    const userHistory = userData.history;
+    const newsHistory: FirebaseFirestore.DocumentData[] = [];
+    // Get news objects
+    for (let i = 0; i < userHistory.length; ++i) {
+      let entry = db.collection("news_item").doc(userHistory[i]);
+      let newsData = (await entry.get()).data() || {};
+      newsHistory.push(newsData);
+    }
+    return newsHistory;
   } catch (error) {
     console.log("Get User Failed");
     return null;

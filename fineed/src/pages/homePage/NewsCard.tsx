@@ -65,6 +65,7 @@ export function NewsCard(props: News) {
     } else {
       console.log("User History Updated: " + updateUserHistoryResp.data);
     }
+    // Get user history
     const getUserHistoryResp = await getUserHistory(userData);
     console.log(getUserHistoryResp.data);
   };
