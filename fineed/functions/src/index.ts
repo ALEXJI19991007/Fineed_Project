@@ -1,6 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-const { parse } = require("node-html-parser");
+const DomParser = require("dom-parser");
 const Parser = require("rss-parser");
 
 admin.initializeApp();
@@ -127,18 +127,18 @@ export const getUserHistory = functions.https.onCall(async (data, _context) => {
   }
 });
 
-export const newsCrawler = functions.https.onCall(async (data, _context) => {
-  try {
-    const root = parse('<ul id="list"><li>Hello World</li></ul>');
-    return root.querySelector("#list");
-  } catch (error) {
-    return error;
-  }
-});
+// export const newsCrawler = functions.https.onCall(async (data, _context) => {
+//   try {
+//     const root = parse('<ul id="list"><li>Hello World</li></ul>');
+//     return root.querySelector("#list");
+//   } catch (error) {
+//     return error;
+//   }
+// });
 
 export const rssFetch = functions.https.onCall(async (data, _context) => {
   const parser: typeof Parser = new Parser();
-  const contentParser: DOMParser = new DOMParser();
+  const contentParser = new DomParser();
   const parsedFeed = await parser.parseURL(data.url);
   //let newsList: Atoms.Item[] = [];
   let newsList: Object[] = [];
@@ -152,11 +152,11 @@ export const rssFetch = functions.https.onCall(async (data, _context) => {
     // <div><img src="/path/to/img"><div>news synopsis</div></div>
     // Not sure other sources have a simliar strcture.
     if (item.content) {
-      const contentHTML = contentParser.parseFromString(
-        item.content,
-        "text/html"
-      );
+      functions.logger.info("Content: ", item.content);
+      const contentHTML = contentParser.parseFromString(item.content, "text/html");
+      functions.logger.info("Content HTML: ", contentHTML);
       const imgTags = contentHTML.getElementsByTagName("img");
+      functions.logger.info("imgTags: ", imgTags);
       if (imgTags.length > 0) {
         imgURL = imgTags[0].src;
       }

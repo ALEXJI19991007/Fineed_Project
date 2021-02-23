@@ -26,6 +26,7 @@ export const filteredNewsListState = selector({
       source: filter.source
     }
     const feedData = await rssFetch(urlData);
-    return feedData;
+    console.log(feedData.data);
+    return feedData.data;
   },
 });
