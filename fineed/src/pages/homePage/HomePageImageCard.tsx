@@ -62,8 +62,6 @@ export function HomePageImageCard() {
       setSloganPaddingLeft(INITSLOGANPADDINGLEFT + scrollY * 0.3);
       setLoginButtonBottom(INITSLOGANBOTTOM + scrollY * 0.5);
       setLoginButtonPaddingLeft(INITSLOGINBUTTONPADDINGLEFT + scrollY * 0.3);
-
-      console.log('scrollY',scrollY);
     } else {
       setScrollState(true);
       setImgHeight(imgHeight);
