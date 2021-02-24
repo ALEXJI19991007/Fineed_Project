@@ -1,12 +1,6 @@
 import { selector } from "recoil";
 import * as Atoms from "../atoms/NewsListFilterAtom";
-import Parser from "rss-parser";
 import { rssFetch } from "../firebase/FirebaseFunction";
-
-// RSSS parser for parsing the main rss/xml document
-const parser: Parser = new Parser();
-// HTML parser specficially for parsing the "content" field of parsed feed
-const contentParser: DOMParser = new DOMParser();
 
 // The filteredNewsListState internally keeps track of two atom 
 // dependencies: newsListFilterState and newsListState so that 
