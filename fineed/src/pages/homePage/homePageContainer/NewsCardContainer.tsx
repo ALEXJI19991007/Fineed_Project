@@ -4,10 +4,8 @@ import { NewsCard } from "../NewsCard";
 import { News } from "../NewsCard";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { useRecoilValue, useRecoilValueLoadable } from "recoil";
+import { useRecoilValueLoadable } from "recoil";
 import * as Selectors from "../../../selectors/NewsFeedSelector";
-import * as Atoms from "../../../atoms/NewsListFilterAtom";
-import { NewsListFilter } from "../../homePage/NewsFilter";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -180,7 +178,7 @@ export const NewsCardContainer = () => {
       return (
         <>
           <div>
-            <NewsListFilter />
+            {/* <NewsListFilter /> */}
             <NewsCardGrid newsList={NewsList(myNewsFeed)} />
           </div>
         </>
@@ -190,7 +188,7 @@ export const NewsCardContainer = () => {
     case "loading":
       return (
         <div>
-          <NewsListFilter />
+          {/* <NewsListFilter /> */}
           <NewsCardGridLoading />
         </div>
       );
