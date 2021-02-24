@@ -32,7 +32,6 @@ export const addEntry = functions.https.onCall(async (data, _context) => {
     entry.set(entryObject);
     return entryObject.id;
   } catch (error) {
-    console.log("Holy shit, it is wrong");
     return "wrong";
   }
 });
@@ -44,7 +43,6 @@ export const updateNewsClick = functions.https.onCall(
       const newsTarget = await newsRef.where("link", "==", data.link).get();
       let newsItem;
       if (newsTarget.empty) {
-        console.log("New News Object. Execute Write In");
         try {
           const entry = newsRef.doc();
           newsItem = {
@@ -62,11 +60,9 @@ export const updateNewsClick = functions.https.onCall(
           await entry.set(newsItem);
           return newsItem.id;
         } catch (error) {
-          console.log("Add New News Item Failed: ", error);
           return null;
         }
       } else {
-        console.log("News Object Found. Execute Update");
         let itemId = newsTarget.docs[0].id;
         // 这边写复杂了，需要修改
         const entry = db.collection("news_item").doc(itemId);
@@ -80,12 +76,10 @@ export const updateNewsClick = functions.https.onCall(
           await entry.set(newsItem);
           return newsItem.id;
         } catch (error) {
-          console.log("Update News Item Failed: ", error);
           return null;
         }
       }
     } catch (error) {
-      console.log("Get News Target Failed: ", error);
       return null;
     }
   }
@@ -100,7 +94,6 @@ export const updateUserHistory = functions.https.onCall(
       });
       return newHistory;
     } catch (error) {
-      console.log("Get User Failed");
       return null;
     }
   }
@@ -123,7 +116,6 @@ export const getUserHistory = functions.https.onCall(async (data, _context) => {
     }
     return newsHistory;
   } catch (error) {
-    console.log("Get User Failed");
     return null;
   }
 });
@@ -152,10 +144,8 @@ export const rssFetch = functions.https.onCall(async (data, _context) => {
     // <div><img src="/path/to/img"><div>news synopsis</div></div>
     // Not sure other sources have a simliar strcture.
     if (item.content) {
-      functions.logger.info("Content: ", item.content);
       const contentDom = new JSDOM(item.content);
       const imgTags = contentDom.window.document.getElementsByTagName("img");
-      functions.logger.info("imgTags: ", imgTags);
       if (imgTags.length > 0) {
         imgURL = imgTags[0].src;
       }
