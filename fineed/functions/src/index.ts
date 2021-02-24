@@ -120,19 +120,9 @@ export const getUserHistory = functions.https.onCall(async (data, _context) => {
   }
 });
 
-// export const newsCrawler = functions.https.onCall(async (data, _context) => {
-//   try {
-//     const root = parse('<ul id="list"><li>Hello World</li></ul>');
-//     return root.querySelector("#list");
-//   } catch (error) {
-//     return error;
-//   }
-// });
-
 export const rssFetch = functions.https.onCall(async (data, _context) => {
   const parser: typeof Parser = new Parser();
   const parsedFeed = await parser.parseURL(data.url);
-  //let newsList: Atoms.Item[] = [];
   let newsList: Object[] = [];
 
   parsedFeed.items.forEach((item: any) => {

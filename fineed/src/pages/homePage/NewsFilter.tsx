@@ -79,7 +79,7 @@ export const NewsListFilter = () => {
     setFilter(currentNewsState);
   };
 
-  return (
+  return filter.source === "user_history" ? null : (
     <div>
       <FormControl className={classes.margin}>
         <InputLabel id="news-source-input-label">Source</InputLabel>

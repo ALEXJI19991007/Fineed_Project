@@ -29,7 +29,6 @@ export const RSS_URL_MAP = new Map([
   ["bing-headlines", "https://rss.app/feeds/PRTaw1JYGhmvhpxf.xml"],
   ["google-headlines", "https://rss.app/feeds/LDMgeOFCAYu4leA3.xml"],
   ["yahoo-headlines", "https://rss.app/feeds/fxb0tDF2FeMrZ3c3.xml"],
-
   ["bing-tesla", "https://rss.app/feeds/UrgWidkFsHlE2Npa.xml"],
   ["google-tesla", "https://rss.app/feeds/hCCLzusFj7cd6FeJ.xml"],
   ["yahoo-tesla", "https://rss.app/feeds/iFXF7jTIhaaGL8zZ.xml"],

@@ -8,7 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import sampleTeslaNewsImage from "../../imageSrc/homepage/teslaNewsimg.jpg";
-import { getUserHistory, updateNewsClick, updateUserHistory } from "../../firebase/FirebaseFunction";
+import { updateNewsClick, updateUserHistory } from "../../firebase/FirebaseFunction";
 
 export type News = {
   companyTag: string;
@@ -51,8 +51,6 @@ export function NewsCard(props: News) {
     const updateNewsClickResp = await updateNewsClick(clickData);
     if (updateNewsClickResp.data === null) {
       console.log("Update News Failed");
-    } else {
-      console.log("News Updated: " + updateNewsClickResp.data);
     }
     // Update history info
     const userData = {
@@ -62,12 +60,7 @@ export function NewsCard(props: News) {
     const updateUserHistoryResp = await updateUserHistory(userData);
     if (updateUserHistoryResp.data === null) {
       console.log("Update User History Failed");
-    } else {
-      console.log("User History Updated: " + updateUserHistoryResp.data);
     }
-    // Get user history
-    const getUserHistoryResp = await getUserHistory(userData);
-    console.log(getUserHistoryResp.data);
   };
 
   return (
