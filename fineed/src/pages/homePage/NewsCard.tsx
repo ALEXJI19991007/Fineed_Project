@@ -23,14 +23,25 @@ export type News = {
 const useStyles = makeStyles({
   root: {
     maxWidth: 300,
-    maxHeight: 600,
+    maxHeight: 800,
+  },
+  title: {
+    maxHeight: 200,
+    overflow: 'hidden',
   },
   content: {
     maxHeight: 200,
+    overflow: 'hidden',
   },
   media: {
     height: 200,
   },
+  text: {
+    wordWrap: "break-word" 
+  },
+  cardAction: {
+    marginTop: 10
+  }
 });
 
 export function NewsCard(props: News) {
@@ -72,16 +83,18 @@ export function NewsCard(props: News) {
           image={props.imgUrl ? props.imgUrl : sampleTeslaNewsImage}
           title={props.title}
         />
-        <CardContent className={classes.content}>
-          <Typography gutterBottom variant="h5" component="h2">
+        <CardContent className={classes.title}>
+        <Typography className={classes.text} gutterBottom variant="h5" component="h2">
             {props.title}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+        </CardContent>
+        <CardContent className={classes.content}>
+          <Typography className={classes.text} variant="body2" color="textSecondary" component="p">
             {props.content}
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
+      <CardActions className={classes.cardAction}>
         <Button size="small" color="primary">
           Share
         </Button>
