@@ -1,6 +1,7 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-const DomParser = require("dom-parser");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 const Parser = require("rss-parser");
 
 admin.initializeApp();
@@ -138,7 +139,6 @@ export const getUserHistory = functions.https.onCall(async (data, _context) => {
 
 export const rssFetch = functions.https.onCall(async (data, _context) => {
   const parser: typeof Parser = new Parser();
-  const contentParser = new DomParser();
   const parsedFeed = await parser.parseURL(data.url);
   //let newsList: Atoms.Item[] = [];
   let newsList: Object[] = [];
@@ -153,9 +153,8 @@ export const rssFetch = functions.https.onCall(async (data, _context) => {
     // Not sure other sources have a simliar strcture.
     if (item.content) {
       functions.logger.info("Content: ", item.content);
-      const contentHTML = contentParser.parseFromString(item.content, "text/html");
-      functions.logger.info("Content HTML: ", contentHTML);
-      const imgTags = contentHTML.getElementsByTagName("img");
+      const contentDom = new JSDOM(item.content);
+      const imgTags = contentDom.window.document.getElementsByTagName("img");
       functions.logger.info("imgTags: ", imgTags);
       if (imgTags.length > 0) {
         imgURL = imgTags[0].src;
