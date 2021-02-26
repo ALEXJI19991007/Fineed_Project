@@ -48,13 +48,12 @@ export const updateNewsClick = functions.https.onCall(
           newsItem = {
             id: entry.id,
             click_count: 1,
-            company_tag: data.companyTag,
+            target: data.target,
             content: data.content,
             fav_count: 0,
             image_url: data.imgUrl,
             link: data.link,
             pub_date: data.pubDate,
-            source_tag: data.sourceTag,
             title: data.title,
           };
           await entry.set(newsItem);
@@ -142,8 +141,7 @@ export const rssFetch = functions.https.onCall(async (data, _context) => {
     }
 
     newsList.push({
-      companyTag: data.company,
-      sourceTag: data.source,
+      target: data.target,
       link: item.link,
       title: item.title,
       content: item.contentSnippet,

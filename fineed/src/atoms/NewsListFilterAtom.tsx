@@ -2,8 +2,7 @@ import { atom, RecoilState } from "recoil";
 
 // One news item
 export type NewsItem = {
-  companyTag?: string;
-  sourceTag?: string;
+  target?: string;
   link?: string;
   title?: string;
   content?: string;
@@ -13,15 +12,15 @@ export type NewsItem = {
 
 // This atom is the current showing state
 export type NewsState = {
-  source: string;
-  company: string;
+  target: string;
+  param: string;
 };
 
 export const newsListFilterState: RecoilState<NewsState> = atom({
   key: "newsListFilterState",
   default: {
-    source: "all",
-    company: "headlines",
+    target: "headlines",
+    param: "",
   },
 });
 

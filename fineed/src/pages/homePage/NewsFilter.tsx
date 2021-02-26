@@ -65,28 +65,20 @@ export const NewsListFilter = () => {
 
   const updateSourceFilter = (e: React.ChangeEvent<{ value: unknown }>) => {
     const currentNewsState = {
-      source: e.target.value as string,
-      company: filter.company,
+      target: e.target.value as string,
+      param: filter.param,
     };
     setFilter(currentNewsState);
   };
 
-  const updateCompanyFilter = (e: React.ChangeEvent<{ value: unknown }>) => {
-    const currentNewsState = {
-      source: filter.source,
-      company: e.target.value as string,
-    };
-    setFilter(currentNewsState);
-  };
-
-  return filter.source === "user_history" ? null : (
+  return filter.target === "user_history" ? null : (
     <div>
       <FormControl className={classes.margin}>
         <InputLabel id="news-source-input-label">Source</InputLabel>
         <Select
           labelId="news-source-input-label"
           id="news-source-input"
-          value={filter.source}
+          value={filter.target}
           onChange={updateSourceFilter}
           input={<BootstrapInput />}
         >
@@ -94,22 +86,6 @@ export const NewsListFilter = () => {
           <MenuItem value="google">Google</MenuItem>
           <MenuItem value="yahoo">Yahoo</MenuItem>
         </Select>
-      </FormControl>
-      <FormControl className={classes.margin}>
-        <InputLabel htmlFor="news-company-source-input">Company</InputLabel>
-        <NativeSelect
-          id="news-company-source-input"
-          value={filter.company}
-          onChange={updateCompanyFilter}
-          input={<BootstrapInput />}
-        >
-          <option value="headlines">Headlines</option>
-          <option value="tesla">Tesla</option>
-          <option value="google">Google</option>
-          <option value="facebook">Facebook</option>
-          <option value="amazon">Amazon</option>
-          <option value="linkedin">Linkedin</option>
-        </NativeSelect>
       </FormControl>
     </div>
   );
