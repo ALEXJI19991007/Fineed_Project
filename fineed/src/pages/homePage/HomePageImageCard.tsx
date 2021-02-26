@@ -18,6 +18,7 @@ const INITSLOGINBUTTONPADDINGLEFT = 900;
 const theme = createMuiTheme({
   palette: {
     primary:{main:'#00DC16'} ,
+    secondary:{main:'#D6FFC2'},
   },
 });
 

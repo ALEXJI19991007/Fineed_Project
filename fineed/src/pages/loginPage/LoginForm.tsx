@@ -1,31 +1,59 @@
 import React, { useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import LogoPic from "../../imageSrc/pageIcon.png";
-import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import { FirebaseAuth } from "../../firebase/FirebaseAuth";
 import { curUserUidAtom } from '../../atoms/FirebaseUserAtom';
 import { useRecoilState } from 'recoil';
+import {CopyRight} from "./CopyRight"
+import GitHubIcon from '@material-ui/icons/GitHub';
+import { makeStyles,ThemeProvider,createMuiTheme } from "@material-ui/core/styles";
+import { Search} from "@trejgun/material-ui-icons-google";
+import {EmailPwdForm} from './EmailPwdForm'
+import Typography from '@material-ui/core/Typography';
 
+const theme = createMuiTheme({
+    palette: {
+      primary:{main:'#00DC16'} , //green
+      secondary:{main:'#3e4444'}, //gray
+    },
+    typography: {
+        h1: {
+            fontSize: 200,
+        },
+        h2: {
+            fontSize: 5,
+        },
+    },
+  });
 
 export function LoginForm(){
     const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
     
     return(
         <div>
-        <Grid container spacing={0} alignContent='center' alignItems='center' justify='center'>
-           <Grid item xs={4}></Grid>
-           <Grid item xs={4}>
+        <ThemeProvider theme={theme}>
+        <Grid container spacing={3} direction="column" alignItems="center" justify="center">
+
             <Avatar src={LogoPic} style={{height:'80px',width:'80px'}}/>
-            <Button variant="contained" color="primary" onClick={async()=>{setCurUserUid( await FirebaseAuth.loginWithGoogle()??'')}}>Continue with Google</Button>
-            <Button variant="contained" color="default" onClick={async()=>{setCurUserUid( await FirebaseAuth.loginWithGitHub()??'')}}>Continue with Github</Button>
-            <Button variant="contained" color="inherit" onClick={async()=>{await FirebaseAuth.logout(); setCurUserUid('')}}>Log out</Button>
-            <br/>
-            <Button variant='contained' color='secondary'>Continue with Fineed</Button>
-           </Grid>
-           <Grid item xs={4}></Grid>
-        </Grid>
             
+            <Grid item xs={2}>
+            <EmailPwdForm/>
+            </Grid>
+            
+            <Typography style={{marginTop:'15px'}} variant="body2" color="textSecondary" align="center">--- or continue with --- </Typography>
+
+            <Grid item spacing={3}>
+            <Search style={{marginTop:'10px',marginRight:'3px', width:40,height:40}} 
+                    color="primary" 
+                    onClick={async()=>{setCurUserUid( await FirebaseAuth.loginWithGoogle()??'')}}/>
+            <GitHubIcon style={{marginTop:'10px',marginLeft:'3px',width:40,height:40}} 
+                        color="secondary" 
+                        onClick={async()=>{setCurUserUid( await FirebaseAuth.loginWithGitHub()??'')}}/>
+                </Grid>
+            <CopyRight/>
+        </Grid>
+        </ThemeProvider>
         </div>
     )
 }
