@@ -4,7 +4,7 @@ import LogoPic from "../../imageSrc/pageIcon.png";
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import { FirebaseAuth } from "../../firebase/FirebaseAuth";
-import { curUserUidAtom } from '../../selectors/FirebaseUserSelector';
+import { curUserUidAtom } from '../../atoms/FirebaseUserAtom';
 import { useRecoilState } from 'recoil';
 
 
@@ -19,7 +19,7 @@ export function LoginForm(){
             <Avatar src={LogoPic} style={{height:'80px',width:'80px'}}/>
             <Button variant="contained" color="primary" onClick={async()=>{setCurUserUid( await FirebaseAuth.loginWithGoogle()??'')}}>Continue with Google</Button>
             <Button variant="contained" color="default" onClick={async()=>{setCurUserUid( await FirebaseAuth.loginWithGitHub()??'')}}>Continue with Github</Button>
-            <Button variant="contained" color="inherit" onClick={async()=>{await FirebaseAuth.logout()}}>Log out</Button>
+            <Button variant="contained" color="inherit" onClick={async()=>{await FirebaseAuth.logout(); setCurUserUid('')}}>Log out</Button>
             <br/>
             <Button variant='contained' color='secondary'>Continue with Fineed</Button>
            </Grid>

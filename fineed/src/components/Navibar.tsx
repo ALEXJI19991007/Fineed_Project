@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   fade,
   makeStyles,
@@ -8,7 +8,7 @@ import {
   createStyles,
 } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import { currentUserAtom } from "../atoms/CurrentUserAtom";
+import { curUserUidAtom } from "../atoms/FirebaseUserAtom";
 import { NaviDrawerOpenStateAtom } from "../atoms/NaviAtom";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -24,6 +24,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import { FirebaseAuth } from "../firebase/FirebaseAuth";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -92,7 +93,8 @@ export function NaviBar() {
     mobileMoreAnchorEl,
     setMobileMoreAnchorEl,
   ] = React.useState<null | HTMLElement>(null);
-  const curUser = useRecoilValue(currentUserAtom);
+  const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
+  console.log(currentUserUid)
   const setNaviDrawerState = useSetRecoilState(NaviDrawerOpenStateAtom);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -125,8 +127,8 @@ export function NaviBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      <MenuItem onClick={async ()=>{ await FirebaseAuth.logout(); setCurUserUid(''); handleMenuClose()}}>Log out</MenuItem>
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
 
@@ -192,7 +194,7 @@ export function NaviBar() {
                 Coming Soon
               </Typography>
             </Button>
-            {curUser ? (
+            {currentUserUid? (
               <IconButton
                 edge="end"
                 aria-label="account of current user"
