@@ -2,6 +2,7 @@ import { Auth } from './Firebase';
 import { FirebaseAnalytics } from './FirebaseAnalytics';
 
 export const FirebaseAuth = {
+
   async loginWithGoogle() {
     try {
       const result = await Auth().signInWithPopup(
@@ -11,7 +12,7 @@ export const FirebaseAuth = {
         FirebaseAnalytics.logEvent('sign_up', { method: 'Google' });
       }
       FirebaseAnalytics.logEvent('login', { method: 'Google' });
-      return result;
+      return result.user?.uid;
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -27,7 +28,7 @@ export const FirebaseAuth = {
         FirebaseAnalytics.logEvent('sign_up', { method: 'GitHub' });
       }
       FirebaseAnalytics.logEvent('login', { method: 'GitHub' });
-      return result;
+      return result.user?.uid;
     } catch (error) {
       console.error(error);
       alert(error.message);
