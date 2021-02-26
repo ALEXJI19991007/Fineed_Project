@@ -10,13 +10,10 @@ export const filteredNewsListState = selector({
   get: async ({ get }) => {
     const filter = get(Atoms.newsListFilterState);
     // If we want to fetch user history
-    if (filter.source === "all" && filter.company === "headlines") {
-      return await getAllHeadlinesHelper(Atoms.SOURCE_LIST);
+    if (filter.target === "user_history") {
+      return await getUserHistoryHelper(filter.param);
     }
-    if (filter.source === "user_history") {
-      return await getUserHistoryHelper(filter.company);
-    }
-    return await getNewsFromParticularSourceAndCompany(filter);
+    return await getAllHeadlinesHelper(Atoms.SOURCE_LIST);
   },
 });
 
@@ -33,8 +30,7 @@ const getAllHeadlinesHelper = async (sourceList: string[]) => {
     let url: string = Atoms.RSS_URL_MAP.get(`${source}-headlines`) || "";
     let urlData = {
       url: url,
-      source: source,
-      company: "headlines",
+      target: "headlines",
     };
     let feedData = await rssFetch(urlData);
     allFeedData.push(feedData.data);
@@ -65,8 +61,7 @@ const getUserHistoryHelper = async (userId: string) => {
   let newsList: Object[] = [];
   historyData.data.forEach((newsItem: any) => {
     newsList.push({
-      companyTag: newsItem.company_tag,
-      sourceTag: newsItem.source_tag,
+      target: newsItem.target,
       link: newsItem.link,
       title: newsItem.title,
       content: newsItem.content,
@@ -80,16 +75,16 @@ const getUserHistoryHelper = async (userId: string) => {
   };
 };
 
-const getNewsFromParticularSourceAndCompany = async (filter: Atoms.NewsState) => {
-  // If we want to fetch news from a particular source
-  let url: string = Atoms.RSS_URL_MAP.get(`${filter.source}-${filter.company}`) || "";
+// const getNewsFromParticularSourceAndCompany = async (filter: Atoms.NewsState) => {
+//   // If we want to fetch news from a particular source
+//   let url: string = Atoms.RSS_URL_MAP.get(`${filter.source}-${filter.company}`) || "";
 
-  const urlData = {
-    url: url,
-    company: filter.company,
-    source: filter.source,
-  };
-  const feedData = await rssFetch(urlData);
-  // console.log(feedData.data);
-  return feedData.data;
-}
+//   const urlData = {
+//     url: url,
+//     company: filter.company,
+//     source: filter.source,
+//   };
+//   const feedData = await rssFetch(urlData);
+//   // console.log(feedData.data);
+//   return feedData.data;
+// }

@@ -11,8 +11,7 @@ import sampleTeslaNewsImage from "../../imageSrc/homepage/teslaNewsimg.jpg";
 import { updateNewsClick, updateUserHistory } from "../../firebase/FirebaseFunction";
 
 export type News = {
-  companyTag: string;
-  sourceTag: string;
+  target: string;
   link: string;
   title: string;
   content: string;
@@ -50,8 +49,7 @@ export function NewsCard(props: News) {
   const newsOnClick = async () => {
     window.open(props.link, "_blank");
     const clickData = {
-      companyTag: props.companyTag,
-      sourceTag: props.sourceTag,
+      target: props.target,
       link: props.link,
       title: props.title,
       content: props.content,

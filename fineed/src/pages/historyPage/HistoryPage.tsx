@@ -12,8 +12,8 @@ export function HistoryPage() {
   useEffect(() => {
     // TODO: company --> userId, for now it is hardcoded, later we need to get userId from session
     const currentNewsState = {
-      source: "user_history",
-      company: "ExHvLJq2sPe5aPKfuPSJ",
+      target: "user_history",
+      param: "ExHvLJq2sPe5aPKfuPSJ",
     };
     setFilter(currentNewsState);
   }, []);

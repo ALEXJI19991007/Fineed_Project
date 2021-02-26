@@ -30,8 +30,7 @@ function NewsList(myNewsFeed: any): List<News> {
   // we shouldn't use for loop anywhere in our code, since this is only for demo
   for (let i = 0; i < myNewsFeed.list.length; i++) {
     let sampleNews = {
-      companyTag: myNewsFeed.list[i].companyTag,
-      sourceTag: myNewsFeed.list[i].sourceTag,
+      target: myNewsFeed.list[i].target,
       link: myNewsFeed.list[i].link,
       title: myNewsFeed.list[i].title,
       content: myNewsFeed.list[i].content,
@@ -150,8 +149,7 @@ function NewsCardGrid(props: NewsCardGridProps) {
             <Grid item xs={3} key={index}>
               <div className={classes.paper}>
                 <NewsCard
-                  companyTag={news.companyTag}
-                  sourceTag={news.sourceTag}
+                  target={news.target}
                   link={news.link}
                   title={news.title}
                   content={news.content}
