@@ -27,7 +27,6 @@ export const newsListFilterState: RecoilState<NewsState> = atom({
 export const SOURCE_LIST: string[] = ["yahoo", "market_watch"];
 
 export const RSS_URL_MAP = new Map([
-  ["all-headlines","https://rss.app/feeds/_xD7y59EooJaxFZRx.xml"],
   ["yahoo-headlines", "https://rss.app/feeds/yFndkcbPTi0PFSYP.xml"],
   ["market_watch-headlines", "https://rss.app/feeds/NLXfVSYlXEEByPqP.xml"],
 ]);
