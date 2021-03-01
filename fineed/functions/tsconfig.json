@@ -8,7 +8,6 @@
     "strict": true,
     "target": "es2017",
     "typeRoots": ["node_modules/@types"],
-    "jsx": "react"
   },
   "compileOnSave": true,
   "include": [

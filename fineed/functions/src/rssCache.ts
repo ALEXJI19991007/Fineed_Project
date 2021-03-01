@@ -1,15 +1,24 @@
 import * as functions from "firebase-functions";
-import * as Atoms from "../../src/atoms/NewsListFilterAtom";
 import {db} from "./index"
+import {RSS_URL_MAP} from "./constants";
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const Parser = require("rss-parser");
 
 // TODO
-// duplicate code - move RssFeed type in NewsFeedSelector.tsx
+// duplicate code - move types in NewsFeedSelector/NewsFilterAtom
 // to a separate "type" folder
+type NewsItem = {
+  target?: string;
+  link?: string;
+  title?: string;
+  content?: string;
+  imgUrl?: string;
+  pubDate?: string;
+};
+
 type FeedListArray = {
-  list: Atoms.NewsItem[],
+  list: NewsItem[],
 };
 
 // Cache rss feed every 15 minutes
@@ -63,8 +72,8 @@ async function fetchAndCacheAllFeeds(transaction: FirebaseFirestore.Transaction)
   const lastTimeStamp = timeStampData["count"];
   let parsedFeedArray: FeedListArray[] = []; // array of FeedList
   let maxFeeds = 0;
-  for (let [source, rssURL] of Atoms.RSS_URL_MAP) {
-    let itemList: Atoms.NewsItem[] = [];
+  for (let [source, rssURL] of RSS_URL_MAP) {
+    let itemList: NewsItem[] = [];
     const parsedFeed = await parser.parseURL(rssURL);
     maxFeeds = Math.max(maxFeeds, parsedFeed.items.length);
     // parse the content field of every news item

@@ -23,11 +23,18 @@ type RssFeed = {
   list: NewsList,
 }
 
+// TODO
+// Hardcoded placeholder - DELETE when no longer needed
+const RSS_URL_MAP = new Map([
+  ["yahoo-headlines", "https://rss.app/feeds/yFndkcbPTi0PFSYP.xml"],
+  ["market_watch-headlines", "https://rss.app/feeds/NLXfVSYlXEEByPqP.xml"],
+]);
+
 const getAllHeadlinesHelper = async (sourceList: string[]) => {
   const allFeedData: RssFeed[] = [];
   for (let i = 0; i < sourceList.length; ++i) {
     let source: string = sourceList[i];
-    let url: string = Atoms.RSS_URL_MAP.get(`${source}-headlines`) || "";
+    let url: string = RSS_URL_MAP.get(`${source}-headlines`) || "";
     let urlData = {
       url: url,
       target: "headlines",
