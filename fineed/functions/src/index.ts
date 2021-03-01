@@ -45,3 +45,7 @@ exports.getUserHistory = getUserHistory.getUserHistory;
 
 const rssFetch = require("./rssFetch");
 exports.rssFetch = rssFetch.rssFetch;
+
+const rssCache = require("./rssCache");
+exports.rssAccumulate = rssCache.rssAccumulate;
+exports.rssClearCache = rssCache.rssClearCache;

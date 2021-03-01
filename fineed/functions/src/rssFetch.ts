@@ -1,40 +1,49 @@
 import * as functions from "firebase-functions";
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const Parser = require("rss-parser");
+import { db } from "./index";
+
+type TimeStampedNewsItem = {
+  target: string;
+  link: string;
+  title: string;
+  content: string;
+  imgUrl: string;
+  pubDate: string;
+  timeStamp: number;
+};
 
 exports.rssFetch = functions.https.onCall(async (data, _context) => {
-    const parser: typeof Parser = new Parser();
-    const parsedFeed = await parser.parseURL(data.url);
-    let newsList: Object[] = [];
-  
-    parsedFeed.items.forEach((item: any) => {
-      // parse the content field
-      let imgURL: string = "";
-      // TODO
-      // This solution is high likely not robust
-      // It seems like the content field generally have a DOM structure as:
-      // <div><img src="/path/to/img"><div>news synopsis</div></div>
-      // Not sure other sources have a simliar strcture.
-      if (item.content) {
-        const contentDom = new JSDOM(item.content);
-        const imgTags = contentDom.window.document.getElementsByTagName("img");
-        if (imgTags.length > 0) {
-          imgURL = imgTags[0].src;
-        }
-      }
-  
-      newsList.push({
+  let timeStampedNewsList: TimeStampedNewsItem[] = [];
+  const newsCache = db.collection("news_cache");
+  newsCache.get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      const docData = doc.data();
+      timeStampedNewsList.push({
         target: data.target,
-        link: item.link,
-        title: item.title,
-        content: item.contentSnippet,
-        imgUrl: imgURL,
-        pubDate: item.pubDate,
+        link: docData.id,
+        title: docData.title,
+        content: docData.content,
+        imgUrl: docData.imgUrl,
+        pubDate: docData.pubDate,
+        timeStamp: docData.timeStamp,
       });
     });
-    return {
-      title: parsedFeed.description,
-      list: newsList,
-    };
   });
+
+  // sort newsList by timestamp in descending order
+  timeStampedNewsList.sort((a, b) => (a.timeStamp < b.timeStamp) ? 1 : -1);
+  // remove timeStamp from the object before sending
+  let newsList: Object[] = [];
+  timeStampedNewsList.forEach((obj) => {
+    newsList.push({
+      target: data.target,
+      link: obj.link,
+      title: obj.title,
+      content: obj.content,
+      imgUrl: obj.imgUrl,
+      pubDate: obj.pubDate,
+    });
+  });
+  return {
+    list: newsList,
+  };
+});
