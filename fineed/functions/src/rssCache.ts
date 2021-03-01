@@ -14,7 +14,7 @@ type FeedListArray = {
 
 // Cache rss feed every 15 minutes
 exports.rssAccumulate = functions.pubsub
-  .schedule('/15 * * * *') // run every 15 minute
+  .schedule('*/15 * * * *') // run every 15 minute
   .timeZone('America/Chicago') // time zone: CST
   .onRun((context) => {
     db.runTransaction(async (transaction) => {
