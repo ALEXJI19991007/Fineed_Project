@@ -26,8 +26,8 @@ exports.rssAccumulate = functions.pubsub
   .schedule('every 15 minutes') // run every 15 minute
   .timeZone('America/Chicago') // time zone: CST
   .onRun((context) => {
-    db.runTransaction(async (transaction) => {
-      await fetchAndCacheAllFeeds(transaction);
+    db.runTransaction((transaction) => {
+      return fetchAndCacheAllFeeds(transaction);
     });
   });
 
@@ -46,7 +46,7 @@ exports.rssClearCache = functions.pubsub
       const timeStampDocRef = cacheRef.doc("timeStamp");
       transaction.update(timeStampDocRef, {"count": 0});
       // then immediately fetch new feeds
-      await fetchAndCacheAllFeeds(transaction);
+      return fetchAndCacheAllFeeds(transaction);
     });
   });
 
@@ -135,5 +135,5 @@ async function fetchAndCacheAllFeeds(transaction: FirebaseFirestore.Transaction)
   }
 
   // finally update the timestamp document
-  transaction.update(timeStampDocRef, {"count": lastTimeStamp + numInserted});
+  return transaction.update(timeStampDocRef, {"count": lastTimeStamp + numInserted});
 }
