@@ -26,8 +26,8 @@ exports.rssAccumulate = functions.pubsub
   .schedule('every 15 minutes') // run every 15 minute
   .timeZone('America/Chicago') // time zone: CST
   .onRun((context) => {
-    db.runTransaction((transaction) => {
-      return fetchAndCacheAllFeeds(transaction);
+    return db.runTransaction((transaction) => {
+      return fetchAndCacheAllFeeds(transaction, true);
     });
   });
 
@@ -35,7 +35,7 @@ exports.rssClearCache = functions.pubsub
   .schedule('every day 00:00') // clear cache everday 12:00 midnight
   .timeZone('America/Chicago') // time zone: CST
   .onRun(async (content) => {
-    db.runTransaction(async (transaction) => {
+    return db.runTransaction(async (transaction) => {
       // clear the cache
       let cacheRef = db.collection("news_cache");
       let docRefArray = await cacheRef.listDocuments();
@@ -45,31 +45,36 @@ exports.rssClearCache = functions.pubsub
       // reset the timestamp document
       const timeStampDocRef = cacheRef.doc("timeStamp");
       transaction.update(timeStampDocRef, {"count": 0});
-      // then immediately fetch new feeds
-      return fetchAndCacheAllFeeds(transaction);
+      // then immediately fetch new feeds - no need to read lastTimeStamp
+      return fetchAndCacheAllFeeds(transaction, false);
     });
   });
 
-async function fetchAndCacheAllFeeds(transaction: FirebaseFirestore.Transaction) {
+// if needToRead == false then we assume that
+// the cache is cleared and lastTimeStamp == 0
+async function fetchAndCacheAllFeeds(transaction: FirebaseFirestore.Transaction, needToRead: boolean) {
   // parser for parsing the rss feed
   const parser: typeof Parser = new Parser();
   let cacheRef = db.collection("news_cache");
 
-  // fetch rss feeds
+  let lastTimeStamp = 0;
   const timeStampDocRef = cacheRef.doc("timeStamp");
-  // read the last timestamp
-  const timeStampDocSnapshot = await transaction.get(timeStampDocRef);
-  // timestamp doc missing - shouldn't be possible
-  if (!timeStampDocSnapshot.exists) {
-    throw "Fatal: timeStamp document missing.";
-  }
-  // timestamp doc is empty - sholdn't be possible
-  const timeStampData = timeStampDocSnapshot.data();
-  if (!timeStampData) {
-    throw "Fatal: timeStamp document is empty";
-  }
+  if(needToRead){
+    // read the last timestamp
+    const timeStampDocSnapshot = await transaction.get(timeStampDocRef);
+    // timestamp doc missing - shouldn't be possible
+    if (!timeStampDocSnapshot.exists) {
+      throw "Fatal: timeStamp document missing.";
+    }
+    // timestamp doc is empty - sholdn't be possible
+    const timeStampData = timeStampDocSnapshot.data();
+    if (!timeStampData) {
+      throw "Fatal: timeStamp document is empty";
+    }
 
-  const lastTimeStamp = timeStampData["count"];
+    lastTimeStamp = timeStampData["count"];
+  }
+  
   let parsedFeedArray: FeedListArray[] = []; // array of FeedList
   let maxFeeds = 0;
   for (let [source, rssURL] of RSS_URL_MAP) {
