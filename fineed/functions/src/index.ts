@@ -33,6 +33,24 @@ export const addEntry = functions.https.onCall(async (data, _context) => {
   }
 });
 
+export const storeUserBarrage = functions.https.onCall(async (data, _context) => {
+  const barrageDocRef = db.collection("barrage").doc();
+  barrageDocRef.set({
+      uid:data.uid,
+      tag:data.tag,
+      time:data.time,
+      content:data.content,
+    }).then(() => {
+      console.log("Document successfully written!");
+  })
+  .catch((error) => {
+      console.error("Error writing document: ", error);
+  });
+    
+    return  
+
+});
+
 // functions used in production
 const updateNewsClick = require("./updateNewsClick");
 exports.updateNewsClick = updateNewsClick.updateNewsClick;
