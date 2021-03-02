@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
+import { Barrage } from "./constants";
 
 admin.initializeApp();
 export const db = admin.firestore();

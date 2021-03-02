@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -13,18 +13,19 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
-import {curUserUidAtom} from '../../atoms/FirebaseUserAtom'
+import { curUserUidAtom } from '../../atoms/FirebaseUserAtom'
 import { useRecoilValue } from "recoil";
 import { storeUserBarrage } from "../../firebase/FirebaseFunction";
+import { useBarrages } from "../../firebase/FirebaseFireStore";
 
 
 const useStyles = makeStyles({
     table: {
-      minWidth: 650,
+        minWidth: 650,
     },
     chatSection: {
-      width: '100%',
-      height: '80vh'
+        width: '100%',
+        height: '80vh'
     },
     headBG: {
         backgroundColor: '#e0e0e0'
@@ -33,72 +34,80 @@ const useStyles = makeStyles({
         borderRight: '1px solid #e0e0e0'
     },
     messageArea: {
-      height: '70vh',
-      overflowY: 'auto'
+        height: '70vh',
+        overflowY: 'auto'
     },
     listItemText: {
         align: 'right',
     }
-  });
+});
 
-export function BarragePage () {
+export function BarragePage() {
     const classes = useStyles();
-    const [textContent,setTextContent] = useState('');
+    const [textContent, setTextContent] = useState('');
     const curUid = useRecoilValue(curUserUidAtom);
+    const {ready,barrages} = useBarrages();
 
-    const sendBarrage = async ()=>{
-        const barrage = {uid:curUid,content:textContent,time: Date.now(),tag:''};
-        console.log("barrage",barrage)
+    const sendBarrage = async () => {
+        const barrage = { uid: curUid, content: textContent, time: Date.now(), tag: '' };
+        console.log("barrage", barrage)
+        setTextContent('')
         await storeUserBarrage(barrage)
     }
 
-  return (curUid?
-      <div style={{marginTop: '100px'}}>
-        <Grid container component={Paper} className={classes.chatSection}>
-            <Grid item xs={9}>
-                <List className={classes.messageArea}>
-                    <ListItem key="1">
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <ListItemText className={classes.listItemText} primary="Hey man, What's up ?"></ListItemText>
+    useEffect(() => {
+        console.log('ready',ready);
+        console.log('barrages',barrages);
+        
+    }, [ready,barrages]);
+
+    return (curUid ?
+        <div style={{ marginTop: '100px' }}>
+            <Grid container component={Paper} className={classes.chatSection}>
+                <Grid item xs={9}>
+                    <List className={classes.messageArea}>
+                        <ListItem key="1">
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    <ListItemText className={classes.listItemText} primary="Hey man, What's up ?"></ListItemText>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <ListItemText className={classes.listItemText} secondary="09:30"></ListItemText>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-                                <ListItemText className={classes.listItemText} secondary="09:30"></ListItemText>
+                        </ListItem>
+                        <ListItem key="2">
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    <ListItemText className={classes.listItemText} primary="Hey, Iam Good! What about you ?"></ListItemText>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <ListItemText className={classes.listItemText} secondary="09:31"></ListItemText>
+                                </Grid>
                             </Grid>
+                        </ListItem>
+                        <ListItem key="3">
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    <ListItemText className={classes.listItemText} primary="Cool. i am good, let's catch up!"></ListItemText>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <ListItemText className={classes.listItemText} secondary="10:30"></ListItemText>
+                                </Grid>
+                            </Grid>
+                        </ListItem>
+                    </List>
+                    <Divider />
+                    <Grid container style={{ padding: '20px' }}>
+                        <Grid item xs={11}>
+                            <TextField id="outlined-basic-email" label="Type Something" fullWidth value={textContent} onChange={(event) => { setTextContent(event.target.value) }} />
                         </Grid>
-                    </ListItem>
-                    <ListItem key="2">
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <ListItemText className={classes.listItemText} primary="Hey, Iam Good! What about you ?"></ListItemText>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ListItemText className={classes.listItemText} secondary="09:31"></ListItemText>
-                            </Grid>
+                        <Grid xs={1} className={classes.listItemText}>
+                            <Fab color="primary" aria-label="add" onClick={sendBarrage}><SendIcon /></Fab>
                         </Grid>
-                    </ListItem>
-                    <ListItem key="3">
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <ListItemText className={classes.listItemText} primary="Cool. i am good, let's catch up!"></ListItemText>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ListItemText className={classes.listItemText} secondary="10:30"></ListItemText>
-                            </Grid>
-                        </Grid>
-                    </ListItem>
-                </List>
-                <Divider />
-                <Grid container style={{padding: '20px'}}>
-                    <Grid item xs={11}>
-                        <TextField id="outlined-basic-email" label="Type Something" fullWidth onChange={(event)=>{setTextContent(event.target.value)}}/>
-                    </Grid>
-                    <Grid xs={1} className={classes.listItemText}>
-                        <Fab color="primary" aria-label="add" onClick={sendBarrage}><SendIcon /></Fab>
                     </Grid>
                 </Grid>
             </Grid>
-        </Grid>
-      </div>:<div style={{marginTop: '100px'}}>u should log in first</div>
-  );
+        </div> : <div style={{ marginTop: '100px' }}>u should log in first</div>
+    );
 }
