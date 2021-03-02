@@ -13,50 +13,10 @@ export const filteredNewsListState = selector({
     if (filter.target === "user_history") {
       return await getUserHistoryHelper(filter.param);
     }
-    return await getAllHeadlinesHelper(Atoms.SOURCE_LIST);
+    const rssFetchResp = await rssFetch({target: "headlines"});
+    return rssFetchResp.data;
   },
 });
-
-type NewsList = Atoms.NewsItem[];
-type RssFeed = {
-  title: string,
-  list: NewsList,
-}
-
-// TODO
-// Hardcoded placeholder - DELETE when no longer needed
-const RSS_URL_MAP = new Map([
-  ["yahoo-headlines", "https://rss.app/feeds/yFndkcbPTi0PFSYP.xml"],
-  ["market_watch-headlines", "https://rss.app/feeds/NLXfVSYlXEEByPqP.xml"],
-]);
-
-const getAllHeadlinesHelper = async (sourceList: string[]) => {
-  const allFeedData: RssFeed[] = [];
-  for (let i = 0; i < sourceList.length; ++i) {
-    let source: string = sourceList[i];
-    let url: string = RSS_URL_MAP.get(`${source}-headlines`) || "";
-    let urlData = {
-      url: url,
-      target: "headlines",
-    };
-    let feedData = await rssFetch(urlData);
-    allFeedData.push(feedData.data);
-  }
-  console.log(allFeedData);
-  const newsList: NewsList = [];
-  // 各个News source获取的rss feed交错形成最终的feed
-  for (let i = 0; i < 50; ++i) {
-    for (let j = 0; j < allFeedData.length; ++j) {
-      if (i < allFeedData[j].list.length) {
-        newsList.push(allFeedData[j].list[i]);
-      }
-    }
-  }
-  return {
-    title: "All Financial News Headlines",
-    list: newsList,
-  };
-}
 
 const getUserHistoryHelper = async (userId: string) => {
   // TODO: 目前传入的userId为hard-coded
