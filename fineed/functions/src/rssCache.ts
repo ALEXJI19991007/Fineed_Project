@@ -108,7 +108,7 @@ async function fetchAndCacheAllFeeds(transaction: FirebaseFirestore.Transaction,
   // add feed item to the databse if the db does not yet contain it
   // and timestamp each added item
   let numInserted = 0;
-  for (let i = 0; i < maxFeeds; ++i) {
+  for (let i = maxFeeds - 1; i >= 0; --i) {
     for (let j = 0; j < parsedFeedArray.length; ++j) {
       const list = parsedFeedArray[j].list;
       if (i < list.length) {
