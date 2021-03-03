@@ -17,6 +17,7 @@ import { curUserUidAtom } from '../../atoms/FirebaseUserAtom'
 import { useRecoilValue } from "recoil";
 import { storeUserBarrage } from "../../firebase/FirebaseFunction";
 import { useBarrages } from "../../firebase/FirebaseFireStore";
+import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
 
 
 const useStyles = makeStyles({
@@ -42,68 +43,75 @@ const useStyles = makeStyles({
     }
 });
 
+function timeConverter(UNIX_timestamp: number): string {
+    var a = new Date(UNIX_timestamp);
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+    return time;
+}
+type BarrageItemProps = {
+    barrageArray: Barrage[]
+}
+
+const BarrageItem = (props: BarrageItemProps) => {
+    const classes = useStyles();
+    const { barrageArray } = props;
+    let sortedBarrageArray = [...barrageArray];
+    
+    sortedBarrageArray.sort((barrageA:Barrage, barrageB:Barrage) => {
+        return barrageA.time - barrageB.time;
+    });
+    // sortedBarrageArray.map((a)=>{console.log(a.time)})
+    return (
+        <List className={classes.messageArea}>
+            {sortedBarrageArray.map((barrage:Barrage, i:number) => (<ListItem key={i}>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <ListItemText className={classes.listItemText} secondary={timeConverter(barrage.time)}></ListItemText>
+                    </Grid>
+                </Grid>
+            </ListItem>))}
+        </List>
+    )
+}
+
 export function BarragePage() {
     const classes = useStyles();
     const [textContent, setTextContent] = useState('');
     const curUid = useRecoilValue(curUserUidAtom);
-    const {ready,barrages} = useBarrages();
-
+    const barragesAtom = useRecoilValue(BarrageSnapShotAtom);
+    const { _ready, _barrages } = useBarrages();
     const sendBarrage = async () => {
         const barrage = { uid: curUid, content: textContent, time: Date.now(), tag: '' };
-        console.log("barrage", barrage)
         setTextContent('')
         await storeUserBarrage(barrage)
     }
 
     useEffect(() => {
-        console.log('ready',ready);
-        console.log('barrages',barrages);
         
-    }, [ready,barrages]);
+    }, [barragesAtom]);
 
     return (curUid ?
         <div style={{ marginTop: '100px' }}>
             <Grid container component={Paper} className={classes.chatSection}>
                 <Grid item xs={9}>
-                    <List className={classes.messageArea}>
-                        <ListItem key="1">
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <ListItemText className={classes.listItemText} primary="Hey man, What's up ?"></ListItemText>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <ListItemText className={classes.listItemText} secondary="09:30"></ListItemText>
-                                </Grid>
-                            </Grid>
-                        </ListItem>
-                        <ListItem key="2">
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <ListItemText className={classes.listItemText} primary="Hey, Iam Good! What about you ?"></ListItemText>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <ListItemText className={classes.listItemText} secondary="09:31"></ListItemText>
-                                </Grid>
-                            </Grid>
-                        </ListItem>
-                        <ListItem key="3">
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <ListItemText className={classes.listItemText} primary="Cool. i am good, let's catch up!"></ListItemText>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <ListItemText className={classes.listItemText} secondary="10:30"></ListItemText>
-                                </Grid>
-                            </Grid>
-                        </ListItem>
-                    </List>
+                    <BarrageItem barrageArray={barragesAtom} />
                     <Divider />
                     <Grid container style={{ padding: '20px' }}>
                         <Grid item xs={11}>
                             <TextField id="outlined-basic-email" label="Type Something" fullWidth value={textContent} onChange={(event) => { setTextContent(event.target.value) }} />
                         </Grid>
                         <Grid xs={1} className={classes.listItemText}>
-                            <Fab color="primary" aria-label="add" onClick={sendBarrage}><SendIcon /></Fab>
+                            <Fab color="primary" aria-label="add" onClick={async()=>{sendBarrage()}}><SendIcon /></Fab>
                         </Grid>
                     </Grid>
                 </Grid>
