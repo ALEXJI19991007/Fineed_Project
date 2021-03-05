@@ -11,28 +11,35 @@ type TimeStampedNewsItem = {
   timeStamp: number;
 };
 
+type NewsItem = {
+  target?: string;
+  link?: string;
+  title?: string;
+  content?: string;
+  imgUrl?: string;
+  pubDate?: string;
+};
+
 exports.rssFetch = functions.https.onCall(async (data, _context) => {
   let timeStampedNewsList: TimeStampedNewsItem[] = [];
-  const newsCache = db.collection("news_cache");
-  newsCache.get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const docData = doc.data();
-      timeStampedNewsList.push({
-        target: data.target,
-        link: docData.id,
-        title: docData.title,
-        content: docData.content,
-        imgUrl: docData.imgUrl,
-        pubDate: docData.pubDate,
-        timeStamp: docData.timeStamp,
-      });
+  const newsCacheSnapShot = await db.collection("news_cache").get();
+  newsCacheSnapShot.forEach((doc) => {
+    const docData = doc.data();
+    timeStampedNewsList.push({
+      target: data.target,
+      link: docData.link,
+      title: docData.title,
+      content: docData.content,
+      imgUrl: docData.imgUrl,
+      pubDate: docData.pubDate,
+      timeStamp: docData.timeStamp,
     });
   });
 
   // sort newsList by timestamp in descending order
   timeStampedNewsList.sort((a, b) => (a.timeStamp < b.timeStamp) ? 1 : -1);
   // remove timeStamp from the object before sending
-  let newsList: Object[] = [];
+  let newsList: NewsItem[] = [];
   timeStampedNewsList.forEach((obj) => {
     newsList.push({
       target: data.target,
@@ -44,6 +51,7 @@ exports.rssFetch = functions.https.onCall(async (data, _context) => {
     });
   });
   return {
+    title: "Fineed -- Give you the most up-to-date financial news",
     list: newsList,
   };
 });

@@ -10,6 +10,7 @@ import { NaviDrawer } from './components/NaviDrawer';
 import { HomePage } from './pages/homePage/HomePage';
 import { LoginPage } from './pages/loginPage/LoginPage';
 import { HistoryPage } from './pages/historyPage/HistoryPage';
+import { BarragePage } from './pages/barragePage/BarragePage';
 
 
 function App() {
@@ -22,7 +23,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/login" component={LoginPage} />
-          <Route exact path="/history" component={HistoryPage} />
+          <Route path="/barrage" component={BarragePage} />
+          <Route path="/history" component={HistoryPage} />
         </Switch>
       </BrowserRouter>
     </RecoilRoot>

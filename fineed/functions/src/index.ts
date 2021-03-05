@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
+import { Barrage } from "./constants";
 
 admin.initializeApp();
 export const db = admin.firestore();
@@ -31,6 +32,24 @@ export const addEntry = functions.https.onCall(async (data, _context) => {
   } catch (error) {
     return "wrong";
   }
+});
+
+export const storeUserBarrage = functions.https.onCall(async (data, _context) => {
+  const barrageDocRef = db.collection("barrage").doc();
+  barrageDocRef.set({
+      uid:data.uid,
+      tag:data.tag,
+      time:data.time,
+      content:data.content,
+    }).then(() => {
+      console.log("Document successfully written!");
+  })
+  .catch((error) => {
+      console.error("Error writing document: ", error);
+  });
+    
+    return  
+
 });
 
 // functions used in production

@@ -9,6 +9,8 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import sampleTeslaNewsImage from "../../imageSrc/homepage/teslaNewsimg.jpg";
 import { updateNewsClick, updateUserHistory } from "../../firebase/FirebaseFunction";
+import { useRecoilValue } from "recoil";
+import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 
 export type News = {
   target: string;
@@ -45,6 +47,7 @@ const useStyles = makeStyles({
 
 export function NewsCard(props: News) {
   const classes = useStyles();
+  const curUid = useRecoilValue(curUserUidAtom);
 
   const newsOnClick = async () => {
     window.open(props.link, "_blank");
@@ -63,7 +66,7 @@ export function NewsCard(props: News) {
     }
     // Update history info
     const userData = {
-      userId: "ExHvLJq2sPe5aPKfuPSJ",
+      userId: curUid,
       newsId: updateNewsClickResp.data
     }
     const updateUserHistoryResp = await updateUserHistory(userData);

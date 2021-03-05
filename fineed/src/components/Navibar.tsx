@@ -94,7 +94,6 @@ export function NaviBar() {
     setMobileMoreAnchorEl,
   ] = React.useState<null | HTMLElement>(null);
   const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
-  console.log(currentUserUid)
   const setNaviDrawerState = useSetRecoilState(NaviDrawerOpenStateAtom);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -185,13 +184,13 @@ export function NaviBar() {
                 History
               </Typography>
             </Button>
-            <Button className={classes.topMenu} color="secondary">
+            <Button className={classes.topMenu} color="secondary" onClick={()=>{history.push('/barrage')}}>
               <Typography
                 className={classes.typography}
                 variant="subtitle1"
                 noWrap
               >
-                Coming Soon
+                Barrage
               </Typography>
             </Button>
             {currentUserUid? (
