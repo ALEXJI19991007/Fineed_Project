@@ -1,5 +1,6 @@
 import { selector } from "recoil";
-import * as Atoms from "../atoms/NewsListFilterAtom";
+import * as NewsAtoms from "../atoms/NewsListFilterAtom";
+import * as UserAtoms from "../atoms/FirebaseUserAtom";
 import { getUserHistory, rssFetch } from "../firebase/FirebaseFunction";
 
 // The filteredNewsListState internally keeps track of two atom
@@ -8,10 +9,11 @@ import { getUserHistory, rssFetch } from "../firebase/FirebaseFunction";
 export const filteredNewsListState = selector({
   key: "filteredNewsListState",
   get: async ({ get }) => {
-    const filter = get(Atoms.newsListFilterState);
+    const target = get(NewsAtoms.newsListFilterState);
+    const userId = get(UserAtoms.curUserUidAtom);
     // If we want to fetch user history
-    if (filter.target === "user_history") {
-      return await getUserHistoryHelper(filter.param);
+    if (target === "user_history") {
+      return await getUserHistoryHelper(userId);
     }
     const rssFetchResp = await rssFetch({target: "headlines"});
     return rssFetchResp.data;

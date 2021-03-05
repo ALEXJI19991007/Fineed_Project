@@ -11,10 +11,7 @@ export function HistoryPage() {
   // We change the state of the atom when History page is loaded
   useEffect(() => {
     // TODO: company --> userId, for now it is hardcoded, later we need to get userId from session
-    const currentNewsState = {
-      target: "user_history",
-      param: "ExHvLJq2sPe5aPKfuPSJ",
-    };
+    const currentNewsState = "user_history";
     setFilter(currentNewsState);
   }, []);
 
