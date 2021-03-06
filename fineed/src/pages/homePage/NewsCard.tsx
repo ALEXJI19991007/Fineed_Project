@@ -65,10 +65,12 @@ export function NewsCard(props: News) {
       console.log("Update News Failed");
     }
     // Update history info
+    // If user has not logged in, update data into admin user
     const userData = {
-      userId: curUid,
+      userId: curUid === "" ? "ExHvLJq2sPe5aPKfuPSJ" : curUid,
       newsId: updateNewsClickResp.data
     }
+
     const updateUserHistoryResp = await updateUserHistory(userData);
     if (updateUserHistoryResp.data === null) {
       console.log("Update User History Failed");

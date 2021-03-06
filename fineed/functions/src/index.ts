@@ -1,6 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-import { Barrage } from "./constants";
+// import { Barrage } from "./constants";
 
 admin.initializeApp();
 export const db = admin.firestore();
@@ -68,3 +68,6 @@ exports.rssFetch = rssFetch.rssFetch;
 const rssCache = require("./rssCache");
 exports.rssAccumulate = rssCache.rssAccumulate;
 exports.rssClearCache = rssCache.rssClearCache;
+
+const createNewUser = require("./CreateNewUser");
+exports.createNewUser = createNewUser.createNewUser;

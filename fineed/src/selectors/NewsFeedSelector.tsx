@@ -13,6 +13,7 @@ export const filteredNewsListState = selector({
     const userId = get(UserAtoms.curUserUidAtom);
     // If we want to fetch user history
     if (target === "user_history") {
+      console.log("Fetch History");
       return await getUserHistoryHelper(userId);
     }
     const rssFetchResp = await rssFetch({target: "headlines"});

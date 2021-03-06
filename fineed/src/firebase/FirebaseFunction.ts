@@ -11,3 +11,4 @@ export const updateUserHistory = FirebaseFunction("updateUserHistory");
 export const getUserHistory = FirebaseFunction("getUserHistory");
 export const rssFetch = FirebaseFunction("rssFetch");
 export const storeUserBarrage = FirebaseFunction("storeUserBarrage");
+export const createNewUser = FirebaseFunction("createNewUser");
