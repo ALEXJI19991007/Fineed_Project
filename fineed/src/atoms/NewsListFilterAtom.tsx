@@ -10,9 +10,15 @@ export type NewsItem = {
   pubDate?: string;
 };
 
-export const newsListFilterState: RecoilState<string> = atom({
+type NewsState = {
+  target: string,
+}
+
+export const newsListFilterState: RecoilState<NewsState> = atom({
   key: "newsListFilterState",
-  default: "headlines",
+  default: {
+    target: "headlines"
+  },
 });
 
 export const SOURCE_LIST: string[] = ["yahoo", "market_watch"];

@@ -9,11 +9,10 @@ import { getUserHistory, rssFetch } from "../firebase/FirebaseFunction";
 export const filteredNewsListState = selector({
   key: "filteredNewsListState",
   get: async ({ get }) => {
-    const target = get(NewsAtoms.newsListFilterState);
+    const filter = get(NewsAtoms.newsListFilterState);
     const userId = get(UserAtoms.curUserUidAtom);
     // If we want to fetch user history
-    if (target === "user_history") {
-      console.log("Fetch History");
+    if (filter.target === "user_history") {
       return await getUserHistoryHelper(userId);
     }
     const rssFetchResp = await rssFetch({target: "headlines"});

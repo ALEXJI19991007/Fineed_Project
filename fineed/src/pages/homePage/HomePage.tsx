@@ -9,7 +9,9 @@ export function HomePage() {
 
   // We change the state of the atom when Home page is loaded
   useEffect(() => {
-    const currentNewsState = "headlines";
+    const currentNewsState = {
+      target: "headlines",
+    }
     setFilter(currentNewsState);
   }, []);
 
