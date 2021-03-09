@@ -19,8 +19,6 @@ import { storeUserBarrage } from "../../firebase/FirebaseFunction";
 import { useBarrages } from "../../firebase/FirebaseFireStore";
 import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
 
-const SCROLLHEIGHTANDTOPOFFSET = 745;
-
 
 const useStyles = makeStyles({
     table: {
@@ -78,11 +76,12 @@ const BarrageItem = (props: BarrageItemProps) => {
         }
     }
     useEffect(()=>{
-        setScrollHeight(scrollRef.current?.scrollHeight??0);
-        setScrollTop(scrollRef.current?.scrollTop??0);
+       
         if(scrollRef.current){
+            setScrollHeight(scrollRef.current.scrollHeight??0);
+            setScrollTop(scrollRef.current.scrollTop??0);
             scrollRef.current.scrollTo({
-                top: scrollHeight-SCROLLHEIGHTANDTOPOFFSET,
+                top: scrollHeight-scrollRef.current.clientHeight,
             })
         }
     },[scrollRef,barrageArray])
