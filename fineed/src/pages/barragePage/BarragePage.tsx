@@ -18,6 +18,7 @@ import { useRecoilValue } from "recoil";
 import { storeUserBarrage } from "../../firebase/FirebaseFunction";
 import { useBarrages } from "../../firebase/FirebaseFireStore";
 import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
+import { StockChart } from "./StockChart";
 
 
 const useStyles = makeStyles({
@@ -135,7 +136,7 @@ export function BarragePage() {
 
     return (curUid ?
         <div style={{marginTop:'100px',display: 'inline-block',width:'100%'}} onKeyPress={async(event)=>{handleEnter(event)}}>
-            <div className={classes.index}>chart</div>
+            <div className={classes.index}><StockChart/></div>
             
             <Grid container component={Paper} className={classes.chatSection} >
                 <Grid item xs={9}>
