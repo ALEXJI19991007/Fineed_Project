@@ -28,7 +28,7 @@ const useStyles = makeStyles({
     },
     index: {
         height:'500px', 
-        width:'400px', 
+        width:'600px', 
         float: 'left',
         marginRight: '100px'
     },

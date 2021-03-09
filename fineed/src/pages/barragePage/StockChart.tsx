@@ -2,7 +2,7 @@ import React, { Component, useEffect, useRef, useState } from "react";
 import moment from 'moment'
 import priceData from './fakeStockData.json';
 
-const ReactHighcharts = require('react-highcharts');
+const ReactHighstock = require('react-highcharts/ReactHighstock')
 
 export function StockChart(){
     const config = {
@@ -28,6 +28,7 @@ export function StockChart(){
           },
         },
         xAxis: {
+          type: 'date',
           labels: {
             enabled: false
           },
@@ -40,6 +41,6 @@ export function StockChart(){
         ]
       };
     
-    return <div><ReactHighcharts config = {config}></ReactHighcharts></div>
+    return <div><ReactHighstock config = {config}></ReactHighstock></div>
 }
 
