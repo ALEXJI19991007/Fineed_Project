@@ -76,7 +76,6 @@ const BarrageItem = (props: BarrageItemProps) => {
         }
     }
     useEffect(()=>{
-       console.log('why not at end while come in?',scrollRef.current)
         if(scrollRef.current){
             setScrollHeight(scrollRef.current.scrollHeight??0);
             setScrollTop(scrollRef.current.scrollTop??0);
@@ -114,12 +113,18 @@ export function BarragePage() {
         await storeUserBarrage(barrage)
     }
 
+    const handleEnter = async(event: React.KeyboardEvent) =>{
+        if(event.key === 'Enter'){
+            await sendBarrage();
+        }
+    }
+
     useEffect(() => {
         
     }, [barragesAtom]);
 
     return (curUid ?
-        <div style={{ marginTop: '100px' }}>
+        <div style={{ marginTop: '100px' }} onKeyPress={async(event)=>{handleEnter(event)}}>
             <Grid container component={Paper} className={classes.chatSection}>
                 <Grid item xs={9}>
                     <BarrageItem barrageArray={barragesAtom} />
