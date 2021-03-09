@@ -35,6 +35,10 @@ export const addEntry = functions.https.onCall(async (data, _context) => {
 });
 
 export const storeUserBarrage = functions.https.onCall(async (data, _context) => {
+  //TODO besides the length check for content we should also add the bad word check
+  if(data.content.length === 0){
+    return;
+  }
   const barrageDocRef = db.collection("barrage").doc();
   barrageDocRef.set({
       uid:data.uid,
@@ -51,6 +55,19 @@ export const storeUserBarrage = functions.https.onCall(async (data, _context) =>
     return  
 
 });
+
+exports.clearBarrage = functions.pubsub.schedule('every 10 minutes').onRun(async(context) => {
+  
+  const barrageDB = await db.collection('barrage').where('time','<=',Date.now());
+  barrageDB.get().then((querySnapshot)=>{
+    querySnapshot.forEach(function(doc) {
+      doc.ref.delete();
+    });
+  })
+  return null;
+});
+
+
 
 // functions used in production
 const updateNewsClick = require("./updateNewsClick");
