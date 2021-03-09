@@ -76,7 +76,7 @@ const BarrageItem = (props: BarrageItemProps) => {
         }
     }
     useEffect(()=>{
-       
+       console.log('why not at end while come in?',scrollRef.current)
         if(scrollRef.current){
             setScrollHeight(scrollRef.current.scrollHeight??0);
             setScrollTop(scrollRef.current.scrollTop??0);
@@ -84,7 +84,7 @@ const BarrageItem = (props: BarrageItemProps) => {
                 top: scrollHeight-scrollRef.current.clientHeight,
             })
         }
-    },[scrollRef,barrageArray])
+    },[scrollRef,barrageArray,scrollHeight])
     return (
         <List className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
             {sortedBarrageArray.map((barrage:Barrage, i:number) => (<ListItem key={i}>
