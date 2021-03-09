@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -18,6 +18,8 @@ import { useRecoilValue } from "recoil";
 import { storeUserBarrage } from "../../firebase/FirebaseFunction";
 import { useBarrages } from "../../firebase/FirebaseFireStore";
 import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
+
+const SCROLLHEIGHTANDTOPOFFSET = 745;
 
 
 const useStyles = makeStyles({
@@ -61,15 +63,31 @@ type BarrageItemProps = {
 
 const BarrageItem = (props: BarrageItemProps) => {
     const classes = useStyles();
+    const scrollRef = useRef<HTMLUListElement>(null);
+    const [scrollHeight,setScrollHeight] = useState<number>(0);
+    const [scrollTop,setScrollTop] = useState<number>(0);
     const { barrageArray } = props;
     let sortedBarrageArray = [...barrageArray];
     
     sortedBarrageArray.sort((barrageA:Barrage, barrageB:Barrage) => {
         return barrageA.time - barrageB.time;
     });
-    // sortedBarrageArray.map((a)=>{console.log(a.time)})
+    const onScroll =() =>{
+        if(scrollRef.current == null){
+            return;
+        }
+    }
+    useEffect(()=>{
+        setScrollHeight(scrollRef.current?.scrollHeight??0);
+        setScrollTop(scrollRef.current?.scrollTop??0);
+        if(scrollRef.current){
+            scrollRef.current.scrollTo({
+                top: scrollHeight-SCROLLHEIGHTANDTOPOFFSET,
+            })
+        }
+    },[scrollRef,barrageArray])
     return (
-        <List className={classes.messageArea}>
+        <List className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
             {sortedBarrageArray.map((barrage:Barrage, i:number) => (<ListItem key={i}>
                 <Grid container>
                     <Grid item xs={12}>
@@ -81,6 +99,7 @@ const BarrageItem = (props: BarrageItemProps) => {
                 </Grid>
             </ListItem>))}
         </List>
+       
     )
 }
 
