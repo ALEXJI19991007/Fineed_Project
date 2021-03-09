@@ -22,11 +22,18 @@ import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
 
 const useStyles = makeStyles({
     table: {
-        minWidth: 650,
+        float: 'left',
+        marginTop: '1000px'
+    },
+    index: {
+        height:'500px', 
+        width:'400px', 
+        float: 'left',
+        marginRight: '100px'
     },
     chatSection: {
-        width: '100%',
-        height: '80vh'
+        width: '50%',
+        float: 'left'
     },
     headBG: {
         backgroundColor: '#e0e0e0'
@@ -108,6 +115,9 @@ export function BarragePage() {
     const barragesAtom = useRecoilValue(BarrageSnapShotAtom);
     const { _ready, _barrages } = useBarrages();
     const sendBarrage = async () => {
+        if(textContent.length === 0){
+            return;
+        }
         const barrage = { uid: curUid, content: textContent, time: Date.now(), tag: '' };
         setTextContent('')
         await storeUserBarrage(barrage)
@@ -124,12 +134,14 @@ export function BarragePage() {
     }, [barragesAtom]);
 
     return (curUid ?
-        <div style={{ marginTop: '100px' }} onKeyPress={async(event)=>{handleEnter(event)}}>
-            <Grid container component={Paper} className={classes.chatSection}>
+        <div style={{marginTop:'100px',display: 'inline-block',width:'100%'}} onKeyPress={async(event)=>{handleEnter(event)}}>
+            <div className={classes.index}>chart</div>
+            
+            <Grid container component={Paper} className={classes.chatSection} >
                 <Grid item xs={9}>
                     <BarrageItem barrageArray={barragesAtom} />
                     <Divider />
-                    <Grid container style={{ padding: '20px' }}>
+                    <Grid container>
                         <Grid item xs={11}>
                             <TextField id="outlined-basic-email" label="Type Something" fullWidth value={textContent} onChange={(event) => { setTextContent(event.target.value) }} />
                         </Grid>
@@ -139,6 +151,7 @@ export function BarragePage() {
                     </Grid>
                 </Grid>
             </Grid>
+            
         </div> : <div style={{ marginTop: '100px' }}>u should log in first</div>
     );
 }
