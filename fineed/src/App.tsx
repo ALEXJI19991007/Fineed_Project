@@ -11,7 +11,7 @@ import { HomePage } from './pages/homePage/HomePage';
 import { LoginPage } from './pages/loginPage/LoginPage';
 import { HistoryPage } from './pages/historyPage/HistoryPage';
 import { BarragePage } from './pages/barragePage/BarragePage';
-
+import { ProfilePage } from './pages/profilePage/ProfilePage';
 
 function App() {
   return (
@@ -25,6 +25,7 @@ function App() {
           <Route path="/login" component={LoginPage} />
           <Route path="/barrage" component={BarragePage} />
           <Route path="/history" component={HistoryPage} />
+          <Route path="/profile" component={ProfilePage} />
         </Switch>
       </BrowserRouter>
     </RecoilRoot>
