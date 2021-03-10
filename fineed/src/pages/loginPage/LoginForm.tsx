@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useHistory} from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import LogoPic from "../../imageSrc/pageIcon.png";
 import Grid from "@material-ui/core/Grid";
@@ -33,10 +34,12 @@ const theme = createMuiTheme({
 
 export function LoginForm() {
   const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
+  const history = useHistory();
 
   const googleLoginHandler = async () => {
     const userId = (await FirebaseAuth.loginWithGoogle()) ?? "";
     setCurUserUid(userId);
+    history.push('/profile')
   };
 
   const githubLoginHandler = async () => {
