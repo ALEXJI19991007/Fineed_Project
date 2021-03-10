@@ -88,3 +88,7 @@ exports.rssClearCache = rssCache.rssClearCache;
 
 const createNewUser = require("./CreateNewUser");
 exports.createNewUser = createNewUser.createNewUser;
+
+const updateUserProfile = require("./updateUserProfile");
+exports.updateUserProfile = updateUserProfile.updateUserProfile;
+exports.updateUserPassword= updateUserProfile.updateUserPassword;
