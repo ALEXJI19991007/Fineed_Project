@@ -14,3 +14,5 @@ export const storeUserBarrage = FirebaseFunction("storeUserBarrage");
 export const createNewUser = FirebaseFunction("createNewUser");
 export const updateUserProfile = FirebaseFunction("updateUserProfile");
 export const updateUserPassword = FirebaseFunction("updateUserPassword");
+export const updateUserFavorite = FirebaseFunction("updateUserFavorite");
+export const getUserFavorite = FirebaseFunction("getUserFavorite");

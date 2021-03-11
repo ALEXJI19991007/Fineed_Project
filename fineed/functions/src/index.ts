@@ -76,8 +76,14 @@ exports.updateNewsClick = updateNewsClick.updateNewsClick;
 const updateUserHistory = require("./updateUserHistory");
 exports.updateUserHistory = updateUserHistory.updateUserHistory;
 
+const updateUserFavorite = require("./updateUserFavorite");
+exports.updateUserFavorite = updateUserFavorite.updateUserFavorite;
+
 const getUserHistory = require("./getUserHistory");
 exports.getUserHistory = getUserHistory.getUserHistory;
+
+const getUserFavorite = require("./getUserFavorite");
+exports.getUserFavorite = getUserFavorite.getUserFavorite;
 
 const rssFetch = require("./rssFetch");
 exports.rssFetch = rssFetch.rssFetch;

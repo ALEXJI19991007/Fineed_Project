@@ -1,7 +1,7 @@
 import { selector } from "recoil";
 import * as NewsAtoms from "../atoms/NewsListFilterAtom";
 import * as UserAtoms from "../atoms/FirebaseUserAtom";
-import { getUserHistory, rssFetch } from "../firebase/FirebaseFunction";
+import { getUserFavorite, getUserHistory, rssFetch } from "../firebase/FirebaseFunction";
 
 // The filteredNewsListState internally keeps track of two atom
 // dependencies: newsListFilterState and newsListState so that
@@ -11,24 +11,24 @@ export const filteredNewsListState = selector({
   get: async ({ get }) => {
     const filter = get(NewsAtoms.newsListFilterState);
     const userId = get(UserAtoms.curUserUidAtom);
-    // If we want to fetch user history
-    if (filter.target === "user_history") {
-      return await getUserHistoryHelper(userId);
+    // If we want to fetch user history or favorite
+    if (filter.target === "user_history" || filter.target === "user_favorite") {
+      return await getUserHistoryOrFavoriteHelper(filter.target, userId);
     }
     const rssFetchResp = await rssFetch({target: "headlines"});
     return rssFetchResp.data;
   },
 });
 
-const getUserHistoryHelper = async (userId: string) => {
+const getUserHistoryOrFavoriteHelper = async (target: string, userId: string) => {
   // TODO: 目前传入的userId为hard-coded
   const userData = {
     userId: userId,
   };
-  const historyData = await getUserHistory(userData);
+  const newsData = target === "user_history" ? (await getUserHistory(userData)) : (await getUserFavorite(userData));
   // console.log(historyData.data);
   let newsList: Object[] = [];
-  historyData.data.forEach((newsItem: any) => {
+  newsData.data.forEach((newsItem: any) => {
     newsList.push({
       target: newsItem.target,
       link: newsItem.link,
@@ -38,8 +38,9 @@ const getUserHistoryHelper = async (userId: string) => {
       pubDate: newsItem.pub_date,
     });
   });
+  const title = target === "user_history" ? "User History" : "User Favorite";
   return {
-    title: "User history",
+    title: title,
     list: newsList,
   };
 };
