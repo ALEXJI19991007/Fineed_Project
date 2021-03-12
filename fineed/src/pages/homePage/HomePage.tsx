@@ -11,8 +11,7 @@ export function HomePage() {
   useEffect(() => {
     const currentNewsState = {
       target: "headlines",
-      param: "",
-    };
+    }
     setFilter(currentNewsState);
   }, []);
 

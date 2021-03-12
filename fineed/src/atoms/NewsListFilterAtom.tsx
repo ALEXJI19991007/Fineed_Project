@@ -10,17 +10,14 @@ export type NewsItem = {
   pubDate?: string;
 };
 
-// This atom is the current showing state
-export type NewsState = {
-  target: string;
-  param: string;
-};
+type NewsState = {
+  target: string,
+}
 
 export const newsListFilterState: RecoilState<NewsState> = atom({
   key: "newsListFilterState",
   default: {
-    target: "headlines",
-    param: "",
+    target: "headlines"
   },
 });
 

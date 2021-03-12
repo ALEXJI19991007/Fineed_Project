@@ -36,24 +36,46 @@ exports.rssClearCache = functions.pubsub
   .schedule("every day 00:00") // clear cache everday 12:00 midnight
   .timeZone("America/Chicago") // time zone: CST
   .onRun(async (_content) => {
-    await db.runTransaction(async (transaction) => {
-      // clear the cache
-      const newsCacheRef = db.collection("news_cache");
-      const docRefArray = await newsCacheRef.listDocuments();
-      docRefArray.forEach((docRef) => {
-        transaction.delete(docRef);
-      });
-      const timeStampRef = db.collection("time_stamp");
-      // reset the timestamp document
-      const timeStampDocRef = timeStampRef.doc("timeStamp");
-      transaction.update(timeStampDocRef, { count: 0 });
-      // then immediately fetch new feeds
-      await fetchAndCacheAllFeeds(transaction, false);
+    // await db.runTransaction(async (transaction) => {
+    //   // clear the cache
+    //   const newsCacheRef = db.collection("news_cache");
+    //   const docRefArray = await newsCacheRef.listDocuments();
+    //   docRefArray.forEach((docRef) => {
+    //     transaction.delete(docRef);
+    //   });
+    //   const timeStampRef = db.collection("time_stamp");
+    //   // reset the timestamp document
+    //   const timeStampDocRef = timeStampRef.doc("timeStamp");
+    //   transaction.update(timeStampDocRef, { count: 0 });
+    //   // then immediately fetch new feeds
+    //   //await fetchAndCacheAllFeeds(transaction, false);
+    // });
+    const newsCacheRefArray = db.collection("news_cache").get();
+    const batchArray:any[] = [];
+    batchArray.push(db.batch());
+    let operationCounter = 0;
+    let batchIndex = 0;
+    (await newsCacheRefArray).forEach((documentSnapshot) => {
+      batchArray[batchIndex].delete(documentSnapshot.ref);
+      operationCounter++;
+
+      if (operationCounter === 499) {
+        batchArray.push(db.batch());
+        batchIndex++;
+        operationCounter = 0;
+      }
     });
+    batchArray.push(db.batch());
+    const timeStampDocRef = db.collection("time_stamp").doc("timeStamp");
+    batchArray[batchIndex].update(timeStampDocRef, { count: 0 });
+    batchArray.forEach(async batch => await batch.commit());
     return null;
   });
 
-async function fetchAndCacheAllFeeds(transaction: FirebaseFirestore.Transaction, needToRead: boolean) {
+async function fetchAndCacheAllFeeds(
+  transaction: FirebaseFirestore.Transaction,
+  needToRead: boolean
+) {
   // parser for parsing the rss feed
   const parser: typeof Parser = new Parser();
   let timeStampRef = db.collection("time_stamp");

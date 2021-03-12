@@ -1,59 +1,102 @@
-import React, { useEffect } from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useEffect } from "react";
+import { useHistory} from "react-router-dom";
+import Avatar from "@material-ui/core/Avatar";
 import LogoPic from "../../imageSrc/pageIcon.png";
 import Grid from "@material-ui/core/Grid";
 import { FirebaseAuth } from "../../firebase/FirebaseAuth";
-import { curUserUidAtom } from '../../atoms/FirebaseUserAtom';
-import { useRecoilState } from 'recoil';
-import {CopyRight} from "./CopyRight"
-import GitHubIcon from '@material-ui/icons/GitHub';
-import { makeStyles,ThemeProvider,createMuiTheme } from "@material-ui/core/styles";
-import { Search} from "@trejgun/material-ui-icons-google";
-import {EmailPwdForm} from './EmailPwdForm'
-import Typography from '@material-ui/core/Typography';
+import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
+import { useRecoilState } from "recoil";
+import { CopyRight } from "./CopyRight";
+import GitHubIcon from "@material-ui/icons/GitHub";
+import {
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
+import { Search } from "@trejgun/material-ui-icons-google";
+import { EmailPwdForm } from "./EmailPwdForm";
+import Typography from "@material-ui/core/Typography";
 
 const theme = createMuiTheme({
-    palette: {
-      primary:{main:'#00DC16'} , //green
-      secondary:{main:'#3e4444'}, //gray
+  palette: {
+    primary: { main: "#00DC16" }, //green
+    secondary: { main: "#3e4444" }, //gray
+  },
+  typography: {
+    h1: {
+      fontSize: 200,
     },
-    typography: {
-        h1: {
-            fontSize: 200,
-        },
-        h2: {
-            fontSize: 5,
-        },
+    h2: {
+      fontSize: 5,
     },
-  });
+  },
+});
 
-export function LoginForm(){
-    const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
-    
-    return(
-        <div>
-        <ThemeProvider theme={theme}>
-        <Grid container spacing={3} direction="column" alignItems="center" justify="center">
+export function LoginForm() {
+  const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
+  const history = useHistory();
 
-            <Avatar src={LogoPic} style={{height:'80px',width:'80px'}}/>
-            
-            <Grid item xs={2}>
-            <EmailPwdForm/>
-            </Grid>
-            
-            <Typography style={{marginTop:'15px'}} variant="body2" color="textSecondary" align="center">--- or continue with --- </Typography>
+  const googleLoginHandler = async () => {
+    const userId = (await FirebaseAuth.loginWithGoogle()) ?? "";
+    setCurUserUid(userId);
+    history.push('/profile')
+  };
 
-            <Grid item spacing={3}>
-            <Search style={{marginTop:'10px',marginRight:'3px', width:40,height:40}} 
-                    color="primary" 
-                    onClick={async()=>{setCurUserUid( await FirebaseAuth.loginWithGoogle()??'')}}/>
-            <GitHubIcon style={{marginTop:'10px',marginLeft:'3px',width:40,height:40}} 
-                        color="secondary" 
-                        onClick={async()=>{setCurUserUid( await FirebaseAuth.loginWithGitHub()??'')}}/>
-                </Grid>
-            <CopyRight/>
+  const githubLoginHandler = async () => {
+    const userId = (await FirebaseAuth.loginWithGitHub()) ?? "";
+    setCurUserUid(userId);
+  };
+
+  return (
+    <div>
+      <ThemeProvider theme={theme}>
+        <Grid
+          container
+          spacing={3}
+          direction="column"
+          alignItems="center"
+          justify="center"
+        >
+          <Avatar src={LogoPic} style={{ height: "80px", width: "80px" }} />
+
+          <Grid item xs={2}>
+            <EmailPwdForm />
+          </Grid>
+
+          <Typography
+            style={{ marginTop: "15px" }}
+            variant="body2"
+            color="textSecondary"
+            align="center"
+          >
+            --- or continue with ---{" "}
+          </Typography>
+
+          <Grid item spacing={3}>
+            <Search
+              style={{
+                marginTop: "10px",
+                marginRight: "3px",
+                width: 40,
+                height: 40,
+              }}
+              color="primary"
+              onClick={googleLoginHandler}
+            />
+            <GitHubIcon
+              style={{
+                marginTop: "10px",
+                marginLeft: "3px",
+                width: 40,
+                height: 40,
+              }}
+              color="secondary"
+              onClick={githubLoginHandler}
+            />
+          </Grid>
+          <CopyRight />
         </Grid>
-        </ThemeProvider>
-        </div>
-    )
+      </ThemeProvider>
+    </div>
+  );
 }
