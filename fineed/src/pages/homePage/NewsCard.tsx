@@ -51,7 +51,10 @@ export function NewsCard(props: News) {
 
   const newsOnClick = async () => {
     window.open(props.link, "_blank");
+    // isNormalClick == true: it is a click on the news card
+    // isNormalClick == false: it is a click on the favorite button.
     const clickData = {
+      isNormalClick: true,
       target: props.target,
       link: props.link,
       title: props.title,
@@ -79,6 +82,7 @@ export function NewsCard(props: News) {
 
   const markNewsFavorite = async () => {
     const clickData = {
+      isNormalClick: false,
       target: props.target,
       link: props.link,
       title: props.title,
@@ -86,7 +90,6 @@ export function NewsCard(props: News) {
       imgUrl: props.imgUrl,
       pubDate: props.pubDate,
     };
-    // If the user clicks favorite, we will also increment click count by 1.
     // Update click info
     const updateNewsClickResp = await updateNewsClick(clickData);
     if (updateNewsClickResp.data === null) {
