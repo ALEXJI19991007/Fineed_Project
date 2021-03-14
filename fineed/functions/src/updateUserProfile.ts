@@ -4,10 +4,11 @@ import { db } from "./index";
 exports.updateUserProfile = functions.https.onCall(async (data, _context) => {
   try {
     const userEntry = db.collection("user").doc(data.userId);
+    const currentUserData = (await userEntry.get()).data() || {};
     userEntry.update({
-      first_name: data.firstName,
-      last_name: data.lastName,
-      username: data.username,
+      first_name: data.firstName === "" ? currentUserData.first_name : data.firstName,
+      last_name: data.lastName === "" ? currentUserData.last_name : data.lastName,
+      username: data.username === "" ? currentUserData.username : data.username,
     });
     return { error: null };
   } catch (error) {

@@ -10,6 +10,7 @@ import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useRecoilValue } from "recoil";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { updateUserProfile } from "../../firebase/FirebaseFunction";
 
 const theme = createMuiTheme({
   palette: {
@@ -26,6 +27,36 @@ const theme = createMuiTheme({
   },
 });
 export function EditProfileForm() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+
+  const firstNameOnChange = (event: React.ChangeEvent<{ value: string }>) => {
+    setFirstName(event.target.value);
+  };
+
+  const lastNameOnChange = (event: React.ChangeEvent<{ value: string }>) => {
+    setLastName(event.target.value);
+  };
+
+  const usernameOnChange = (event: React.ChangeEvent<{ value: string }>) => {
+    setUsername(event.target.value);
+  };
+
+  const handleSubmit = async (event: React.FormEvent<{ value: unknown }>) => {
+    event.preventDefault();
+    const userData = {
+      firstName: firstName,
+      lastName: lastName,
+      username: username,
+    };
+    console.log(userData);
+    const updateUserProfileResp = await updateUserProfile(userData);
+    if (updateUserProfileResp.data.error !== null) {
+      console.log(updateUserProfileResp.data.error);
+    }
+  };
+
   return (
     <div>
       <ThemeProvider theme={theme}>
@@ -45,9 +76,10 @@ export function EditProfileForm() {
                 fullWidth
                 id="first_name"
                 label="First Name"
-                name="firstname"
+                name="first_name"
                 autoComplete="firstname"
                 autoFocus
+                onChange={firstNameOnChange}
               />
               <TextField
                 variant="outlined"
@@ -55,23 +87,30 @@ export function EditProfileForm() {
                 fullWidth
                 id="last_name"
                 label="Last Name"
-                name="lastname"
+                name="last_name"
                 autoComplete="lastname"
                 autoFocus
+                onChange={lastNameOnChange}
               />
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="username"
+                name="username"
+                autoComplete="username"
                 autoFocus
+                onChange={usernameOnChange}
               />
               <br />
-              <Button type="submit" variant="contained" color="primary">
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                onSubmit={handleSubmit}
+              >
                 Edit
               </Button>
             </form>
