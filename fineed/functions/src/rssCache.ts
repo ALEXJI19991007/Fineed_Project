@@ -1,27 +1,13 @@
 import * as functions from "firebase-functions";
 import { db } from "./index";
-import { RSS_URL_MAP } from "./constants";
+import { RSS_URL_MAP, NewsItem, FeedListArray } from "./constants";
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const Parser = require("rss-parser");
 
-// TODO
-// duplicate code - move types in NewsFeedSelector/NewsFilterAtom
-// to a separate "type" folder
-type NewsItem = {
-  target?: string;
-  link?: string;
-  title?: string;
-  content?: string;
-  imgUrl?: string;
-  pubDate?: string;
-};
-
-type FeedListArray = {
-  list: NewsItem[];
-};
-
 // Cache rss feed every 15 minutes
+// TODO: Rewrite so that we automatically create timeStamp
+// as documents are inserted
 exports.rssAccumulate = functions.pubsub
   .schedule("every 15 minutes") // run every 15 minute
   .timeZone("America/Chicago") // time zone: CST
@@ -145,7 +131,7 @@ async function fetchAndCacheAllFeeds(
             const docEntry = newCacheRef.doc();
             ++numInserted;
             const newDocData = {
-              id: docEntry.id, // feed link as id
+              id: docEntry.id,
               link: item.link,
               target: item.target,
               title: item.title,
