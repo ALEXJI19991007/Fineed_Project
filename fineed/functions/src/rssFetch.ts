@@ -1,24 +1,6 @@
 import * as functions from "firebase-functions";
 import { db } from "./index";
-
-type TimeStampedNewsItem = {
-  target: string;
-  link: string;
-  title: string;
-  content: string;
-  imgUrl: string;
-  pubDate: string;
-  timeStamp: number;
-};
-
-type NewsItem = {
-  target?: string;
-  link?: string;
-  title?: string;
-  content?: string;
-  imgUrl?: string;
-  pubDate?: string;
-};
+import { NewsItem, TimeStampedNewsItem, PAGE_SZIE } from "./constants";
 
 exports.rssFetch = functions.https.onCall(async (data, _context) => {
   let timeStampedNewsList: TimeStampedNewsItem[] = [];
@@ -53,5 +35,34 @@ exports.rssFetch = functions.https.onCall(async (data, _context) => {
   return {
     title: "Fineed -- Give you the most up-to-date financial news",
     list: newsList,
+  };
+});
+
+// TODO - rssFetch with pagnation. Work in progress so not deployed.
+// expected data: { pageIndex: number }
+exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
+  let newsItemArray: NewsItem[] = [];
+  // assumption: data.pageIndex is 1-indexed (starts from 1).
+  const pageIndex = data.pageIndex - 1;
+  const cachePageSnapshot = await db.collection("news_cache")
+    .orderBy("timeStamp").startAt(PAGE_SZIE * pageIndex)
+    .endBefore(PAGE_SZIE * (pageIndex + 1)).get()
+  
+  // We shouldn't need to sort again since the query result is already ordered
+  cachePageSnapshot.forEach((doc) => {
+    const docData = doc.data();
+    newsItemArray.push({
+      target: data.target,
+      link: docData.link,
+      title: docData.title,
+      content: docData.content,
+      imgUrl: docData.imgUrl,
+      pubDate: docData.pubDate,
+    });
+  });
+
+  return {
+    title: "Fineed -- Give you the most up-to-date financial news",
+    list: newsItemArray,
   };
 });

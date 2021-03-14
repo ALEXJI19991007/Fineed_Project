@@ -87,12 +87,13 @@ exports.getUserFavorite = getUserFavorite.getUserFavorite;
 
 const rssFetch = require("./rssFetch");
 exports.rssFetch = rssFetch.rssFetch;
+exports.rssFetchPage = rssFetch.rssFetchPage;
 
 const rssCache = require("./rssCache");
 exports.rssAccumulate = rssCache.rssAccumulate;
 exports.rssClearCache = rssCache.rssClearCache;
 
-const createNewUser = require("./CreateNewUser");
+const createNewUser = require("./createNewUser");
 exports.createNewUser = createNewUser.createNewUser;
 
 const updateUserProfile = require("./updateUserProfile");
