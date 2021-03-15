@@ -22,12 +22,12 @@ function App() {
         <NaviBar />
         <NaviDrawer/>
         <Switch>
-          <Route exact path="/" component={HomePage} />
+          <Route exact path="/" component={PromoVideoPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/barrage" component={BarragePage} />
           <Route path="/history" component={HistoryPage} />
           <Route path="/profile" component={ProfilePage} />
-          <Route path="/promo" component={PromoVideoPage} />
+          <Route path="/home" component={HomePage} />
         </Switch>
       </BrowserRouter>
     </RecoilRoot>

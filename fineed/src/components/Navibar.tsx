@@ -112,7 +112,7 @@ export function NaviBar() {
   };
 
   const fineedOnClick = () => {
-    history.push("/")
+    history.push("/home")
   }
 
   const profileOnClick = () => {
@@ -134,7 +134,7 @@ export function NaviBar() {
       <MenuItem onClick={profileOnClick}>Profile</MenuItem>
     </Menu>
   );
-  if (location.pathname.match(/promo/)){
+  if (location.pathname==='/'){
     return null;
   }
 
