@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, withRouter } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   fade,
@@ -84,8 +84,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
 export function NaviBar() {
+  let location = useLocation();
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -134,6 +134,9 @@ export function NaviBar() {
       <MenuItem onClick={profileOnClick}>Profile</MenuItem>
     </Menu>
   );
+  if (location.pathname.match(/promo/)){
+    return null;
+  }
 
   return (
     <div className={classes.grow}>

@@ -12,6 +12,7 @@ import { LoginPage } from './pages/loginPage/LoginPage';
 import { HistoryPage } from './pages/historyPage/HistoryPage';
 import { BarragePage } from './pages/barragePage/BarragePage';
 import { ProfilePage } from './pages/profilePage/ProfilePage';
+import { PromoVideoPage } from './pages/promoVideoPage/PromoVideoPage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/barrage" component={BarragePage} />
           <Route path="/history" component={HistoryPage} />
           <Route path="/profile" component={ProfilePage} />
+          <Route path="/promo" component={PromoVideoPage} />
         </Switch>
       </BrowserRouter>
     </RecoilRoot>
