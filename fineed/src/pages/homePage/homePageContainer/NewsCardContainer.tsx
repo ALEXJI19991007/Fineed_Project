@@ -4,13 +4,15 @@ import { NewsCard } from "../NewsCard";
 import { News } from "../NewsCard";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { useRecoilValueLoadable } from "recoil";
+import { useRecoilValueLoadable, useSetRecoilState } from "recoil";
 import * as Selectors from "../../../selectors/NewsFeedSelector";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
+import { Pagination } from "@material-ui/lab";
+import * as NewsAtoms from "../../../atoms/NewsListFilterAtom"
 
 type NewsCardGridProps = {
   newsList: List<News>;
@@ -178,6 +180,7 @@ export const NewsCardContainer = () => {
           <div>
             {/* <NewsListFilter /> */}
             <NewsCardGrid newsList={NewsList(myNewsFeed)} />
+            <PageDisplay pageCount={myNewsFeed.pageCount}/>
           </div>
         </>
       );
@@ -192,3 +195,17 @@ export const NewsCardContainer = () => {
       );
   }
 };
+
+type pageDisplayProp = {
+  pageCount: number,
+}
+
+const PageDisplay = (props: pageDisplayProp) => {
+  const setPageIndexState = useSetRecoilState(NewsAtoms.newsListPageIndexState);
+
+  const handleChange = (_event: any, value: number) => {
+    setPageIndexState(value);
+  };
+
+  return (<Pagination count={props.pageCount} onChange={handleChange}/>);
+}

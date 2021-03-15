@@ -21,4 +21,9 @@ export const newsListFilterState: RecoilState<NewsState> = atom({
   },
 });
 
+export const newsListPageIndexState: RecoilState<number> = atom({
+  key: "newsListPageIndexState",
+  default: 1,
+});
+
 export const SOURCE_LIST: string[] = ["yahoo", "market_watch"];

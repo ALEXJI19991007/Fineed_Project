@@ -1,21 +1,22 @@
 import { selector } from "recoil";
 import * as NewsAtoms from "../atoms/NewsListFilterAtom";
 import * as UserAtoms from "../atoms/FirebaseUserAtom";
-import { getUserFavorite, getUserHistory, rssFetch } from "../firebase/FirebaseFunction";
+import { getUserFavorite, getUserHistory, rssFetch, rssFetchPage } from "../firebase/FirebaseFunction";
 
-// The filteredNewsListState internally keeps track of two atom
-// dependencies: newsListFilterState and newsListState so that
-// it re-runs if either of those change.
+// The filteredNewsListState internally keeps track of three atom
+// dependencies: newsListFilterState, newsListState and newsListPageIndexState
+// so that it re-runs if any of those change.
 export const filteredNewsListState = selector({
   key: "filteredNewsListState",
   get: async ({ get }) => {
     const filter = get(NewsAtoms.newsListFilterState);
     const userId = get(UserAtoms.curUserUidAtom);
+    const pageIndex = get(NewsAtoms.newsListPageIndexState);
     // If we want to fetch user history or favorite
     if (filter.target === "user_history" || filter.target === "user_favorite") {
       return await getUserHistoryOrFavoriteHelper(filter.target, userId);
     }
-    const rssFetchResp = await rssFetch({target: "headlines"});
+    const rssFetchResp = await rssFetchPage({target: "headlines", pageIndex: pageIndex});
     return rssFetchResp.data;
   },
 });

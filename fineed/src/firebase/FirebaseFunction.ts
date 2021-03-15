@@ -10,6 +10,7 @@ export const updateNewsClick = FirebaseFunction("updateNewsClick");
 export const updateUserHistory = FirebaseFunction("updateUserHistory");
 export const getUserHistory = FirebaseFunction("getUserHistory");
 export const rssFetch = FirebaseFunction("rssFetch");
+export const rssFetchPage = FirebaseFunction("rssFetchPage");
 export const storeUserBarrage = FirebaseFunction("storeUserBarrage");
 export const createNewUser = FirebaseFunction("createNewUser");
 export const updateUserProfile = FirebaseFunction("updateUserProfile");
