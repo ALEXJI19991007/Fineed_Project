@@ -66,7 +66,7 @@ exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
 
   const timeStampData = 
     timeStampDocSnapshot ? timeStampDocSnapshot.data() : undefined;
-  const docCount = timeStampData ? timeStampData["count"] + 1 : 0;
+  const docCount = timeStampData ? timeStampData["count"] : 0;
   return {
     title: "Fineed -- Give you the most up-to-date financial news",
     list: newsList,

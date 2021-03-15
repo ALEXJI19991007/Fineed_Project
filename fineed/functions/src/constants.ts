@@ -3,7 +3,7 @@ export const RSS_URL_MAP = new Map([
   ["market_watch-headlines", "https://rss.app/feeds/SmHR4u6DBoOLBb6o.xml"],
 ]);
 
-export const PAGE_SZIE = 50;
+export const PAGE_SZIE = 40;
 
 export type Barrage = {
   uid: string,
