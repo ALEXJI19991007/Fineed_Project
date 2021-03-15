@@ -43,8 +43,7 @@ export function EditProfileForm() {
     setUsername(event.target.value);
   };
 
-  const handleSubmit = async (event: React.FormEvent<{ value: unknown }>) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     const userData = {
       firstName: firstName,
       lastName: lastName,
@@ -109,7 +108,7 @@ export function EditProfileForm() {
                 type="submit"
                 variant="contained"
                 color="primary"
-                onSubmit={handleSubmit}
+                onClick={handleSubmit}
               >
                 Edit
               </Button>
