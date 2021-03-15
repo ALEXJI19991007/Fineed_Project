@@ -1,14 +1,39 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactPlayer from 'react-player'
+import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
-import ShowChartIcon from '@material-ui/icons/ShowChart';
-// https://promo.com/share/604eda054b0582038433b3a6?utm_source=old_share_page_share_dialog
-// const samplePromoVideo =require("../../videoSrc/SamplePromoVideo.mp4");
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import { blueGrey,yellow } from '@material-ui/core/colors';
 import samplePromoVideo from "../../videoSrc/IntroVideo.mp4";
+
+
+const useStyles = makeStyles({
+    page:{
+        zIndex: 1,
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundColor: yellow['A400'],
+        float:'left',
+    },
+    player:{
+       
+        // position: 'absolute'
+    },
+    volum: {
+        color: blueGrey[500],
+        zIndex: 10,
+        position: 'fixed',
+        top: '50%',
+        right: '50%',
+        fontSize: 60
+    },
+});
 
 //TODO Sijian Trim the Promo Page
 export function PromoVideoPage() {
     const history = useHistory();
+    const classes = useStyles();
     const [isVideoMuted,setIsVideoMuted] = useState(true);
     const [isVideoPlayed,setIsVideoPlayed] = useState(true);
 
@@ -37,16 +62,21 @@ export function PromoVideoPage() {
     // useEffect(()=>{
     //     setTimeout(function(){ setIsVideoMuted(false),setIsVideoPlayed(true) }, 1000);
     // },[])
-    return(<div style={{marginTop:'10px'}}>
+    const handleVolume =()=>{
+        setIsVideoMuted(false);
+    }
+    return(<div className={classes.page}>
+        {isVideoMuted?<VolumeUpIcon className={classes.volum} onClick={handleVolume}/>:null}
         <ReactPlayer 
-           width='105%'
-           height='120%'
-           controls
+           className={classes.player}
+           width='100%'
+           height='100%'
            muted={isVideoMuted}
            playing={isVideoPlayed}
            url={samplePromoVideo}
            onEnded={()=>{history.push("/home")}}
            />
+           
         </div>)
 }
 
