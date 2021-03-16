@@ -5,9 +5,6 @@ import {
   createMuiTheme,
 } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
-import { useRecoilValue } from "recoil";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { updateUserProfile } from "../../firebase/FirebaseFunction";
@@ -105,7 +102,7 @@ export function EditProfileForm() {
               />
               <br />
               <Button
-                type="submit"
+                //type="submit"
                 variant="contained"
                 color="primary"
                 onClick={handleSubmit}
