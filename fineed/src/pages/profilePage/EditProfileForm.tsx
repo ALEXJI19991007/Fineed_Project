@@ -8,6 +8,8 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { updateUserProfile } from "../../firebase/FirebaseFunction";
+import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
+import { useRecoilValue } from "recoil";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,6 +29,7 @@ export function EditProfileForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
+  const userId = useRecoilValue(curUserUidAtom);
 
   const firstNameOnChange = (event: React.ChangeEvent<{ value: string }>) => {
     setFirstName(event.target.value);
@@ -42,14 +45,15 @@ export function EditProfileForm() {
 
   const handleSubmit = async () => {
     const userData = {
+      userId: userId,
       firstName: firstName,
       lastName: lastName,
       username: username,
     };
     console.log(userData);
     const updateUserProfileResp = await updateUserProfile(userData);
-    if (updateUserProfileResp.data.error !== null) {
-      console.log(updateUserProfileResp.data.error);
+    if (updateUserProfileResp.data === null) {
+      console.log("Uplate failed");
     }
   };
 

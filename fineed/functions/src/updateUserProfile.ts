@@ -10,9 +10,9 @@ exports.updateUserProfile = functions.https.onCall(async (data, _context) => {
       last_name: data.lastName === "" ? currentUserData.last_name : data.lastName,
       username: data.username === "" ? currentUserData.username : data.username,
     });
-    return { error: null };
+    return data.username;
   } catch (error) {
-    return { error: "update failed" };
+    return null;
   }
 });
 
@@ -27,8 +27,8 @@ exports.updateUserPassword = functions.https.onCall(async (data, _context) => {
     userEntry.update({
       password: data.newPassword,
     });
-    return { error: null };
+    return data.username;
   } catch (error) {
-    return { error: "update failed" };
+    return null;
   }
 });
