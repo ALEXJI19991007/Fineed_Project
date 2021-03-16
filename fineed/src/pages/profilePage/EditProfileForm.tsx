@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import { updateUserProfile } from "../../firebase/FirebaseFunction";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useRecoilValue } from "recoil";
+import { useHistory} from "react-router-dom";
 
 const theme = createMuiTheme({
   palette: {
@@ -30,6 +31,8 @@ export function EditProfileForm() {
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const userId = useRecoilValue(curUserUidAtom);
+  const history = useHistory();
+
 
   const firstNameOnChange = (event: React.ChangeEvent<{ value: string }>) => {
     setFirstName(event.target.value);
@@ -54,13 +57,15 @@ export function EditProfileForm() {
     const updateUserProfileResp = await updateUserProfile(userData);
     if (updateUserProfileResp.data === null) {
       console.log("Uplate failed");
+    } else {
+      history.push('profile')
     }
   };
 
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <Grid
+          <Grid
           container
           spacing={3}
           direction="column"
@@ -68,7 +73,7 @@ export function EditProfileForm() {
           justify="center"
         >
           <Grid item xs={2}>
-            <form noValidate>
+          <form noValidate>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -104,15 +109,14 @@ export function EditProfileForm() {
               />
               <br />
               <Button
-                //type="submit"
                 variant="contained"
                 color="primary"
                 onClick={handleSubmit}
               >
                 Edit
               </Button>
-            </form>
-          </Grid>
+              </form>
+              </Grid>
         </Grid>
       </ThemeProvider>
     </div>

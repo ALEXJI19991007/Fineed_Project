@@ -26,8 +26,10 @@ const theme = createMuiTheme({
   },
 });
 export function EditPwdForm() {
+  const pwdReg = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   const [oldPwd, setOldPwd] = useState("");
   const [newPwd, setNewPwd] = useState("");
+  const [err, setErr] = useState("");
   const userId = useRecoilValue(curUserUidAtom);
 
   const oldPwdOnChange = (event: React.ChangeEvent<{ value: string }>) => {
@@ -35,7 +37,11 @@ export function EditPwdForm() {
   };
 
   const newPwdOnChange = (event: React.ChangeEvent<{ value: string }>) => {
+    setErr("")
     setNewPwd(event.target.value);
+    if (!newPwd.match(pwdReg)){
+      setErr("New password must contain at least 8 characters, at least one letter and one number.")
+    }
   };
 
 
@@ -64,8 +70,8 @@ export function EditPwdForm() {
           alignItems="center"
           justify="center"
         >
-          <Grid item xs={2}>
-            <form noValidate>
+          <Grid item xs={3}>
+           <form noValidate>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -75,6 +81,8 @@ export function EditPwdForm() {
                 label="Original Password"
                 name="oldPwd"
                 autoComplete=""
+                type="password"
+                helperText="Leave it blank if you haven't set a password."
                 autoFocus
                 onChange={oldPwdOnChange}
               />
@@ -86,8 +94,10 @@ export function EditPwdForm() {
                 id="newPwd"
                 label="New Password"
                 name="newPwd"
+                type="password"
                 autoComplete=""
                 onChange={newPwdOnChange}
+                helperText = {err}
               />
               <br />
               <Button
@@ -97,7 +107,7 @@ export function EditPwdForm() {
               >
                 Change Password
               </Button>
-            </form>
+              </form>
           </Grid>
         </Grid>
       </ThemeProvider>
