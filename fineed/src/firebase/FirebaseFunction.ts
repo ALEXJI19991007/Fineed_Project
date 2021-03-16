@@ -17,3 +17,4 @@ export const updateUserProfile = FirebaseFunction("updateUserProfile");
 export const updateUserPassword = FirebaseFunction("updateUserPassword");
 export const updateUserFavorite = FirebaseFunction("updateUserFavorite");
 export const getUserFavorite = FirebaseFunction("getUserFavorite");
+export const getUsername = FirebaseFunction("getUsername");

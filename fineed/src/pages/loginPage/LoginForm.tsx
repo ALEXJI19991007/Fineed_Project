@@ -4,12 +4,12 @@ import Avatar from "@material-ui/core/Avatar";
 import LogoPic from "../../imageSrc/pageIcon.png";
 import Grid from "@material-ui/core/Grid";
 import { FirebaseAuth } from "../../firebase/FirebaseAuth";
-import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
-import { useRecoilState } from "recoil";
+import { getUsername } from "../../firebase/FirebaseFunction";
+import { curUsernameAtom, curUserUidAtom } from "../../atoms/FirebaseUserAtom";
+import { useSetRecoilState } from "recoil";
 import { CopyRight } from "./CopyRight";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import {
-  makeStyles,
   ThemeProvider,
   createMuiTheme,
 } from "@material-ui/core/styles";
@@ -33,11 +33,18 @@ const theme = createMuiTheme({
 });
 
 export function LoginForm() {
-  const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
+  const setCurUserUid = useSetRecoilState(curUserUidAtom);
+  const setCurUsername = useSetRecoilState(curUsernameAtom);
   const history = useHistory();
 
   const googleLoginHandler = async () => {
     const userId = (await FirebaseAuth.loginWithGoogle()) ?? "";
+    const getUsernameResp = await getUsername({userId: userId});
+    if (getUsernameResp.data === null) {
+      console.log("Get Username Failed");
+    }
+    console.log(getUsernameResp.data);
+    setCurUsername(getUsernameResp.data);
     setCurUserUid(userId);
     history.push('/profile')
   };

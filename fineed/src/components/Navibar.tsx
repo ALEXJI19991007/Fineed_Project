@@ -119,6 +119,13 @@ export function NaviBar() {
     history.push("/profile")
   }
 
+  const logoutOnClick = async () => {
+    await FirebaseAuth.logout(); 
+    setCurUserUid(''); 
+    handleMenuClose();
+    history.push("/home");
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -130,7 +137,7 @@ export function NaviBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={async ()=>{ await FirebaseAuth.logout(); setCurUserUid(''); handleMenuClose()}}>Log out</MenuItem>
+      <MenuItem onClick={logoutOnClick}>Log out</MenuItem>
       <MenuItem onClick={profileOnClick}>Profile</MenuItem>
     </Menu>
   );

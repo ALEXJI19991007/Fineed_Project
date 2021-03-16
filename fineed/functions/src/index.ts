@@ -79,6 +79,9 @@ exports.updateUserHistory = updateUserHistory.updateUserHistory;
 const updateUserFavorite = require("./updateUserFavorite");
 exports.updateUserFavorite = updateUserFavorite.updateUserFavorite;
 
+const getUsername = require("./getUsername");
+exports.getUsername = getUsername.getUsername;
+
 const getUserHistory = require("./getUserHistory");
 exports.getUserHistory = getUserHistory.getUserHistory;
 
