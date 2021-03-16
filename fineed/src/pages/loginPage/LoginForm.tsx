@@ -3,7 +3,6 @@ import Avatar from "@material-ui/core/Avatar";
 import LogoPic from "../../imageSrc/pageIcon.png";
 import Grid from "@material-ui/core/Grid";
 import { FirebaseAuth } from "../../firebase/FirebaseAuth";
-import { getUserAuth, getUsername } from "../../firebase/FirebaseFunction";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useSetRecoilState } from "recoil";
 import { CopyRight } from "./CopyRight";
@@ -38,11 +37,6 @@ export function LoginForm() {
 
   const googleLoginHandler = async () => {
     const userId = (await FirebaseAuth.loginWithGoogle()) ?? "";
-    const getUsernameResp = await getUsername({userId: userId});
-    if (getUsernameResp.data === null) {
-      console.log("Get Username Failed");
-      return;
-    }
     //setCurUsername(getUsernameResp.data);
     setCurUserUid(userId);
     history.push('/profile');
@@ -50,11 +44,6 @@ export function LoginForm() {
 
   const githubLoginHandler = async () => {
     const userId = (await FirebaseAuth.loginWithGitHub()) ?? "";
-    const getUsernameResp = await getUsername({userId: userId});
-    if (getUsernameResp.data === null) {
-      console.log("Get Username Failed");
-      return;
-    }
     //setCurUsername(getUsernameResp.data);
     setCurUserUid(userId);
     history.push('/profile');

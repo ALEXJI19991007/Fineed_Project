@@ -51,12 +51,10 @@ export function EditPwdForm() {
       oldPassword: oldPwd,
       newPassword: newPwd,
     };
-    console.log(userData);
     const updatePasswordResp = await updateUserPassword(userData);
     if (updatePasswordResp.data === null) {
       console.log("Update Pwd Error");
-    } else {
-      console.log(updatePasswordResp.data);
+      return;
     }
   };
 

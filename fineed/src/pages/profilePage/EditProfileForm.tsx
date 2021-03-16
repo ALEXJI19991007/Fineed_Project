@@ -53,7 +53,6 @@ export function EditProfileForm() {
       lastName: lastName,
       username: username,
     };
-    console.log(userData);
     const updateUserProfileResp = await updateUserProfile(userData);
     if (updateUserProfileResp.data === null) {
       console.log("Uplate failed");
