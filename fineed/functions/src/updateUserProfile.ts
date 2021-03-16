@@ -22,12 +22,12 @@ exports.updateUserPassword = functions.https.onCall(async (data, _context) => {
     const currentUserData = (await userEntry.get()).data() || {};
     const oldPassword = currentUserData.password;
     if (oldPassword !== data.oldPassword) {
-        return { error: "password not match" };
+        return "Update Failed";
     }
     userEntry.update({
       password: data.newPassword,
     });
-    return data.username;
+    return "Update Success";
   } catch (error) {
     return null;
   }

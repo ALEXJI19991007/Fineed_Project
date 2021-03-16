@@ -8,6 +8,8 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { updateUserPassword } from "../../firebase/FirebaseFunction";
+import { useRecoilValue } from "recoil";
+import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 
 const theme = createMuiTheme({
   palette: {
@@ -26,6 +28,7 @@ const theme = createMuiTheme({
 export function EditPwdForm() {
   const [oldPwd, setOldPwd] = useState("");
   const [newPwd, setNewPwd] = useState("");
+  const userId = useRecoilValue(curUserUidAtom);
 
   const oldPwdOnChange = (event: React.ChangeEvent<{ value: string }>) => {
     setOldPwd(event.target.value);
@@ -38,13 +41,16 @@ export function EditPwdForm() {
 
   const handleSubmit = async () => {
     const userData = {
+      userId: userId,
       oldPassword: oldPwd,
       newPassword: newPwd,
     };
     console.log(userData);
     const updatePasswordResp = await updateUserPassword(userData);
-    if (updatePasswordResp.data.error !== null) {
-      console.log(updatePasswordResp.data.error);
+    if (updatePasswordResp.data === null) {
+      console.log("Update Pwd Error");
+    } else {
+      console.log(updatePasswordResp.data);
     }
   };
 
