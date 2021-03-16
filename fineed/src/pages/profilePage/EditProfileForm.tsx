@@ -89,7 +89,6 @@ export function EditProfileForm() {
                 label="Last Name"
                 name="last_name"
                 autoComplete="lastname"
-                autoFocus
                 onChange={lastNameOnChange}
               />
               <TextField
@@ -101,7 +100,6 @@ export function EditProfileForm() {
                 label="username"
                 name="username"
                 autoComplete="username"
-                autoFocus
                 onChange={usernameOnChange}
               />
               <br />

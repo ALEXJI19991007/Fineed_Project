@@ -11,6 +11,7 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { EditProfileForm } from "./EditProfileForm";
+import { EditPwdForm } from "./EditPwdForm";
 import { HistoryPage } from "./history & favorite page/HistoryPage";
 import { FavoritePage } from "./history & favorite page/FavoritePage";
 
@@ -75,19 +76,21 @@ export function ProfileTab() {
         <AppBar position="static" color="secondary" elevation={0}>
           <Tabs value={value} onChange={handleChange} centered>
             <Tab label="Edit Profile" {...a11yProps(0)} />
-            <Tab label="Your History" {...a11yProps(1)} />
-            <Tab label="Your Favorite" {...a11yProps(2)} />
+            <Tab label="Change Password" {...a11yProps(1)} />
+            <Tab label="Your History" {...a11yProps(2)} />
+            <Tab label="Your Favorite" {...a11yProps(3)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
           <EditProfileForm />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {/* User History Here... */}
-          <HistoryPage />
+          <EditPwdForm />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          {/* Item Three */}
+          <HistoryPage />
+        </TabPanel>
+        <TabPanel value={value} index={3}>
           <FavoritePage />
         </TabPanel>
       </ThemeProvider>
