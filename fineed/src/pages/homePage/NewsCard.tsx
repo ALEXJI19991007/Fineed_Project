@@ -110,7 +110,7 @@ export function NewsCard(props: News) {
 
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={newsOnClick}>
+      <CardActionArea onClick={async ()=>{await newsOnClick()}}>
         <CardMedia
           className={classes.media}
           // TODO - Need to find a new placeholder image in case no image url is present in the feed
@@ -132,7 +132,7 @@ export function NewsCard(props: News) {
         <Button size="small" color="primary">
           Share
         </Button>
-        <Button size="small" color="primary" onClick={markNewsFavorite}>
+        <Button size="small" color="primary" onClick={async()=>{await markNewsFavorite()}}>
           Favorite
         </Button>
       </CardActions>
