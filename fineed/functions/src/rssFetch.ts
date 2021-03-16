@@ -69,6 +69,7 @@ exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
   const docCount = timeStampData ? timeStampData["count"] : 0;
   return {
     title: "Fineed -- Give you the most up-to-date financial news",
+    target: data.target,
     list: newsList,
     pageCount: Math.ceil(docCount / PAGE_SZIE),
   };

@@ -180,7 +180,7 @@ export const NewsCardContainer = () => {
           <div>
             {/* <NewsListFilter /> */}
             <NewsCardGrid newsList={NewsList(myNewsFeed)} />
-            <PageDisplay pageCount={myNewsFeed.pageCount}/>
+            {myNewsFeed.target === "headlines" ? <PageDisplay pageCount={myNewsFeed.pageCount}/> : undefined}
           </div>
         </>
       );
@@ -201,7 +201,7 @@ type pageDisplayProp = {
 }
 
 const PageDisplay = (props: pageDisplayProp) => {
-  const setPageIndexState = useSetRecoilState(NewsAtoms.newsListPageIndexState);
+  const setPageIndexState = useSetRecoilState(NewsAtoms.headlinePageIndexState);
 
   const handleChange = (_event: any, value: number) => {
     setPageIndexState(value);

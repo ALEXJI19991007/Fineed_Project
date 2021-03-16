@@ -1,7 +1,7 @@
 import { selector } from "recoil";
 import * as NewsAtoms from "../atoms/NewsListFilterAtom";
 import * as UserAtoms from "../atoms/FirebaseUserAtom";
-import { getUserFavorite, getUserHistory, rssFetch, rssFetchPage } from "../firebase/FirebaseFunction";
+import { getUserFavorite, getUserHistory, rssFetchPage } from "../firebase/FirebaseFunction";
 
 // The filteredNewsListState internally keeps track of three atom
 // dependencies: newsListFilterState, newsListState and newsListPageIndexState
@@ -11,7 +11,7 @@ export const filteredNewsListState = selector({
   get: async ({ get }) => {
     const filter = get(NewsAtoms.newsListFilterState);
     const userId = get(UserAtoms.curUserUidAtom);
-    const pageIndex = get(NewsAtoms.newsListPageIndexState);
+    const pageIndex = get(NewsAtoms.headlinePageIndexState);
     // If we want to fetch user history or favorite
     if (filter.target === "user_history" || filter.target === "user_favorite") {
       return await getUserHistoryOrFavoriteHelper(filter.target, userId);
@@ -39,9 +39,9 @@ const getUserHistoryOrFavoriteHelper = async (target: string, userId: string) =>
       pubDate: newsItem.pub_date,
     });
   });
-  const title = target === "user_history" ? "User History" : "User Favorite";
   return {
-    title: title,
+    title: "Your Personal News Collection",
+    target: target,
     list: newsList,
   };
 };
