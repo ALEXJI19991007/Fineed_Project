@@ -8,14 +8,14 @@ import {
   createMuiTheme,
 } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import { curUsernameAtom, curUserUidAtom } from "../../atoms/FirebaseUserAtom";
+import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { getUserAuth } from "../../firebase/FirebaseFunction";
 import { useHistory } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 
 export function EmailPwdForm() {
   const setCurUserUid = useSetRecoilState(curUserUidAtom);
-  const setCurUsername = useSetRecoilState(curUsernameAtom);
+  //const setCurUsername = useSetRecoilState(curUsernameAtom);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
@@ -33,7 +33,7 @@ export function EmailPwdForm() {
     if (getUserAuthResp.data === null) {
       console.log("Get User Authentication Failed");
     }
-    setCurUsername(getUserAuthResp.data.username);
+    //setCurUsername(getUserAuthResp.data.username);
     setCurUserUid(getUserAuthResp.data.userId);
     history.push('/profile');
   }

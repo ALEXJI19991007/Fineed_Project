@@ -4,7 +4,7 @@ import LogoPic from "../../imageSrc/pageIcon.png";
 import Grid from "@material-ui/core/Grid";
 import { FirebaseAuth } from "../../firebase/FirebaseAuth";
 import { getUserAuth, getUsername } from "../../firebase/FirebaseFunction";
-import { curUsernameAtom, curUserUidAtom } from "../../atoms/FirebaseUserAtom";
+import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useSetRecoilState } from "recoil";
 import { CopyRight } from "./CopyRight";
 import GitHubIcon from "@material-ui/icons/GitHub";
@@ -33,7 +33,7 @@ const theme = createMuiTheme({
 
 export function LoginForm() {
   const setCurUserUid = useSetRecoilState(curUserUidAtom);
-  const setCurUsername = useSetRecoilState(curUsernameAtom);
+  //const setCurUsername = useSetRecoilState(curUsernameAtom);
   const history = useHistory();
 
   const googleLoginHandler = async () => {
@@ -43,7 +43,7 @@ export function LoginForm() {
       console.log("Get Username Failed");
       return;
     }
-    setCurUsername(getUsernameResp.data);
+    //setCurUsername(getUsernameResp.data);
     setCurUserUid(userId);
     history.push('/profile');
   };
@@ -55,7 +55,7 @@ export function LoginForm() {
       console.log("Get Username Failed");
       return;
     }
-    setCurUsername(getUsernameResp.data);
+    //setCurUsername(getUsernameResp.data);
     setCurUserUid(userId);
     history.push('/profile');
   };
