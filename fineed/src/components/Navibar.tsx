@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory, useLocation, withRouter } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   fade,
   makeStyles,
@@ -8,7 +8,7 @@ import {
   createStyles,
 } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import { curUserUidAtom } from "../atoms/FirebaseUserAtom";
+import { curUsernameAtom, curUserUidAtom } from "../atoms/FirebaseUserAtom";
 import { NaviDrawerOpenStateAtom } from "../atoms/NaviAtom";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -94,6 +94,7 @@ export function NaviBar() {
     setMobileMoreAnchorEl,
   ] = React.useState<null | HTMLElement>(null);
   const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
+  const setCurUsername = useSetRecoilState(curUsernameAtom);
   const setNaviDrawerState = useSetRecoilState(NaviDrawerOpenStateAtom);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -121,7 +122,8 @@ export function NaviBar() {
 
   const logoutOnClick = async () => {
     await FirebaseAuth.logout(); 
-    setCurUserUid(''); 
+    setCurUserUid("");
+    setCurUsername("");
     handleMenuClose();
     history.push("/home");
   }

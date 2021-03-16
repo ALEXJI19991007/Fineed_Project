@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
 import { useHistory} from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import LogoPic from "../../imageSrc/pageIcon.png";
 import Grid from "@material-ui/core/Grid";
 import { FirebaseAuth } from "../../firebase/FirebaseAuth";
-import { getUsername } from "../../firebase/FirebaseFunction";
+import { getUserAuth, getUsername } from "../../firebase/FirebaseFunction";
 import { curUsernameAtom, curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useSetRecoilState } from "recoil";
 import { CopyRight } from "./CopyRight";
@@ -42,16 +41,23 @@ export function LoginForm() {
     const getUsernameResp = await getUsername({userId: userId});
     if (getUsernameResp.data === null) {
       console.log("Get Username Failed");
+      return;
     }
-    console.log(getUsernameResp.data);
     setCurUsername(getUsernameResp.data);
     setCurUserUid(userId);
-    history.push('/profile')
+    history.push('/profile');
   };
 
   const githubLoginHandler = async () => {
     const userId = (await FirebaseAuth.loginWithGitHub()) ?? "";
+    const getUsernameResp = await getUsername({userId: userId});
+    if (getUsernameResp.data === null) {
+      console.log("Get Username Failed");
+      return;
+    }
+    setCurUsername(getUsernameResp.data);
     setCurUserUid(userId);
+    history.push('/profile');
   };
 
   return (

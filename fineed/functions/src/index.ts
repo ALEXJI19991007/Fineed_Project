@@ -82,6 +82,9 @@ exports.updateUserFavorite = updateUserFavorite.updateUserFavorite;
 const getUsername = require("./getUsername");
 exports.getUsername = getUsername.getUsername;
 
+const getUserAuth = require("./getUserAuth");
+exports.getUserAuth = getUserAuth.getUserAuth;
+
 const getUserHistory = require("./getUserHistory");
 exports.getUserHistory = getUserHistory.getUserHistory;
 
