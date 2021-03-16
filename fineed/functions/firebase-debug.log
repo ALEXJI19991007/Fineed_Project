@@ -1,0 +1,24 @@
+[debug] [2021-03-16T20:54:06.829Z] ----------------------------------------------------------------------
+[debug] [2021-03-16T20:54:06.831Z] Command:       /usr/local/bin/node /Users/alexji1999/Documents/Vanderbilt/Spring 2021/WebDevProject/Fineed/fineed/functions/node_modules/.bin/firebase deploy --only functions
+[debug] [2021-03-16T20:54:06.831Z] CLI Version:   9.4.0
+[debug] [2021-03-16T20:54:06.831Z] Platform:      darwin
+[debug] [2021-03-16T20:54:06.831Z] Node Version:  v12.19.0
+[debug] [2021-03-16T20:54:06.832Z] Time:          Tue Mar 16 2021 15:54:06 GMT-0500 (GMT-05:00)
+[debug] [2021-03-16T20:54:06.832Z] ----------------------------------------------------------------------
+[debug] [2021-03-16T20:54:06.832Z] 
+[debug] [2021-03-16T20:54:06.839Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-03-16T20:54:06.839Z] > authorizing via signed-in user
+[debug] [2021-03-16T20:54:06.840Z] [iam] checking project fineed-ffb74 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2021-03-16T20:54:06.841Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/fineed-ffb74:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2021-03-16T20:54:07.011Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 16 Mar 2021 20:54:06 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=42","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-03-16T20:54:07.013Z] >>> HTTP REQUEST POST https://iam.googleapis.com/v1/projects/fineed-ffb74/serviceAccounts/fineed-ffb74@appspot.gserviceaccount.com:testIamPermissions  
+ {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2021-03-16T20:54:07.248Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 16 Mar 2021 20:54:07 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions.
+Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[info] 
+[info] === Deploying to 'fineed-ffb74'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
