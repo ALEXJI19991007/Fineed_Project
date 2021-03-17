@@ -103,13 +103,13 @@ export function EditProfileForm(props:any) {
                 margin="normal"
                 required
                 fullWidth
-                value={props.username}
                 id="username"
                 label="username"
                 name="username"
                 autoComplete="username"
                 onChange={usernameOnChange}
               />
+              <Typography variant="body2" color="textSecondary">Current username: {props.username===""?"not set yet":props.username}</Typography>
               <br />
               <Button
                 variant="contained"
