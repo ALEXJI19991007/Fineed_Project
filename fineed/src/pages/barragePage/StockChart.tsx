@@ -3,8 +3,9 @@ import { atom, selector, useRecoilState } from 'recoil';
 import { BarrageHoverTimeStampAtom } from '../../atoms/BarrageHoverTimeStampAtom'
 import moment from 'moment'
 import priceData from './fakeStockData.json';
-import * as Highcharts from 'highcharts';
+import Highcharts from "highcharts";
 import HighchartsReact from 'highcharts-react-official';
+
 
 export function StockChart() {
   const [_curHoverTimeStampAtom, setCurHoverTimeStampAtom] = useRecoilState(BarrageHoverTimeStampAtom)
@@ -15,7 +16,8 @@ export function StockChart() {
   };
   const config = {
     chart: {
-      type: 'line'
+      type: 'line',
+      zoomType: 'x'
     },
     title: {
       text: 'Apple Inc.'
@@ -41,11 +43,8 @@ export function StockChart() {
       },
     },
     xAxis: {
-      type: 'date',
-      labels: {
-        enabled: false
-      },
-    },
+      type: 'datetime'
+   },
     series: [
       {
         name: 'Price USD',
