@@ -2,5 +2,5 @@ import { atom, RecoilState } from "recoil";
 
 export const BarrageHoverTimeStampAtom = atom({
   key: "BarrageHoverTimeStampAtom",
-  default: 0,
+  default: -1,
 });

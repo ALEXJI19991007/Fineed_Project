@@ -14,11 +14,12 @@ import Avatar from '@material-ui/core/Avatar';
 import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
 import { curUserUidAtom } from '../../atoms/FirebaseUserAtom'
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { storeUserBarrage } from "../../firebase/FirebaseFunction";
 import { useBarrages } from "../../firebase/FirebaseFireStore";
 import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
 import { StockChart } from "./StockChart";
+import { BarrageHoverTimeStampAtom } from "../../atoms/BarrageHoverTimeStampAtom";
 
 
 const useStyles = makeStyles({
@@ -72,6 +73,8 @@ const BarrageItem = (props: BarrageItemProps) => {
     const scrollRef = useRef<HTMLUListElement>(null);
     const [scrollHeight,setScrollHeight] = useState<number>(0);
     const [scrollTop,setScrollTop] = useState<number>(0);
+    const [curHoverTimeStampAtom,setCurHoverTimeStampAtom] = useRecoilState(BarrageHoverTimeStampAtom);
+    console.log('hi here is the atom number pass from chart hover: ',curHoverTimeStampAtom);
     const { barrageArray } = props;
     let sortedBarrageArray = [...barrageArray];
     
