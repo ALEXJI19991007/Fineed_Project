@@ -58,6 +58,4 @@ exports.fetchFinnhubStockApiTMP = functions.pubsub.schedule('every 1 minutes').o
         }
         
     });
-
-
 });
