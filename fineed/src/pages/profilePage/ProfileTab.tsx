@@ -14,6 +14,7 @@ import { EditProfileForm } from "./EditProfileForm";
 import { EditPwdForm } from "./EditPwdForm";
 import { HistoryPage } from "./history & favorite page/HistoryPage";
 import { FavoritePage } from "./history & favorite page/FavoritePage";
+import { PinDropSharp } from "@material-ui/icons";
 
 const thm = createMuiTheme({
   palette: {
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export function ProfileTab() {
+export function ProfileTab(props:any) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -82,7 +83,7 @@ export function ProfileTab() {
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <EditProfileForm />
+          <EditProfileForm username={props.username}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <EditPwdForm />
