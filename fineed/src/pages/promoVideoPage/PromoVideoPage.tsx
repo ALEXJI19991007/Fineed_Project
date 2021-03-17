@@ -3,6 +3,7 @@ import ReactPlayer from 'react-player'
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
 import { blueGrey,yellow } from '@material-ui/core/colors';
 import samplePromoVideo from "../../videoSrc/IntroVideo.mp4";
 
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
        
         // position: 'absolute'
     },
-    volum: {
+    button: {
         color: blueGrey[500],
         zIndex: 10,
         position: 'fixed',
@@ -66,7 +67,7 @@ export function PromoVideoPage() {
         setIsVideoMuted(false);
     }
     return(<div className={classes.page}>
-        {isVideoMuted?<VolumeUpIcon className={classes.volum} onClick={handleVolume}/>:null}
+        {isVideoMuted?<VolumeUpIcon className={classes.button} onClick={handleVolume}/>:<SkipNextIcon className={classes.button} onClick={()=>{history.push("/home")}}/>}
         <ReactPlayer 
            className={classes.player}
            width='100%'
