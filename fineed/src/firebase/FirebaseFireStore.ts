@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRadioGroup } from "@material-ui/core";
 import { Barrage, BarrageSnapShotAtom } from "../atoms/BarrageSnapShotAtom";
 import { useRecoilState } from "recoil";
+import { StockData, StockSnapShotAtom } from "../atoms/StockSnapShotAtom";
 
 // this file is only for firebase firestore snapshot listener if you want to change this file, ask Sijian first
 
@@ -30,4 +31,34 @@ export const useBarrages = () => {
     }, []);
     return { _ready:ready, _barrages:barrages };
 }
+
+export const useStockData = () => {
+    const [ready, setReady] = useState(false);
+    const [stockData, setStockData] = useState<StockData[]>([]);
+    const [stockDataAtom,setStockDataAtom] = useRecoilState(StockSnapShotAtom)
+
+    useEffect(() => {
+        const unsubscribe =  Auth().onAuthStateChanged((user) =>{
+            db.collection('stock_chart_data').onSnapshot(function (querySnapshot) {
+                let stockDataArr:StockData[]= [];
+                querySnapshot.forEach(function (doc) {
+                    const stockChartData  = doc.data().data 
+                    const stockData = {
+                        price: stockChartData.c,
+                        time: Date.now(),
+                    } as StockData
+                    stockDataArr.push(stockData);
+                });
+                if (stockDataArr) {
+                    setReady(true);
+                    setStockData(stockDataArr);
+                    setStockDataAtom(stockDataArr)
+                }
+            }, (error) => { console.log(error) });
+          })
+        return () => unsubscribe();
+    }, []);
+    return { _ready:ready, _stockDataArr:stockData };
+}
+
 

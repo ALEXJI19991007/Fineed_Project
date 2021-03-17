@@ -74,7 +74,6 @@ const BarrageItem = (props: BarrageItemProps) => {
     const [scrollHeight,setScrollHeight] = useState<number>(0);
     const [scrollTop,setScrollTop] = useState<number>(0);
     const [curHoverTimeStampAtom,setCurHoverTimeStampAtom] = useRecoilState(BarrageHoverTimeStampAtom);
-    console.log('hi here is the atom number pass from chart hover: ',curHoverTimeStampAtom);
     const { barrageArray } = props;
     let sortedBarrageArray = [...barrageArray];
     

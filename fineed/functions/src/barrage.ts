@@ -56,7 +56,6 @@ exports.fetchFinnhubStockApiTMP = functions.pubsub.schedule('every 1 minutes').o
             console.log('data received is null')
         }
         
-
     });
 
 
