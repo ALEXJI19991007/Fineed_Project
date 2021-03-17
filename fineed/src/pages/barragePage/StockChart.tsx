@@ -1,14 +1,14 @@
 import React, { Component, useEffect, useRef, useState } from "react";
-import {atom, selector, useRecoilState} from 'recoil';
-import {BarrageHoverTimeStampAtom} from '../../atoms/BarrageHoverTimeStampAtom'
+import { atom, selector, useRecoilState } from 'recoil';
+import { BarrageHoverTimeStampAtom } from '../../atoms/BarrageHoverTimeStampAtom'
 import moment from 'moment'
 import priceData from './fakeStockData.json';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 export function StockChart() {
-  const [_curHoverTimeStampAtom,setCurHoverTimeStampAtom] = useRecoilState(BarrageHoverTimeStampAtom)
-  const handleMouseOver = (event:any) => {
+  const [_curHoverTimeStampAtom, setCurHoverTimeStampAtom] = useRecoilState(BarrageHoverTimeStampAtom)
+  const handleMouseOver = (event: any) => {
     const curHoverTimeStamp = event.target.x;
     console.log(curHoverTimeStamp)
     setCurHoverTimeStampAtom(curHoverTimeStamp);
@@ -54,9 +54,11 @@ export function StockChart() {
     ],
   };
 
-  return <div><HighchartsReact
-  highcharts={Highcharts}
-  options={config}
-/></div>
+  return (
+    <div><HighchartsReact
+      highcharts={Highcharts}
+      options={config}
+    /></div>
+  )
 }
 
