@@ -74,3 +74,4 @@ exports.updateUserPassword= updateUserProfile.updateUserPassword;
 const barrage = require("./barrage");
 exports.storeUserBarrage = barrage.storeUserBarrage;
 exports.clearBarrage = barrage.clearBarrage;
+exports.fetchFinnhubStockApiTMP = barrage.fetchFinnhubStockApiTMP;
