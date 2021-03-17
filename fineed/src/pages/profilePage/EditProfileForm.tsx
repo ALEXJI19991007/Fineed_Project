@@ -103,7 +103,7 @@ export function EditProfileForm(props:any) {
                 margin="normal"
                 required
                 fullWidth
-                value={username}
+                value={props.username}
                 id="username"
                 label="username"
                 name="username"
