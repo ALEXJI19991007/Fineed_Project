@@ -42,10 +42,11 @@ export const useStockData = () => {
             db.collection('stock_chart_data').onSnapshot(function (querySnapshot) {
                 let stockDataArr:StockData[]= [];
                 querySnapshot.forEach(function (doc) {
-                    const stockChartData  = doc.data().data 
+                    const stockChartData  = doc.data().data;
+                    const stockDatatime = doc.data().time;
                     const stockData = {
                         price: stockChartData.c,
-                        time: Date.now(),
+                        time: stockDatatime,
                     } as StockData
                     stockDataArr.push(stockData);
                 });

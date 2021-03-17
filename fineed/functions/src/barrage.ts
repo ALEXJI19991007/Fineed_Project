@@ -46,7 +46,8 @@ exports.fetchFinnhubStockApiTMP = functions.pubsub.schedule('every 1 minutes').o
         const stockChartDocRef = db.collection("stock_chart_data").doc();
         if(data!= null){
             stockChartDocRef.set({
-                data:JSON.parse(JSON.stringify(data))
+                data:JSON.parse(JSON.stringify(data)),
+                time:Date.now()
             }).then(() => {
                 console.log("Document successfully written!");
             }).catch((error) => {
