@@ -6,9 +6,6 @@ import ProfileHeader from "../../imageSrc/profilepage/profileheader.png";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles,ThemeProvider,createMuiTheme } from "@material-ui/core/styles";
-import { curUserUidAtom } from '../../atoms/FirebaseUserAtom'
-import { useRecoilValue } from "recoil";
-
 
 const imgCardStyle = makeStyles({
   card: {
@@ -27,16 +24,17 @@ const imgCardStyle = makeStyles({
 },
 });
 
-export function ProfilePageHeader() {
-  const classes = imgCardStyle();
-  //const curUsername = useRecoilValue(curUsernameAtom);
+export function ProfilePageHeader(props:any) {
 
+  const classes = imgCardStyle();
+
+  const username = props.username === "" ? "dear user" : props.username
   return (
     <Card elevation={0} style={{height:'250px'}}>
       <CardMedia component="img" image={ProfileHeader}/>
       <Typography variant="h3" 
                   className={classes.sloganPos} >
-    Hi, Dear User.
+    Hi, {username}.
     </Typography>
     </Card>
   );

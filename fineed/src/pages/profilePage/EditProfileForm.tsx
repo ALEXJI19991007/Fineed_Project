@@ -7,10 +7,11 @@ import {
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { updateUserProfile } from "../../firebase/FirebaseFunction";
+import { updateUserProfile, getUsername } from "../../firebase/FirebaseFunction";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useRecoilValue } from "recoil";
 import { useHistory} from "react-router-dom";
+import { Typography } from "@material-ui/core";
 
 const theme = createMuiTheme({
   palette: {
@@ -26,13 +27,13 @@ const theme = createMuiTheme({
     },
   },
 });
-export function EditProfileForm() {
+export function EditProfileForm(props:any) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(props.username);
+  const [msg, setMsg] = useState("");
   const userId = useRecoilValue(curUserUidAtom);
   const history = useHistory();
-
 
   const firstNameOnChange = (event: React.ChangeEvent<{ value: string }>) => {
     setFirstName(event.target.value);
@@ -57,7 +58,8 @@ export function EditProfileForm() {
     if (updateUserProfileResp.data === null) {
       console.log("Uplate failed");
     } else {
-      history.push('profile')
+      setMsg("Successfully updated profile!")
+      history.push('/profile')
     }
   };
 
@@ -71,6 +73,7 @@ export function EditProfileForm() {
           alignItems="center"
           justify="center"
         >
+          <Typography>{msg}</Typography>
           <Grid item xs={2}>
           <form noValidate>
               <TextField
@@ -100,6 +103,7 @@ export function EditProfileForm() {
                 margin="normal"
                 required
                 fullWidth
+                value={username}
                 id="username"
                 label="username"
                 name="username"
