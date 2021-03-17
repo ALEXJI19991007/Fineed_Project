@@ -17,7 +17,6 @@ export function StockChart() {
   const config = {
     chart: {
       type: 'line',
-      zoomType: 'x'
     },
     title: {
       text: 'Apple Inc.'
