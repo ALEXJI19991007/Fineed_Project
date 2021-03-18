@@ -50,17 +50,17 @@ exports.getUserHistory_v2 = GetUserInfo.getUserHistory_v2;
 exports.getUserFavorite_v2 = GetUserInfo.getUserFavorite_v2;
 exports.getUserAuth_v2 = GetUserInfo.getUserAuth_v2;
 
-const getUsername = require("./getUsername");
-exports.getUsername = getUsername.getUsername;
+// const getUsername = require("./getUsername");
+// exports.getUsername = getUsername.getUsername;
 
-const getUserAuth = require("./getUserAuth");
-exports.getUserAuth = getUserAuth.getUserAuth;
+// const getUserAuth = require("./getUserAuth");
+// exports.getUserAuth = getUserAuth.getUserAuth;
 
-const getUserHistory = require("./getUserHistory");
-exports.getUserHistory = getUserHistory.getUserHistory;
+// const getUserHistory = require("./getUserHistory");
+// exports.getUserHistory = getUserHistory.getUserHistory;
 
-const getUserFavorite = require("./getUserFavorite");
-exports.getUserFavorite = getUserFavorite.getUserFavorite;
+// const getUserFavorite = require("./getUserFavorite");
+// exports.getUserFavorite = getUserFavorite.getUserFavorite;
 
 const rssFetch = require("./rssFetch");
 exports.rssFetch = rssFetch.rssFetch;
