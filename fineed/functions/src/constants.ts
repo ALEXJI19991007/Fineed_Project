@@ -43,6 +43,8 @@ export type Response = {
 export enum ERROR {
   NO_ERROR = "No error",
   UNAUTHENTICATED = "User not signed in",
+  UNAUTHORIZED_ACCESS = "Unauthorized access",
+  PARAM_ERROR = "Missing required parameter(s)",
   NOT_FOUND = "Requested document not found",
   FIRESTORE_ERROR = "Firestore error",
 }

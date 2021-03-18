@@ -55,8 +55,81 @@ exports.getUserHistory_v2 = functions.https.onCall(async (data, _context) => {
       }
     }
     response.resp = {
-      history: newsHistory,
+      newsList: newsHistory,
+    };
+    return response;
+  } catch (error) {
+    response.error = ERROR.FIRESTORE_ERROR;
+    return response;
+  }
+});
+
+exports.getUserFavorite_v2 = functions.https.onCall(async (data, _context) => {
+  let response: Response = {
+    resp: null,
+    error: ERROR.NO_ERROR,
+  };
+  try {
+    if (data.userId === null || data.userId === "") {
+      response.error = ERROR.UNAUTHENTICATED;
+      return response;
     }
+    const userEntry = db.collection("user").doc(data.userId);
+    const userData = (await userEntry.get()).data() || null;
+    if (userData === null) {
+      response.error = ERROR.NOT_FOUND;
+      return response;
+    }
+    const userFavorite = userData.favorite;
+    const favoriteNews: FirebaseFirestore.DocumentData[] = [];
+    // Get news objects
+    for (let i = 0; i < userFavorite.length; ++i) {
+      let entry = db.collection("news_item").doc(userFavorite[i]);
+      let newsData = (await entry.get()).data() || {};
+      if (newsData !== {}) {
+        favoriteNews.push(newsData);
+      }
+    }
+    response.resp = {
+      newsList: favoriteNews,
+    };
+    return response;
+  } catch (error) {
+    response.error = ERROR.FIRESTORE_ERROR;
+    return response;
+  }
+});
+
+exports.getUserAuth_v2 = functions.https.onCall(async (data, _context) => {
+  let response: Response = {
+    resp: null,
+    error: ERROR.NO_ERROR,
+  };
+  try {
+    if (data.email === null || data.email === "") {
+      response.error = ERROR.PARAM_ERROR;
+      return response;
+    }
+    const userRef = db.collection("user");
+    const userSnapshot = await userRef.where("email", "==", data.email).get();
+    if (userSnapshot.empty) {
+      response.error = ERROR.NOT_FOUND;
+      return response;
+    }
+    let userPwd;
+    let username;
+    let userId;
+    userSnapshot.forEach((doc) => {
+      const entryData = doc.data();
+      userPwd = entryData.password;
+      username = entryData.username;
+      userId = entryData.id;
+    });
+    if (data.password !== userPwd) {
+      response.error = ERROR.UNAUTHORIZED_ACCESS;
+      return response;
+    }
+    response.resp = { username: username, userId: userId };
     return response;
   } catch (error) {
     response.error = ERROR.FIRESTORE_ERROR;
