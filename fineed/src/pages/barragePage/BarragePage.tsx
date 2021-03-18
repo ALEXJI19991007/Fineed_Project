@@ -68,6 +68,14 @@ type BarrageItemProps = {
     barrageArray: Barrage[],
 }
 
+type BarrageItemWithFocus = {
+    uid: string,
+    content: string,
+    time: number,
+    tag: string,
+    focus: boolean,
+}
+
 const BarrageItem = (props: BarrageItemProps) => {
     const classes = useStyles();
     const scrollRef = useRef<HTMLUListElement>(null);
@@ -80,26 +88,46 @@ const BarrageItem = (props: BarrageItemProps) => {
     sortedBarrageArray.sort((barrageA:Barrage, barrageB:Barrage) => {
         return barrageA.time - barrageB.time;
     });
+    const [sortedBarrageArrayState,setSortedBarrageArrayState] =useState<BarrageItemWithFocus[]>(sortedBarrageArray.map((barrage)=>{return{...barrage,focus:false}}))
+    
     const onScroll =() =>{
         if(scrollRef.current == null){
             return;
         }
     }
+    // console.log(sortedBarrageArrayState)
+
     useEffect(()=>{
-        if(scrollRef.current){
-            setScrollHeight(scrollRef.current.scrollHeight??0);
-            setScrollTop(scrollRef.current.scrollTop??0);
-            scrollRef.current.scrollTo({
-                top: scrollHeight-scrollRef.current.clientHeight,
-            })
+        // if(scrollRef.current){
+        //     setScrollHeight(scrollRef.current.scrollHeight??0);
+        //     setScrollTop(scrollRef.current.scrollTop??0);
+        //     scrollRef.current.scrollTo({
+        //         top: scrollHeight-scrollRef.current.clientHeight,
+        //     })
+        // }
+        if(curHoverTimeStampAtom > 0){
+            let closestTime = sortedBarrageArray.sort( (a, b) => Math.abs(curHoverTimeStampAtom - a.time) - Math.abs(curHoverTimeStampAtom - b.time) )[0].time;
+            const focusArray:BarrageItemWithFocus[] = sortedBarrageArray.map((barrage)=>{
+                if(barrage.time === closestTime){
+                    return {...barrage,focus:true}
+                }else{
+                    return {...barrage,focus:false}
+                }
+            }).sort((barrageA:BarrageItemWithFocus, barrageB:BarrageItemWithFocus) => {
+                return barrageA.time - barrageB.time;
+            });
+            setSortedBarrageArrayState(focusArray);
+        }else{
+            setSortedBarrageArrayState(sortedBarrageArray.map((barrage)=>{return{...barrage,focus:false}}));
         }
+        
         console.log(curHoverTimeStampAtom);
 
     },[scrollRef,barrageArray,scrollHeight,curHoverTimeStampAtom])
     return (
         <List className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
-            {sortedBarrageArray.map((barrage:Barrage, i:number) => (<ListItem key={i}>
-                <Grid container>
+            {sortedBarrageArrayState.map((barrage:BarrageItemWithFocus, i:number) => (<ListItem key={i}>
+                <Grid container style={{backgroundColor:barrage.focus?'#81d4fa':'white',borderRadius:7,paddingRight:'10px',paddingLeft:'10px'}}>
                     <Grid item xs={12}>
                         <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
                     </Grid>

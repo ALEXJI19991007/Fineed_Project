@@ -29,6 +29,9 @@ export function StockChart() {
    
     setCurHoverTimeStampAtom(curHoverTimeStamp);
   };
+  const handleMouseOut = (event: any)=>{
+    setCurHoverTimeStampAtom(-1);
+  }
   const config = {
     chart: {
       type: 'line',
@@ -46,7 +49,8 @@ export function StockChart() {
         },
         point: {
           events: {
-            mouseOver: handleMouseOver
+            mouseOver: handleMouseOver,
+            mouseOut: handleMouseOut,
           }
         }
       },
