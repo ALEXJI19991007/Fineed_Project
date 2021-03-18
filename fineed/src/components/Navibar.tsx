@@ -108,10 +108,6 @@ export function NaviBar() {
     setAnchorEl(null);
   };
 
-  const historyOnClick = () => {
-    history.push("history");
-  };
-
   const fineedOnClick = () => {
     history.push("/home")
   }
@@ -191,14 +187,13 @@ export function NaviBar() {
             <Button
               className={classes.topMenu}
               color="secondary"
-              onClick={historyOnClick}
             >
               <Typography
                 className={classes.typography}
                 variant="subtitle1"
                 noWrap
               >
-                History
+                Coming Soon
               </Typography>
             </Button>
             <Button className={classes.topMenu} color="secondary" onClick={()=>{history.push('/barrage')}}>

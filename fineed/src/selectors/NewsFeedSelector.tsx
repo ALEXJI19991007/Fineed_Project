@@ -1,7 +1,12 @@
 import { selector } from "recoil";
 import * as NewsAtoms from "../atoms/NewsListFilterAtom";
 import * as UserAtoms from "../atoms/FirebaseUserAtom";
-import { getUserFavorite, getUserHistory, rssFetchPage } from "../firebase/FirebaseFunction";
+import {
+  getUserFavorite_v2,
+  getUserHistory_v2,
+  rssFetchPage,
+} from "../firebase/FirebaseFunction";
+import { ERROR } from "../atoms/constants";
 
 // The filteredNewsListState internally keeps track of three atom
 // dependencies: newsListFilterState, newsListState and newsListPageIndexState
@@ -16,7 +21,10 @@ export const filteredNewsListState = selector({
     if (filter.target === "user_history" || filter.target === "user_favorite") {
       return await getUserHistoryOrFavoriteHelper(filter.target, userId);
     }
-    const rssFetchResp = await rssFetchPage({target: "headlines", pageIndex: pageIndex});
+    const rssFetchResp = await rssFetchPage({
+      target: "headlines",
+      pageIndex: pageIndex,
+    });
     return rssFetchResp.data;
   },
 });
@@ -26,10 +34,16 @@ const getUserHistoryOrFavoriteHelper = async (target: string, userId: string) =>
   const userData = {
     userId: userId,
   };
-  const newsData = target === "user_history" ? (await getUserHistory(userData)) : (await getUserFavorite(userData));
-  // console.log(historyData.data);
+  const getUserNewsInfoResp =
+    target === "user_history"
+      ? (await getUserHistory_v2(userData)).data
+      : (await getUserFavorite_v2(userData)).data;
+  if (getUserNewsInfoResp.error !== ERROR.NO_ERROR) {
+    console.log(getUserNewsInfoResp.error);
+    return;
+  }
   let newsList: Object[] = [];
-  newsData.data.forEach((newsItem: any) => {
+  getUserNewsInfoResp.resp.newsList.forEach((newsItem: any) => {
     newsList.push({
       target: newsItem.target,
       link: newsItem.link,

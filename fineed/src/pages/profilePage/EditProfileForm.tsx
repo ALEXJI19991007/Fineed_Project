@@ -7,7 +7,7 @@ import {
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { updateUserProfile, getUsername } from "../../firebase/FirebaseFunction";
+import { updateUserProfile } from "../../firebase/FirebaseFunction";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useRecoilValue } from "recoil";
 import { useHistory} from "react-router-dom";

@@ -1,15 +1,14 @@
-import React from 'react';
+// import React from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import { HelloWorld } from './components/HelloWorldExample';
-import logo from './logo.svg';
+// import { HelloWorld } from './components/HelloWorldExample';
+// import logo from './logo.svg';
 import './App.css';
 import { NaviBar } from './components/Navibar';
 import { NaviDrawer } from './components/NaviDrawer';
 import { HomePage } from './pages/homePage/HomePage';
 import { LoginPage } from './pages/loginPage/LoginPage';
-import { HistoryPage } from './pages/historyPage/HistoryPage';
 import { BarragePage } from './pages/barragePage/BarragePage';
 import { ProfilePage } from './pages/profilePage/ProfilePage';
 import { PromoVideoPage } from './pages/promoVideoPage/PromoVideoPage';
@@ -25,7 +24,7 @@ function App() {
           <Route exact path="/" component={PromoVideoPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/barrage" component={BarragePage} />
-          <Route path="/history" component={HistoryPage} />
+          {/* <Route path="/history" component={HistoryPage} /> */}
           <Route path="/profile" component={ProfilePage} />
           <Route path="/home" component={HomePage} />
         </Switch>

@@ -9,9 +9,10 @@ import {
 } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
-import { getUserAuth } from "../../firebase/FirebaseFunction";
+import { getUserAuth_v2 } from "../../firebase/FirebaseFunction";
 import { useHistory } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import { ERROR } from "../../atoms/constants";
 
 export function EmailPwdForm() {
   const setCurUserUid = useSetRecoilState(curUserUidAtom);
@@ -29,12 +30,13 @@ export function EmailPwdForm() {
   };
 
   const emailLoginHandler = async () => {
-    const getUserAuthResp = await getUserAuth({email: email, password: password});
-    if (getUserAuthResp.data === null) {
-      console.log("Get User Authentication Failed");
+    const getUserAuthResp = (await getUserAuth_v2({email: email, password: password})).data;
+    if (getUserAuthResp.error !== ERROR.NO_ERROR) {
+      console.log(getUserAuthResp.error);
+      return;
     }
-    //setCurUsername(getUserAuthResp.data.username);
-    setCurUserUid(getUserAuthResp.data.userId);
+    console.log("Welcome ", getUserAuthResp.resp.username);
+    setCurUserUid(getUserAuthResp.resp.userId);
     history.push('/profile');
   }
 
