@@ -1,6 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-import { db } from "./index";
+import { db } from "../index";
 
 exports.updateUserHistory = functions.https.onCall(async (data, _context) => {
   try {

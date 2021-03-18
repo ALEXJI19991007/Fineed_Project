@@ -38,16 +38,6 @@ export const addEntry = functions.https.onCall(async (data, _context) => {
 const updateNewsClick = require("./updateNewsClick");
 exports.updateNewsClick = updateNewsClick.updateNewsClick;
 
-const updateUserHistory = require("./updateUserHistory");
-exports.updateUserHistory = updateUserHistory.updateUserHistory;
-
-const updateUserFavorite = require("./updateUserFavorite");
-exports.updateUserFavorite = updateUserFavorite.updateUserFavorite;
-
-const updateUserProfile = require("./updateUserProfile");
-exports.updateUserProfile = updateUserProfile.updateUserProfile;
-exports.updateUserPassword= updateUserProfile.updateUserPassword;
-
 const GetUserInfo = require("./GetUserInfo");
 exports.getUsername_v2 = GetUserInfo.getUsername_v2;
 exports.getUserHistory_v2 = GetUserInfo.getUserHistory_v2;
@@ -72,6 +62,16 @@ exports.updateUserPassword_v2 = UpdateUserInfo.updateUserPassword_v2;
 // const getUserFavorite = require("./getUserFavorite");
 // exports.getUserFavorite = getUserFavorite.getUserFavorite;
 
+// const updateUserHistory = require("./updateUserHistory");
+// exports.updateUserHistory = updateUserHistory.updateUserHistory;
+
+// const updateUserFavorite = require("./updateUserFavorite");
+// exports.updateUserFavorite = updateUserFavorite.updateUserFavorite;
+
+// const updateUserProfile = require("./updateUserProfile");
+// exports.updateUserProfile = updateUserProfile.updateUserProfile;
+// exports.updateUserPassword= updateUserProfile.updateUserPassword;
+
 const rssFetch = require("./rssFetch");
 exports.rssFetch = rssFetch.rssFetch;
 exports.rssFetchPage = rssFetch.rssFetchPage;
@@ -82,7 +82,6 @@ exports.rssClearCache = rssCache.rssClearCache;
 
 const createNewUser = require("./createNewUser");
 exports.createNewUser = createNewUser.createNewUser;
-
 
 const barrage = require("./barrage");
 exports.storeUserBarrage = barrage.storeUserBarrage;
