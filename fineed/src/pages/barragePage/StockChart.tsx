@@ -20,14 +20,13 @@ export function StockChart() {
     priceArray.push([stockDataItem.time,stockDataItem.price]);
   });
     priceArray.sort((priceA,priceB)=>{return priceA[0]-priceB[0]});
-    console.log(priceArray)
     setChartData(priceArray);
-    
   },[stockSnapShotAtom]);
 
   const [_curHoverTimeStampAtom, setCurHoverTimeStampAtom] = useRecoilState(BarrageHoverTimeStampAtom);
   const handleMouseOver = (event: any) => {
     const curHoverTimeStamp = event.target.x;
+   
     setCurHoverTimeStampAtom(curHoverTimeStamp);
   };
   const config = {

@@ -65,7 +65,7 @@ function timeConverter(UNIX_timestamp: number): string {
     return time;
 }
 type BarrageItemProps = {
-    barrageArray: Barrage[]
+    barrageArray: Barrage[],
 }
 
 const BarrageItem = (props: BarrageItemProps) => {
@@ -73,7 +73,7 @@ const BarrageItem = (props: BarrageItemProps) => {
     const scrollRef = useRef<HTMLUListElement>(null);
     const [scrollHeight,setScrollHeight] = useState<number>(0);
     const [scrollTop,setScrollTop] = useState<number>(0);
-    const [curHoverTimeStampAtom,setCurHoverTimeStampAtom] = useRecoilState(BarrageHoverTimeStampAtom);
+    const curHoverTimeStampAtom= useRecoilValue(BarrageHoverTimeStampAtom);
     const { barrageArray } = props;
     let sortedBarrageArray = [...barrageArray];
     
@@ -93,7 +93,9 @@ const BarrageItem = (props: BarrageItemProps) => {
                 top: scrollHeight-scrollRef.current.clientHeight,
             })
         }
-    },[scrollRef,barrageArray,scrollHeight])
+        console.log(curHoverTimeStampAtom);
+
+    },[scrollRef,barrageArray,scrollHeight,curHoverTimeStampAtom])
     return (
         <List className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
             {sortedBarrageArray.map((barrage:Barrage, i:number) => (<ListItem key={i}>
@@ -133,7 +135,7 @@ export function BarragePage() {
     }
 
     useEffect(() => {
-        
+        // console.log(curHoverTimeStampAtom)
     }, [barragesAtom]);
 
     return (curUid ?
@@ -142,7 +144,7 @@ export function BarragePage() {
             
             <Grid container component={Paper} className={classes.chatSection} >
                 <Grid item xs={9}>
-                    <BarrageItem barrageArray={barragesAtom} />
+                    <BarrageItem barrageArray={barragesAtom}/>
                     <Divider />
                     <Grid container>
                         <Grid item xs={11}>
