@@ -15,12 +15,11 @@ export function StockChart() {
   const [chartData,setChartData] = useState<any>([])
   
   useEffect(()=>{
-
     let priceArray: number[][] = []
     stockSnapShotAtom.forEach((stockDataItem)=>{
     priceArray.push([stockDataItem.time,stockDataItem.price]);
   });
-    priceArray.sort((a,b)=>{return a[0]-b[0]});
+    priceArray.sort((priceA,priceB)=>{return priceA[0]-priceA[0]});
     console.log(priceArray)
     setChartData(priceArray);
     
