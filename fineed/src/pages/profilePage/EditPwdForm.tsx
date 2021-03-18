@@ -10,6 +10,7 @@ import { updateUserPassword_v2 } from "../../firebase/FirebaseFunction";
 import { useRecoilValue } from "recoil";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { ERROR } from "../../atoms/constants";
+import { Typography } from "@material-ui/core";
 
 const theme = createMuiTheme({
   palette: {
@@ -30,6 +31,7 @@ export function EditPwdForm() {
   const [oldPwd, setOldPwd] = useState("");
   const [newPwd, setNewPwd] = useState("");
   const [err, setErr] = useState("");
+  const [notify, setNotify] = useState("");
   const userId = useRecoilValue(curUserUidAtom);
 
   const oldPwdOnChange = (event: React.ChangeEvent<{ value: string }>) => {
@@ -53,9 +55,13 @@ export function EditPwdForm() {
     };
     const updatePasswordResp = (await updateUserPassword_v2(userData)).data;
     if (updatePasswordResp.error !== ERROR.NO_ERROR) {
+      setNotify("Old password doesn't match our record.")
       console.log(updatePasswordResp.error);
       return;
     }
+    setNotify("Successfully changed password!")
+    setOldPwd("");
+    setNewPwd("");
   };
 
   return (
@@ -69,6 +75,7 @@ export function EditPwdForm() {
           justify="center"
         >
           <Grid item xs={3}>
+           <Typography>{notify}</Typography>
            <form noValidate>
               <TextField
                 variant="outlined"
@@ -79,6 +86,7 @@ export function EditPwdForm() {
                 label="Original Password"
                 name="oldPwd"
                 autoComplete=""
+                value={oldPwd}
                 type="password"
                 helperText="Leave it blank if you haven't set a password."
                 autoFocus
@@ -94,6 +102,7 @@ export function EditPwdForm() {
                 name="newPwd"
                 type="password"
                 autoComplete=""
+                value={newPwd}
                 onChange={newPwdOnChange}
                 helperText = {err}
               />
