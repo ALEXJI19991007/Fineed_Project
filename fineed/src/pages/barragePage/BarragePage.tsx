@@ -135,8 +135,18 @@ const BarrageItem = (props: BarrageItemProps) => {
             setSortedBarrageArrayState(focusArray);
             if (focusRef.current && scrollRef.current) {
                 const element = focusRef.current;
-                const container = scrollRef.current;
-                element.scrollIntoView({behavior: "smooth"})
+            //     const container = scrollRef.current;
+
+            //     const headerOffset = 45;
+            //     const elementPosition = element.getBoundingClientRect().top;
+            //     const offsetPosition = elementPosition - headerOffset;
+                
+            //     container.scrollTo({
+            //         top: offsetPosition,
+            //         behavior: "smooth"
+            //    });
+
+               element.scrollIntoView({behavior: "smooth", block: 'center'})
             }
         } else {
             if (scrollRef.current) {
