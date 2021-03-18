@@ -34,6 +34,9 @@ const getUserHistoryOrFavoriteHelper = async (target: string, userId: string) =>
   const userData = {
     userId: userId,
   };
+  if (userId === null || userId === "") {
+    return;
+  }
   const getUserNewsInfoResp =
     target === "user_history"
       ? (await getUserHistory_v2(userData)).data

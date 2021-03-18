@@ -119,8 +119,8 @@ export function NaviBar() {
   const logoutOnClick = async () => {
     await FirebaseAuth.logout(); 
     setCurUserUid("");
-    //setCurUsername("");
-    console.log(curUserUidAtom);
+    // setCurUsername("");
+    // console.log(curUserUidAtom);
     handleMenuClose();
     history.push("/home");
   }

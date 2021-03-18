@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  makeStyles,
   ThemeProvider,
   createMuiTheme,
 } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { updateUserProfile } from "../../firebase/FirebaseFunction";
+import { updateUserProfile_v2 } from "../../firebase/FirebaseFunction";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useRecoilValue } from "recoil";
-import { useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
+import { ERROR } from "../../atoms/constants";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,7 +27,8 @@ const theme = createMuiTheme({
     },
   },
 });
-export function EditProfileForm(props:any) {
+
+export function EditProfileForm(props: any) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState(props.username);
@@ -54,19 +55,19 @@ export function EditProfileForm(props:any) {
       lastName: lastName,
       username: username,
     };
-    const updateUserProfileResp = await updateUserProfile(userData);
-    if (updateUserProfileResp.data === null) {
-      console.log("Uplate failed");
-    } else {
-      setMsg("Successfully updated profile!")
-      history.push('/profile')
+    const updateUserProfileResp = (await updateUserProfile_v2(userData)).data;
+    if (updateUserProfileResp.error !== ERROR.NO_ERROR) {
+      console.log(updateUserProfileResp.error);
+      return;
     }
+    setMsg("Successfully updated profile!");
+    history.push("/profile");
   };
 
   return (
     <div>
       <ThemeProvider theme={theme}>
-          <Grid
+        <Grid
           container
           spacing={3}
           direction="column"
@@ -75,7 +76,7 @@ export function EditProfileForm(props:any) {
         >
           <Typography>{msg}</Typography>
           <Grid item xs={2}>
-          <form noValidate>
+            <form noValidate>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -109,7 +110,10 @@ export function EditProfileForm(props:any) {
                 autoComplete="username"
                 onChange={usernameOnChange}
               />
-              <Typography variant="body2" color="textSecondary">Current username: {props.username===""?"not set yet":props.username}</Typography>
+              <Typography variant="body2" color="textSecondary">
+                Current username:{" "}
+                {props.username === "" ? "not set yet" : props.username}
+              </Typography>
               <br />
               <Button
                 variant="contained"
@@ -118,8 +122,8 @@ export function EditProfileForm(props:any) {
               >
                 Edit
               </Button>
-              </form>
-              </Grid>
+            </form>
+          </Grid>
         </Grid>
       </ThemeProvider>
     </div>

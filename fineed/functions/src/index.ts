@@ -44,11 +44,21 @@ exports.updateUserHistory = updateUserHistory.updateUserHistory;
 const updateUserFavorite = require("./updateUserFavorite");
 exports.updateUserFavorite = updateUserFavorite.updateUserFavorite;
 
+const updateUserProfile = require("./updateUserProfile");
+exports.updateUserProfile = updateUserProfile.updateUserProfile;
+exports.updateUserPassword= updateUserProfile.updateUserPassword;
+
 const GetUserInfo = require("./GetUserInfo");
 exports.getUsername_v2 = GetUserInfo.getUsername_v2;
 exports.getUserHistory_v2 = GetUserInfo.getUserHistory_v2;
 exports.getUserFavorite_v2 = GetUserInfo.getUserFavorite_v2;
 exports.getUserAuth_v2 = GetUserInfo.getUserAuth_v2;
+
+const UpdateUserInfo = require("./UpdateUserInfo");
+exports.updateUserFavorite_v2 = UpdateUserInfo.updateUserFavorite_v2;
+exports.updateUserHistory_v2 = UpdateUserInfo.updateUserHistory_v2;
+exports.updateUserProfile_v2 = UpdateUserInfo.updateUserProfile_v2;
+exports.updateUserPassword_v2 = UpdateUserInfo.updateUserPassword_v2;
 
 // const getUsername = require("./getUsername");
 // exports.getUsername = getUsername.getUsername;
@@ -73,9 +83,6 @@ exports.rssClearCache = rssCache.rssClearCache;
 const createNewUser = require("./createNewUser");
 exports.createNewUser = createNewUser.createNewUser;
 
-const updateUserProfile = require("./updateUserProfile");
-exports.updateUserProfile = updateUserProfile.updateUserProfile;
-exports.updateUserPassword= updateUserProfile.updateUserPassword;
 
 const barrage = require("./barrage");
 exports.storeUserBarrage = barrage.storeUserBarrage;

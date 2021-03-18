@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  makeStyles,
   ThemeProvider,
   createMuiTheme,
 } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { updateUserPassword } from "../../firebase/FirebaseFunction";
+import { updateUserPassword_v2 } from "../../firebase/FirebaseFunction";
 import { useRecoilValue } from "recoil";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
+import { ERROR } from "../../atoms/constants";
 
 const theme = createMuiTheme({
   palette: {
@@ -51,9 +51,9 @@ export function EditPwdForm() {
       oldPassword: oldPwd,
       newPassword: newPwd,
     };
-    const updatePasswordResp = await updateUserPassword(userData);
-    if (updatePasswordResp.data === null) {
-      console.log("Update Pwd Error");
+    const updatePasswordResp = (await updateUserPassword_v2(userData)).data;
+    if (updatePasswordResp.error !== ERROR.NO_ERROR) {
+      console.log(updatePasswordResp.error);
       return;
     }
   };
