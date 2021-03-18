@@ -28,8 +28,8 @@ const useStyles = makeStyles({
         marginTop: '1000px'
     },
     index: {
-        height:'500px', 
-        width:'600px', 
+        height: '500px',
+        width: '600px',
         float: 'left',
         marginRight: '100px'
     },
@@ -76,68 +76,102 @@ type BarrageItemWithFocus = {
     focus: boolean,
 }
 
+type isInTheViewParaType = {
+    elementClientHeight: number,
+    elementOffsetTop: number,
+    containerClientHeight: number,
+    containerScrollTop: number,
+}
+
 const BarrageItem = (props: BarrageItemProps) => {
     const classes = useStyles();
     const scrollRef = useRef<HTMLUListElement>(null);
-    const [scrollHeight,setScrollHeight] = useState<number>(0);
-    const [scrollTop,setScrollTop] = useState<number>(0);
-    const curHoverTimeStampAtom= useRecoilValue(BarrageHoverTimeStampAtom);
+    const focusRef = useRef<HTMLDivElement>(null);
+    const [scrollHeight, setScrollHeight] = useState<number>(0);
+    const [scrollTop, setScrollTop] = useState<number>(0);
+    const curHoverTimeStampAtom = useRecoilValue(BarrageHoverTimeStampAtom);
     const { barrageArray } = props;
     let sortedBarrageArray = [...barrageArray];
-    
-    sortedBarrageArray.sort((barrageA:Barrage, barrageB:Barrage) => {
+
+    sortedBarrageArray.sort((barrageA: Barrage, barrageB: Barrage) => {
         return barrageA.time - barrageB.time;
     });
-    const [sortedBarrageArrayState,setSortedBarrageArrayState] =useState<BarrageItemWithFocus[]>(sortedBarrageArray.map((barrage)=>{return{...barrage,focus:false}}))
-    
-    const onScroll =() =>{
-        if(scrollRef.current == null){
+    const [sortedBarrageArrayState, setSortedBarrageArrayState] = useState<BarrageItemWithFocus[]>(sortedBarrageArray.map((barrage) => { return { ...barrage, focus: false } }))
+
+    const onScroll = () => {
+        if (scrollRef.current == null) {
             return;
         }
     }
-    // console.log(sortedBarrageArrayState)
+    const isInTheView = (IsOverFlowItem: isInTheViewParaType, partial: boolean) => {
+        const { elementClientHeight, elementOffsetTop, containerClientHeight, containerScrollTop } = IsOverFlowItem
+        const cTop = containerScrollTop;
+        const cBottom = cTop + containerClientHeight;
+        const eTop = elementOffsetTop;
+        const eBottom = eTop + elementClientHeight;
+        let isTotal = (eTop >= cTop && eBottom <= cBottom);
+        let isPartial = partial && (
+            (eTop < cTop && eBottom > cTop) ||
+            (eBottom > cBottom && eTop < cBottom)
+        );
 
-    useEffect(()=>{
-        if(curHoverTimeStampAtom > 0){
-            let closestTime = sortedBarrageArray.sort( (a, b) => Math.abs(curHoverTimeStampAtom - a.time) - Math.abs(curHoverTimeStampAtom - b.time) )[0].time;
-            const focusArray:BarrageItemWithFocus[] = sortedBarrageArray.map((barrage)=>{
-                if(barrage.time === closestTime){
-                    return {...barrage,focus:true}
-                }else{
-                    return {...barrage,focus:false}
+        return (isTotal || isPartial);
+    }
+
+    useEffect(() => {
+        if (curHoverTimeStampAtom > 0) {
+            let closestTime = sortedBarrageArray.sort((a, b) => Math.abs(curHoverTimeStampAtom - a.time) - Math.abs(curHoverTimeStampAtom - b.time))[0].time;
+            const focusArray: BarrageItemWithFocus[] = sortedBarrageArray.map((barrage) => {
+                if (barrage.time === closestTime) {
+                    return { ...barrage, focus: true }
+                } else {
+                    return { ...barrage, focus: false }
                 }
-            }).sort((barrageA:BarrageItemWithFocus, barrageB:BarrageItemWithFocus) => {
+            }).sort((barrageA: BarrageItemWithFocus, barrageB: BarrageItemWithFocus) => {
                 return barrageA.time - barrageB.time;
             });
             setSortedBarrageArrayState(focusArray);
-        }else{
-            if(scrollRef.current){
-                setScrollHeight(scrollRef.current.scrollHeight??0);
-                setScrollTop(scrollRef.current.scrollTop??0);
+            if (focusRef.current && scrollRef.current) {
+                const element = focusRef.current;
+                const container = scrollRef.current;
+                element.scrollIntoView({behavior: "smooth"})
+            }
+        } else {
+            if (scrollRef.current) {
+                setScrollHeight(scrollRef.current.scrollHeight ?? 0);
+                setScrollTop(scrollRef.current.scrollTop ?? 0);
                 scrollRef.current.scrollTo({
-                    top: scrollHeight-scrollRef.current.clientHeight,
+                    top: scrollHeight - scrollRef.current.clientHeight,
                 })
             }
-            setSortedBarrageArrayState(sortedBarrageArray.map((barrage)=>{return{...barrage,focus:false}}));
+            setSortedBarrageArrayState(sortedBarrageArray.map((barrage) => { return { ...barrage, focus: false } }));
         }
-        
-        console.log(curHoverTimeStampAtom);
 
-    },[scrollRef,barrageArray,scrollHeight,curHoverTimeStampAtom])
+    }, [scrollRef, focusRef, barrageArray, scrollHeight, curHoverTimeStampAtom])
     return (
         <List className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
-            {sortedBarrageArrayState.map((barrage:BarrageItemWithFocus, i:number) => (<ListItem key={i}>
-                <Grid container style={{backgroundColor:barrage.focus?'#81d4fa':'white',borderRadius:7,paddingRight:'10px',paddingLeft:'10px'}}>
-                    <Grid item xs={12}>
-                        <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <ListItemText className={classes.listItemText} secondary={timeConverter(barrage.time)}></ListItemText>
-                    </Grid>
-                </Grid>
+            {sortedBarrageArrayState.map((barrage: BarrageItemWithFocus, i: number) => (<ListItem key={i}>
+                {barrage.focus ? (
+                    <Grid container style={{ backgroundColor: '#81d4fa', borderRadius: 7, paddingRight: '10px', paddingLeft: '10px' }} ref={focusRef}>
+                        <Grid item xs={12}>
+                            <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ListItemText className={classes.listItemText} secondary={timeConverter(barrage.time)}></ListItemText>
+                        </Grid>
+                    </Grid>) :
+                    (<Grid container>
+                        <Grid item xs={12}>
+                            <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ListItemText className={classes.listItemText} secondary={timeConverter(barrage.time)}></ListItemText>
+                        </Grid>
+                    </Grid>)
+                }
             </ListItem>))}
         </List>
-       
+
     )
 }
 
@@ -148,7 +182,7 @@ export function BarragePage() {
     const barragesAtom = useRecoilValue(BarrageSnapShotAtom);
     const { _ready, _barrages } = useBarrages();
     const sendBarrage = async () => {
-        if(textContent.length === 0){
+        if (textContent.length === 0) {
             return;
         }
         const barrage = { uid: curUid, content: textContent, time: Date.now(), tag: '' };
@@ -156,35 +190,34 @@ export function BarragePage() {
         await storeUserBarrage(barrage)
     }
 
-    const handleEnter = async(event: React.KeyboardEvent) =>{
-        if(event.key === 'Enter'){
+    const handleEnter = async (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter') {
             await sendBarrage();
         }
     }
 
     useEffect(() => {
-        // console.log(curHoverTimeStampAtom)
     }, [barragesAtom]);
 
     return (curUid ?
-        <div style={{marginTop:'100px',display: 'inline-block',width:'100%'}} onKeyPress={async(event)=>{handleEnter(event)}}>
-            <div className={classes.index}><StockChart/></div>
-            
+        <div style={{ marginTop: '100px', display: 'inline-block', width: '100%' }} onKeyPress={async (event) => { handleEnter(event) }}>
+            <div className={classes.index}><StockChart /></div>
+
             <Grid container component={Paper} className={classes.chatSection} >
                 <Grid item xs={9}>
-                    <BarrageItem barrageArray={barragesAtom}/>
+                    <BarrageItem barrageArray={barragesAtom} />
                     <Divider />
                     <Grid container>
                         <Grid item xs={11}>
                             <TextField id="outlined-basic-email" label="Type Something" fullWidth value={textContent} onChange={(event) => { setTextContent(event.target.value) }} />
                         </Grid>
                         <Grid xs={1} className={classes.listItemText}>
-                            <Fab color="primary" aria-label="add" onClick={async()=>{sendBarrage()}}><SendIcon /></Fab>
+                            <Fab color="primary" aria-label="add" onClick={async () => { sendBarrage() }}><SendIcon /></Fab>
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
-            
+
         </div> : <div style={{ marginTop: '100px' }}>u should log in first</div>
     );
 }
