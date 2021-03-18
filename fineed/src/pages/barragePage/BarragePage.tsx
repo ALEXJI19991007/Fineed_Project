@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -20,22 +19,37 @@ import { useBarrages } from "../../firebase/FirebaseFireStore";
 import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
 import { StockChart } from "./StockChart";
 import { BarrageHoverTimeStampAtom } from "../../atoms/BarrageHoverTimeStampAtom";
+import BarragePicture from "../../imageSrc/barragepage/barragePagePic.jpg";
 
 
 const useStyles = makeStyles({
+    page: {
+        backgroundImage:`url(${BarragePicture})`,
+        backgroundPosition:'center',
+        backgroundSize:'cover',
+        backgroundRepeat:'no-repeat',
+        position: 'fixed',
+        top:0,
+        bottom:0,
+        left:0,
+        right:0
+    },
     table: {
         float: 'left',
         marginTop: '1000px'
     },
-    index: {
-        height: '500px',
-        width: '600px',
+    stockChart: {
+        height: '700px',
+        width: '700px',
         float: 'left',
-        marginRight: '100px'
+        marginLeft:'40px',
+        marginTop:'80px'
     },
     chatSection: {
-        width: '50%',
-        float: 'left'
+        borderRadius: 8,
+        width: '70vh',
+        float: 'right',
+        marginRight: '5%'
     },
     headBG: {
         backgroundColor: '#e0e0e0'
@@ -45,10 +59,13 @@ const useStyles = makeStyles({
     },
     messageArea: {
         height: '70vh',
-        overflowY: 'auto'
+        overflowY: 'auto',
     },
     listItemText: {
         align: 'right',
+    },
+    sendMessageArea: {
+        padding: '4px'
     }
 });
 
@@ -61,7 +78,7 @@ function timeConverter(UNIX_timestamp: number): string {
     var hour = a.getHours();
     var min = a.getMinutes();
     var sec = a.getSeconds();
-    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+    var time = month + ' ' + date + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
     return time;
 }
 type BarrageItemProps = {
@@ -103,21 +120,6 @@ const BarrageItem = (props: BarrageItemProps) => {
             return;
         }
     }
-    const isInTheView = (IsOverFlowItem: isInTheViewParaType, partial: boolean) => {
-        const { elementClientHeight, elementOffsetTop, containerClientHeight, containerScrollTop } = IsOverFlowItem
-        const cTop = containerScrollTop;
-        const cBottom = cTop + containerClientHeight;
-        const eTop = elementOffsetTop;
-        const eBottom = eTop + elementClientHeight;
-        let isTotal = (eTop >= cTop && eBottom <= cBottom);
-        let isPartial = partial && (
-            (eTop < cTop && eBottom > cTop) ||
-            (eBottom > cBottom && eTop < cBottom)
-        );
-
-        return (isTotal || isPartial);
-    }
-
     useEffect(() => {
         if (curHoverTimeStampAtom > 0) {
             let closestTime = sortedBarrageArray.sort((a, b) => Math.abs(curHoverTimeStampAtom - a.time) - Math.abs(curHoverTimeStampAtom - b.time))[0].time;
@@ -149,7 +151,7 @@ const BarrageItem = (props: BarrageItemProps) => {
 
     }, [scrollRef, focusRef, barrageArray, scrollHeight, curHoverTimeStampAtom])
     return (
-        <List className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
+        <List  className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
             {sortedBarrageArrayState.map((barrage: BarrageItemWithFocus, i: number) => (<ListItem key={i}>
                 {barrage.focus ? (
                     <Grid container style={{ backgroundColor: '#81d4fa', borderRadius: 7, paddingRight: '10px', paddingLeft: '10px' }} ref={focusRef}>
@@ -199,25 +201,31 @@ export function BarragePage() {
     useEffect(() => {
     }, [barragesAtom]);
 
-    return (curUid ?
-        <div style={{ marginTop: '100px', display: 'inline-block', width: '100%' }} onKeyPress={async (event) => { handleEnter(event) }}>
-            <div className={classes.index}><StockChart /></div>
+    return (<div className={classes.page}>
+        {curUid ?
+        <div style={{ marginTop: '100px', display: 'inline-block', width: '100%'}} onKeyPress={async (event) => { handleEnter(event) }}>
+            <div className={classes.stockChart}>
+                <StockChart />
+            </div>
 
             <Grid container component={Paper} className={classes.chatSection} >
-                <Grid item xs={9}>
+                <Grid item xs={12}>
                     <BarrageItem barrageArray={barragesAtom} />
                     <Divider />
-                    <Grid container>
+                    <Grid container className={classes.sendMessageArea}>
                         <Grid item xs={11}>
-                            <TextField id="outlined-basic-email" label="Type Something" fullWidth value={textContent} onChange={(event) => { setTextContent(event.target.value) }} />
+                            <TextField id="outlined-basic-email" label="Type Barrage!" fullWidth value={textContent} onChange={(event) => { setTextContent(event.target.value) }} />
                         </Grid>
-                        <Grid xs={1} className={classes.listItemText}>
-                            <Fab color="primary" aria-label="add" onClick={async () => { sendBarrage() }}><SendIcon /></Fab>
+                        <Grid xs={1} >
+                            <div >
+                            <Fab color="primary" aria-label="add" size='large'  onClick={async () => { sendBarrage() }}><SendIcon /></Fab>
+                            </div>
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
 
-        </div> : <div style={{ marginTop: '100px' }}>u should log in first</div>
+        </div> : <div style={{ marginTop: '100px' }}>u should log in first</div>}
+        </div>
     );
 }

@@ -10,10 +10,15 @@ import { StockSnapShotAtom } from "../../atoms/StockSnapShotAtom";
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { makeStyles } from "@material-ui/core";
 
-
+const useStyles=makeStyles({
+  stockChart: {
+  }
+})
 
 export function StockChart() {
+  const classes = useStyles();
   const { _ready, _stockDataArr } = useStockData();
   const stockSnapShotAtom = useRecoilValue(StockSnapShotAtom);
   const [chartData, setChartData] = useState<any>([])
@@ -40,6 +45,9 @@ export function StockChart() {
   const config = {
     chart: {
       type: 'line',
+      borderRadius: 10,
+      height: 450,
+      width: 650,
     },
     title: {
       text: 'GameStop Inc.'
@@ -89,10 +97,12 @@ export function StockChart() {
   };
 
   const betaConfig = {
-
     chart: {
       alignTicks: false,
-      zoomType: 'x'
+      borderRadius: 10,
+      zoomType: 'x',
+      height: 450,
+      width: 650,
     },
 
     credits: {
@@ -178,7 +188,7 @@ export function StockChart() {
     ],
   }
   useEffect(() => {
-    if(isBeta === false){
+    if (isBeta === false) {
       // window.location.reload();
     }
   }, [isBeta])
@@ -186,28 +196,28 @@ export function StockChart() {
   return (
     <div>
       <div>
-      <FormControlLabel control={<Checkbox
-        checked={isBeta}
-        onChange={() => {
-          if(isBeta === true){
-            window.location.reload();
-          }else{
-            setIsBeta(!isBeta);
-          }
-          
-        }}
-        name="checkedB"
-        color="primary"
-        
-      />} label="Try Beta version(error trending)"/>
-      
-      
+        <FormControlLabel control={<Checkbox
+          checked={isBeta}
+          onChange={() => {
+            if (isBeta === true) {
+              window.location.reload();
+            } else {
+              setIsBeta(!isBeta);
+            }
 
+          }}
+          name="checkedB"
+          color="primary"
+
+        />} 
+        label="Try Beta version(error trending)" color="primary"/>
       </div>
       {isBeta ? <HighchartsReact
+        className={classes.stockChart}
         highcharts={Highcharts}
         options={betaConfig}
       /> : <HighchartsReact
+        className={classes.stockChart}
         highcharts={Highcharts}
         options={config}
       />}
