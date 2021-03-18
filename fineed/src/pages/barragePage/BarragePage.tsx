@@ -19,7 +19,7 @@ import { useBarrages } from "../../firebase/FirebaseFireStore";
 import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
 import { StockChart } from "./StockChart";
 import { BarrageHoverTimeStampAtom } from "../../atoms/BarrageHoverTimeStampAtom";
-import BarragePicture from "../../imageSrc/barragepage/barragePagePic.jpg";
+import BarragePicture from "../../imageSrc/barragepage/barragePagePic2.jpg";
 
 
 const useStyles = makeStyles({
