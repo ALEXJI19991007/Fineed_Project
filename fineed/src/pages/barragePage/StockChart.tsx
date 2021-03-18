@@ -19,7 +19,7 @@ export function StockChart() {
     stockSnapShotAtom.forEach((stockDataItem)=>{
     priceArray.push([stockDataItem.time,stockDataItem.price]);
   });
-    priceArray.sort((priceA,priceB)=>{return priceA[0]-priceA[0]});
+    priceArray.sort((priceA,priceB)=>{return priceA[0]-priceB[0]});
     console.log(priceArray)
     setChartData(priceArray);
     
@@ -38,7 +38,7 @@ export function StockChart() {
       text: 'GameStop Inc.'
     },
     subtitle: {
-      text: '(NASDAQ: AAPL): 100 days'
+      text: '(NASDAQ: GME): 100 days'
     },
     plotOptions: {
       series: {
