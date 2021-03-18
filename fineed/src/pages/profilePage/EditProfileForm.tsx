@@ -61,6 +61,9 @@ export function EditProfileForm(props: any) {
       return;
     }
     setMsg("Successfully updated profile!");
+    setFirstName("");
+    setLastName("");
+    setUsername("");
     history.push("/profile");
   };
 
@@ -86,6 +89,7 @@ export function EditProfileForm(props: any) {
                 label="First Name"
                 name="first_name"
                 autoComplete="firstname"
+                value={firstName}
                 autoFocus
                 onChange={firstNameOnChange}
               />
@@ -96,6 +100,7 @@ export function EditProfileForm(props: any) {
                 id="last_name"
                 label="Last Name"
                 name="last_name"
+                value={lastName}
                 autoComplete="lastname"
                 onChange={lastNameOnChange}
               />
@@ -107,13 +112,14 @@ export function EditProfileForm(props: any) {
                 id="username"
                 label="username"
                 name="username"
+                value={username}
                 autoComplete="username"
                 onChange={usernameOnChange}
               />
-              <Typography variant="body2" color="textSecondary">
+              {/* <Typography variant="body2" color="textSecondary">
                 Current username:{" "}
                 {props.username === "" ? "not set yet" : props.username}
-              </Typography>
+              </Typography> */}
               <br />
               <Button
                 variant="contained"
