@@ -98,13 +98,6 @@ const BarrageItem = (props: BarrageItemProps) => {
     // console.log(sortedBarrageArrayState)
 
     useEffect(()=>{
-        // if(scrollRef.current){
-        //     setScrollHeight(scrollRef.current.scrollHeight??0);
-        //     setScrollTop(scrollRef.current.scrollTop??0);
-        //     scrollRef.current.scrollTo({
-        //         top: scrollHeight-scrollRef.current.clientHeight,
-        //     })
-        // }
         if(curHoverTimeStampAtom > 0){
             let closestTime = sortedBarrageArray.sort( (a, b) => Math.abs(curHoverTimeStampAtom - a.time) - Math.abs(curHoverTimeStampAtom - b.time) )[0].time;
             const focusArray:BarrageItemWithFocus[] = sortedBarrageArray.map((barrage)=>{
@@ -118,6 +111,13 @@ const BarrageItem = (props: BarrageItemProps) => {
             });
             setSortedBarrageArrayState(focusArray);
         }else{
+            if(scrollRef.current){
+                setScrollHeight(scrollRef.current.scrollHeight??0);
+                setScrollTop(scrollRef.current.scrollTop??0);
+                scrollRef.current.scrollTo({
+                    top: scrollHeight-scrollRef.current.clientHeight,
+                })
+            }
             setSortedBarrageArrayState(sortedBarrageArray.map((barrage)=>{return{...barrage,focus:false}}));
         }
         
