@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { List } from "immutable";
 import { NewsCard } from "../NewsCard";
 import { News } from "../NewsCard";
@@ -11,6 +11,9 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
+import Grow from '@material-ui/core/Grow';
+import Fade from '@material-ui/core/Fade';
+import Collapse from '@material-ui/core/Collapse';
 import { Pagination } from "@material-ui/lab";
 import * as NewsAtoms from "../../../atoms/NewsListFilterAtom"
 
@@ -122,6 +125,7 @@ function NewsCardLoading() {
 
 function NewsCardGridLoading() {
   const classes = useStyles();
+  const [checked, setChecked] = useState(true);
   //generate 8 loading card to demo on the screen.
   const loadingList = [1, 1, 1, 1, 1, 1, 1, 1];
   return (
@@ -130,9 +134,11 @@ function NewsCardGridLoading() {
         {loadingList.map((news: number, index: number) => {
           return (
             <Grid item xs={3} key={index}>
+              <Grow in={checked} timeout={1200}>
               <div className={classes.paper}>
                 <NewsCardLoading />
               </div>
+              </Grow>
             </Grid>
           );
         })}
@@ -143,12 +149,14 @@ function NewsCardGridLoading() {
 
 function NewsCardGrid(props: NewsCardGridProps) {
   const classes = useStyles();
+  const [checked, setChecked] = useState(true);
   return (
     <div className={classes.root}>
       <Grid container spacing={5}>
         {props.newsList.map((news: News, index: number) => {
           return (
             <Grid item xs={3} key={index}>
+              <Grow in={checked} timeout={500}>
               <div className={classes.paper}>
                 <NewsCard
                   target={news.target}
@@ -159,6 +167,7 @@ function NewsCardGrid(props: NewsCardGridProps) {
                   pubDate={news.pubDate}
                 />
               </div>
+              </Grow>
             </Grid>
           );
         })}
