@@ -12,6 +12,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
+import Grow from '@material-ui/core/Grow';
+import Fade from '@material-ui/core/Fade';
+import Collapse from '@material-ui/core/Collapse';
+import Zoom from '@material-ui/core/Zoom';
 import { curUserUidAtom } from '../../atoms/FirebaseUserAtom'
 import { useRecoilState, useRecoilValue } from "recoil";
 import { storeUserBarrage } from "../../firebase/FirebaseFunction";
@@ -192,6 +196,7 @@ export function BarragePage() {
     const [textContent, setTextContent] = useState('');
     const curUid = useRecoilValue(curUserUidAtom);
     const barragesAtom = useRecoilValue(BarrageSnapShotAtom);
+    const [checked, setChecked] = useState(true);
     const { _ready, _barrages } = useBarrages();
     const sendBarrage = async () => {
         if (textContent.length === 0) {
@@ -214,10 +219,12 @@ export function BarragePage() {
     return (<div className={classes.page}>
         {curUid ?
         <div style={{ marginTop: '100px', display: 'inline-block', width: '100%'}} onKeyPress={async (event) => { handleEnter(event) }}>
+            <Zoom in={checked} timeout={1000}>
             <div className={classes.stockChart}>
                 <StockChart />
             </div>
-
+            </Zoom>
+            <Fade in={checked} timeout={2000}>
             <Grid container component={Paper} className={classes.chatSection} >
                 <Grid item xs={12}>
                     <BarrageItem barrageArray={barragesAtom} />
@@ -234,7 +241,7 @@ export function BarragePage() {
                     </Grid>
                 </Grid>
             </Grid>
-
+            </Fade>
         </div> : <div style={{ marginTop: '100px' }}>u should log in first</div>}
         </div>
     );
