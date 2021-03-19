@@ -5,6 +5,10 @@ import { useHistory } from "react-router-dom";
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import { blueGrey,yellow } from '@material-ui/core/colors';
+import Grow from '@material-ui/core/Grow';
+import Fade from '@material-ui/core/Fade';
+import Collapse from '@material-ui/core/Collapse';
+import Zoom from '@material-ui/core/Zoom';
 import samplePromoVideo from "../../videoSrc/IntroVideo.mp4";
 
 
@@ -37,6 +41,7 @@ export function PromoVideoPage() {
     const classes = useStyles();
     const [isVideoMuted,setIsVideoMuted] = useState(true);
     const [isVideoPlayed,setIsVideoPlayed] = useState(true);
+    const [checked, setChecked] = useState(true);
 
     // const videoRef = useRef<ReactPlayer|null>(null);
     // const [seekToState,setSeekToState] = useState(0.0);
@@ -66,7 +71,9 @@ export function PromoVideoPage() {
     const handleVolume =()=>{
         setIsVideoMuted(false);
     }
-    return(<div className={classes.page}>
+    return(
+        <Fade in={checked} timeout={1300}>
+    <div className={classes.page}>
         {isVideoMuted?<VolumeUpIcon className={classes.button} onClick={handleVolume}/>:<SkipNextIcon className={classes.button} onClick={()=>{history.push("/home")}}/>}
         <ReactPlayer 
            className={classes.player}
@@ -78,6 +85,8 @@ export function PromoVideoPage() {
            onEnded={()=>{history.push("/home")}}
            />
            
-        </div>)
+        </div>
+        </Fade>
+        )
 }
 
