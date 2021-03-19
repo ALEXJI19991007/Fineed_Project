@@ -48,7 +48,7 @@ exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
   const timeStampDocSnapshot = await db.collection("time_stamp")
     .doc("timeStamp").get();
   const cachePageSnapshot = await db.collection("news_cache")
-    .orderBy("timeStamp", "desc").startAt(PAGE_SZIE * pageIndex)
+    .orderBy("timeStamp").startAt(PAGE_SZIE * pageIndex)
     .endBefore(PAGE_SZIE * (pageIndex + 1)).get()
   
   // We shouldn't need to sort again since the query result is already ordered
