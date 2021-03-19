@@ -25,7 +25,7 @@ export const filteredNewsListState = selector({
       target: "headlines",
       pageIndex: pageIndex,
     });
-    console.log(rssFetchResp.data);
+    // console.log(rssFetchResp.data);
     return rssFetchResp.data;
   },
 });
