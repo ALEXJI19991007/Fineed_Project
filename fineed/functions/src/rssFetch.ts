@@ -38,7 +38,6 @@ exports.rssFetch = functions.https.onCall(async (data, _context) => {
   };
 });
 
-// TODO - rssFetch with pagnation. Work in progress so not deployed.
 // expected data: { pageIndex: number }
 exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
   let newsList: NewsItem[] = [];
@@ -47,9 +46,18 @@ exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
 
   const timeStampDocSnapshot = await db.collection("time_stamp")
     .doc("timeStamp").get();
+  
+  // fetch the count of total number of time stamped feeds
+  const timeStampData = 
+    timeStampDocSnapshot ? timeStampDocSnapshot.data() : undefined;
+  const docCount = timeStampData ? timeStampData["count"] : 0;
+  // total number of pages
+  const pageCount = Math.ceil(docCount / PAGE_SZIE);
+
+  // query for the page - the latest feed has the largest timestamp
   const cachePageSnapshot = await db.collection("news_cache")
-    .orderBy("timeStamp").startAt(PAGE_SZIE * pageIndex)
-    .endBefore(PAGE_SZIE * (pageIndex + 1)).get()
+    .orderBy("timeStamp", "desc").startAt(docCount - PAGE_SZIE * pageIndex)
+    .endBefore(docCount - PAGE_SZIE * (pageIndex + 1)).get()
   
   // We shouldn't need to sort again since the query result is already ordered
   cachePageSnapshot.forEach((doc) => {
@@ -64,13 +72,11 @@ exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
     });
   });
 
-  const timeStampData = 
-    timeStampDocSnapshot ? timeStampDocSnapshot.data() : undefined;
-  const docCount = timeStampData ? timeStampData["count"] : 0;
+  
   return {
     title: "Fineed -- Give you the most up-to-date financial news",
     target: data.target,
     list: newsList,
-    pageCount: Math.ceil(docCount / PAGE_SZIE),
+    pageCount: pageCount,
   };
 });
