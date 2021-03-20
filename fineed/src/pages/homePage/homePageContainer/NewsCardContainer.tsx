@@ -4,7 +4,7 @@ import { NewsCard } from "../NewsCard";
 import { News } from "../NewsCard";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { useRecoilValueLoadable, useSetRecoilState } from "recoil";
+import { useRecoilValueLoadable, useRecoilState } from "recoil";
 import * as Selectors from "../../../selectors/NewsFeedSelector";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Card from "@material-ui/core/Card";
@@ -210,11 +210,11 @@ type pageDisplayProp = {
 }
 
 const PageDisplay = (props: pageDisplayProp) => {
-  const setPageIndexState = useSetRecoilState(NewsAtoms.headlinePageIndexState);
+  const [pageIndexState, setPageIndexState] = useRecoilState(NewsAtoms.headlinePageIndexState);
 
   const handleChange = (_event: any, value: number) => {
     setPageIndexState(value);
   };
 
-  return (<Pagination count={props.pageCount} onChange={handleChange}/>);
+  return (<Pagination count={props.pageCount} defaultPage={pageIndexState} onChange={handleChange}/>);
 }
