@@ -35,7 +35,7 @@ export const addEntry = functions.https.onCall(async (data, _context) => {
 });
 
 // functions used in production
-const updateNewsClick = require("./updateNewsClick");
+const updateNewsClick = require("./v1/updateNewsClick");
 exports.updateNewsClick = updateNewsClick.updateNewsClick;
 
 const GetUserInfo = require("./GetUserInfo");
