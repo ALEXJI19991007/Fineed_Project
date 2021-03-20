@@ -219,5 +219,6 @@ const PageDisplay = (props: pageDisplayProp) => {
   return (
     <Grid container justify = "center">
       <Pagination count={props.pageCount} defaultPage={pageIndexState} onChange={handleChange}/>
-    </Grid>);
-  }
+    </Grid>
+  );
+}
