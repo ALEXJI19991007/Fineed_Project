@@ -83,7 +83,6 @@ export function EditProfileForm(props: any) {
               <TextField
                 variant="outlined"
                 margin="normal"
-                required
                 fullWidth
                 id="first_name"
                 label="First Name"

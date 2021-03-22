@@ -19,12 +19,16 @@ import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import StarsIcon from '@material-ui/icons/Stars';
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { FirebaseAuth } from "../firebase/FirebaseAuth";
+import { ListItemIcon } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -110,24 +114,24 @@ export function NaviBar() {
 
   const fineedOnClick = () => {
     history.push("/home");
-  }
+  };
 
   const profileOnClick = () => {
     history.push("/profile");
-  }
+  };
 
   const myNewsOnClick = () => {
     history.push("/mynews");
-  }
+  };
 
   const logoutOnClick = async () => {
-    await FirebaseAuth.logout(); 
+    await FirebaseAuth.logout();
     setCurUserUid("");
     // setCurUsername("");
     // console.log(curUserUidAtom);
     handleMenuClose();
     history.push("/home");
-  }
+  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -140,12 +144,21 @@ export function NaviBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={logoutOnClick}>Log out</MenuItem>
-      <MenuItem onClick={profileOnClick}>Profile</MenuItem>
-      <MenuItem onClick={myNewsOnClick}>My News</MenuItem>
+      <MenuItem onClick={logoutOnClick}>
+        <ExitToAppIcon/>
+        Logout
+      </MenuItem>
+      <MenuItem onClick={profileOnClick}>
+        <AccountBoxIcon/>
+        Profile
+      </MenuItem>
+      <MenuItem onClick={myNewsOnClick}>
+        <StarsIcon/>
+        My News
+      </MenuItem>
     </Menu>
   );
-  if (location.pathname==='/'){
+  if (location.pathname === "/") {
     return null;
   }
 
@@ -189,10 +202,7 @@ export function NaviBar() {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button
-              className={classes.topMenu}
-              color="secondary"
-            >
+            <Button className={classes.topMenu} color="secondary">
               <Typography
                 className={classes.typography}
                 variant="subtitle1"
@@ -201,7 +211,13 @@ export function NaviBar() {
                 Coming Soon
               </Typography>
             </Button>
-            <Button className={classes.topMenu} color="secondary" onClick={()=>{history.push('/barrage')}}>
+            <Button
+              className={classes.topMenu}
+              color="secondary"
+              onClick={() => {
+                history.push("/barrage");
+              }}
+            >
               <Typography
                 className={classes.typography}
                 variant="subtitle1"
@@ -210,7 +226,7 @@ export function NaviBar() {
                 Barrage
               </Typography>
             </Button>
-            {currentUserUid? (
+            {currentUserUid ? (
               <IconButton
                 edge="end"
                 aria-label="account of current user"
