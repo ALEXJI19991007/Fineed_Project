@@ -18,7 +18,7 @@ exports.createNewUser_v2 = functions.https.onCall(async (data, _context) => {
 
     const userRef = db.collection("user");
     // For later register with email
-    const userEntry = (data.id === null || data.id === "") ? userRef.doc() : userRef.doc(data.id);
+    // const userEntry = (data.id === null || data.id === "") ? userRef.doc() : userRef.doc(data.id);
     const newUserData = {
       id: data.id,
       email: data.email,
@@ -29,7 +29,7 @@ exports.createNewUser_v2 = functions.https.onCall(async (data, _context) => {
       password: "",
       username: data.id,
     };
-    await userEntry.set(newUserData);
+    await userRef.doc(data.id).set(newUserData);
     response.resp = {
         id: newUserData.id,
     }

@@ -53,6 +53,9 @@ exports.updateUserPassword_v2 = UpdateUserInfo.updateUserPassword_v2;
 const CreateNewUser = require("./CreateNewUser");
 exports.createNewUser_v2 = CreateNewUser.createNewUser_v2;
 
+// const CreateNewUser = require("./CreateNewUser")
+// exports.createNewUser_v2 = CreateNewUser.createNewUser_v2;
+
 // const getUsername = require("./getUsername");
 // exports.getUsername = getUsername.getUsername;
 
@@ -83,8 +86,8 @@ const rssCache = require("./rssCache");
 exports.rssAccumulate = rssCache.rssAccumulate;
 exports.rssClearCache = rssCache.rssClearCache;
 
-const createNewUser = require("./createNewUser");
-exports.createNewUser = createNewUser.createNewUser;
+// const createNewUser = require("./createNewUser");
+// exports.createNewUser = createNewUser.createNewUser;
 
 const barrage = require("./barrage");
 exports.storeUserBarrage = barrage.storeUserBarrage;
