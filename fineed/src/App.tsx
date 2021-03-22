@@ -1,9 +1,6 @@
-// import React from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-// import { HelloWorld } from './components/HelloWorldExample';
-// import logo from './logo.svg';
 import './App.css';
 import { NaviBar } from './components/Navibar';
 import { NaviDrawer } from './components/NaviDrawer';
@@ -12,6 +9,7 @@ import { LoginPage } from './pages/loginPage/LoginPage';
 import { BarragePage } from './pages/barragePage/BarragePage';
 import { ProfilePage } from './pages/profilePage/ProfilePage';
 import { PromoVideoPage } from './pages/promoVideoPage/PromoVideoPage';
+import { MyNewsPage } from "./pages/mynewsPage/MyNewsPage";
 
 function App() {
   return (
@@ -24,7 +22,7 @@ function App() {
           <Route exact path="/" component={PromoVideoPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/barrage" component={BarragePage} />
-          {/* <Route path="/history" component={HistoryPage} /> */}
+          <Route path="/mynews" component={MyNewsPage} />
           <Route path="/profile" component={ProfilePage} />
           <Route path="/home" component={HomePage} />
         </Switch>

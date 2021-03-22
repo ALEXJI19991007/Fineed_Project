@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
-import ProfileHeader from "../../imageSrc/profilepage/profileheader.png";
+import UserHeader from "../imageSrc/profilepage/profileheader.png";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles,ThemeProvider,createMuiTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const imgCardStyle = makeStyles({
   card: {
@@ -24,14 +21,14 @@ const imgCardStyle = makeStyles({
 },
 });
 
-export function ProfilePageHeader(props:any) {
+export function UserPageHeader(props:any) {
 
   const classes = imgCardStyle();
 
   const username = props.username === "" ? "dear user" : props.username
   return (
     <Card elevation={0} style={{height:'250px'}}>
-      <CardMedia component="img" image={ProfileHeader}/>
+      <CardMedia component="img" image={UserHeader}/>
       <Typography variant="h3" 
                   className={classes.sloganPos} >
     Hi, {username}.

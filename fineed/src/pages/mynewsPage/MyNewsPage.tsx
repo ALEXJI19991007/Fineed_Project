@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { ProfileTab } from "./ProfileTab";
-import { UserPageHeader } from "../../components/UserPageHeader"
+import { MyNewsTab } from "./MyNewsTab";
+import { UserPageHeader } from "../../components/UserPageHeader";
 import { getUsername_v2 } from "../../firebase/FirebaseFunction";
 import { useRecoilValue } from "recoil";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
-import { PinDropSharp } from "@material-ui/icons";
 import { ERROR } from "../../atoms/constants";
 
-export function ProfilePage(props: any) {
+export function MyNewsPage() {
   const [username, setUsername] = useState("");
   const userId = useRecoilValue(curUserUidAtom);
 
@@ -31,7 +27,7 @@ export function ProfilePage(props: any) {
   return (
     <div>
       <UserPageHeader username={username} />
-      <ProfileTab username={username} />
+      <MyNewsTab />
     </div>
   );
 }

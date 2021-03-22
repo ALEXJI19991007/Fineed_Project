@@ -109,11 +109,15 @@ export function NaviBar() {
   };
 
   const fineedOnClick = () => {
-    history.push("/home")
+    history.push("/home");
   }
 
   const profileOnClick = () => {
-    history.push("/profile")
+    history.push("/profile");
+  }
+
+  const myNewsOnClick = () => {
+    history.push("/mynews");
   }
 
   const logoutOnClick = async () => {
@@ -138,6 +142,7 @@ export function NaviBar() {
     >
       <MenuItem onClick={logoutOnClick}>Log out</MenuItem>
       <MenuItem onClick={profileOnClick}>Profile</MenuItem>
+      <MenuItem onClick={myNewsOnClick}>My News</MenuItem>
     </Menu>
   );
   if (location.pathname==='/'){

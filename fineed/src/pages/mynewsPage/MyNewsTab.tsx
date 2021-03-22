@@ -10,9 +10,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import { EditProfileForm } from "./EditProfileForm";
-import { EditPwdForm } from "./EditPwdForm";
-import { PinDropSharp } from "@material-ui/icons";
+import { HistoryPage } from "./history & favorite page/HistoryPage";
+import { FavoritePage } from "./history & favorite page/FavoritePage";
 
 const thm = createMuiTheme({
   palette: {
@@ -61,11 +60,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export function ProfileTab(props:any) {
+export function MyNewsTab() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
@@ -74,15 +73,15 @@ export function ProfileTab(props:any) {
       <ThemeProvider theme={thm}>
         <AppBar position="static" color="secondary" elevation={0}>
           <Tabs value={value} onChange={handleChange} centered>
-            <Tab label="Edit Profile" {...a11yProps(0)} />
-            <Tab label="Change Password" {...a11yProps(1)} />
+            <Tab label="Your History" {...a11yProps(0)} />
+            <Tab label="Your Favorite" {...a11yProps(1)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <EditProfileForm username={props.username}/>
+          <HistoryPage />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <EditPwdForm />
+          <FavoritePage />
         </TabPanel>
       </ThemeProvider>
     </div>
