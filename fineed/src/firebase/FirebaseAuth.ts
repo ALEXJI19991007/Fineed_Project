@@ -51,5 +51,5 @@ const createUser = async(id: string | undefined, email: string | null | undefine
     id: id,
     email: email,
   }
-  await createNewUser_v2(userData);
+  const resp = await createNewUser_v2(userData);
 }

@@ -7,7 +7,11 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import sampleTeslaNewsImage from "../../imageSrc/homepage/teslaNewsimg.jpg";
-import { updateNewsClick, updateUserFavorite_v2, updateUserHistory_v2 } from "../../firebase/FirebaseFunction";
+import {
+  updateNewsClick_v2,
+  updateUserFavorite_v2,
+  updateUserHistory_v2,
+} from "../../firebase/FirebaseFunction";
 import { useRecoilValue } from "recoil";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { ERROR } from "../../atoms/constants";
@@ -28,21 +32,21 @@ const useStyles = makeStyles({
   },
   title: {
     maxHeight: 200,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   content: {
     maxHeight: 200,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   media: {
     height: 200,
   },
   text: {
-    wordWrap: "break-word" 
+    wordWrap: "break-word",
   },
   cardAction: {
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
 
 export function NewsCard(props: News) {
@@ -63,23 +67,24 @@ export function NewsCard(props: News) {
       pubDate: props.pubDate,
     };
     // Update click info
-    const updateNewsClickResp = await updateNewsClick(clickData);
-    if (updateNewsClickResp.data === null) {
-      console.log("Update News Failed");
+    const updateNewsClickResp = (await updateNewsClick_v2(clickData)).data;
+    if (updateNewsClickResp.error !== ERROR.NO_ERROR) {
+      console.log(updateNewsClickResp.error);
+      return;
     }
     // Update history info
     // If user has not logged in, update data into admin user
     const userData = {
       userId: curUid === "" ? "ExHvLJq2sPe5aPKfuPSJ" : curUid,
-      newsId: updateNewsClickResp.data
-    }
+      newsId: updateNewsClickResp.resp.newsId,
+    };
 
     const updateUserHistoryResp = (await updateUserHistory_v2(userData)).data;
     if (updateUserHistoryResp.error !== ERROR.NO_ERROR) {
       console.log(updateUserHistoryResp.error);
       return;
     }
-  }
+  };
 
   const markNewsFavorite = async () => {
     const clickData = {
@@ -92,27 +97,32 @@ export function NewsCard(props: News) {
       pubDate: props.pubDate,
     };
     // Update click info
-    const updateNewsClickResp = await updateNewsClick(clickData);
-    if (updateNewsClickResp.data === null) {
-      console.log("Update News Failed");
+    const updateNewsClickResp = (await updateNewsClick_v2(clickData)).data;
+    if (updateNewsClickResp.error !== ERROR.NO_ERROR) {
+      console.log(updateNewsClickResp.error);
+      return;
     }
     // Update history info
     // If user has not logged in, update data into admin user
     const userData = {
       userId: curUid === "" ? "ExHvLJq2sPe5aPKfuPSJ" : curUid,
-      newsId: updateNewsClickResp.data
-    }
+      newsId: updateNewsClickResp.resp.newsId,
+    };
 
     const updateUserFavoriteResp = (await updateUserFavorite_v2(userData)).data;
     if (updateUserFavoriteResp.error !== ERROR.NO_ERROR) {
       console.log(updateUserFavoriteResp.error);
       return;
     }
-  }
+  };
 
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={async ()=>{await newsOnClick()}}>
+      <CardActionArea
+        onClick={async () => {
+          await newsOnClick();
+        }}
+      >
         <CardMedia
           className={classes.media}
           // TODO - Need to find a new placeholder image in case no image url is present in the feed
@@ -120,12 +130,22 @@ export function NewsCard(props: News) {
           title={props.title}
         />
         <CardContent className={classes.title}>
-        <Typography className={classes.text} gutterBottom variant="h5" component="h2">
+          <Typography
+            className={classes.text}
+            gutterBottom
+            variant="h5"
+            component="h2"
+          >
             {props.title}
           </Typography>
         </CardContent>
         <CardContent className={classes.content}>
-          <Typography className={classes.text} variant="body2" color="textSecondary" component="p">
+          <Typography
+            className={classes.text}
+            variant="body2"
+            color="textSecondary"
+            component="p"
+          >
             {props.content}
           </Typography>
         </CardContent>
@@ -134,7 +154,13 @@ export function NewsCard(props: News) {
         <Button size="small" color="primary">
           Share
         </Button>
-        <Button size="small" color="primary" onClick={async()=>{await markNewsFavorite()}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={async () => {
+            await markNewsFavorite();
+          }}
+        >
           Favorite
         </Button>
       </CardActions>
