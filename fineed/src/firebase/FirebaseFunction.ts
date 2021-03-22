@@ -9,7 +9,7 @@ export const newsCrawler = FirebaseFunction('newsCrawler');
 export const rssFetch = FirebaseFunction("rssFetch");
 export const rssFetchPage = FirebaseFunction("rssFetchPage");
 export const storeUserBarrage = FirebaseFunction("storeUserBarrage");
-export const createNewUser = FirebaseFunction("createNewUser");
+// export const createNewUser = FirebaseFunction("createNewUser");
 export const updateNewsClick = FirebaseFunction("updateNewsClick");
 // export const updateUserHistory = FirebaseFunction("updateUserHistory");
 // export const updateUserProfile = FirebaseFunction("updateUserProfile");
@@ -19,6 +19,8 @@ export const updateNewsClick = FirebaseFunction("updateNewsClick");
 // export const getUserHistory = FirebaseFunction("getUserHistory");
 // export const getUsername = FirebaseFunction("getUsername");
 // export const getUserAuth = FirebaseFunction("getUserAuth");
+
+export const createNewUser_v2 = FirebaseFunction("createNewUser_v2");
 
 export const getUsername_v2 = FirebaseFunction("getUsername_v2");
 export const getUserHistory_v2 = FirebaseFunction("getUserHistory_v2");

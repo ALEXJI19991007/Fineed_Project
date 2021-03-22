@@ -1,6 +1,6 @@
 import { Auth } from './Firebase';
 import { FirebaseAnalytics } from './FirebaseAnalytics';
-import { createNewUser } from './FirebaseFunction';
+import { createNewUser_v2 } from './FirebaseFunction';
 
 export const FirebaseAuth = {
 
@@ -51,5 +51,5 @@ const createUser = async(id: string | undefined, email: string | null | undefine
     id: id,
     email: email,
   }
-  await createNewUser(userData);
+  await createNewUser_v2(userData);
 }
