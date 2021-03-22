@@ -10,6 +10,7 @@ import { BarragePage } from './pages/barragePage/BarragePage';
 import { ProfilePage } from './pages/profilePage/ProfilePage';
 import { PromoVideoPage } from './pages/promoVideoPage/PromoVideoPage';
 import { MyNewsPage } from "./pages/mynewsPage/MyNewsPage";
+import { CompanyNewsPage } from './pages/companynewsPage/CompanyNewsPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/mynews" component={MyNewsPage} />
           <Route path="/profile" component={ProfilePage} />
           <Route path="/home" component={HomePage} />
+          <Route path="/companynews" component={CompanyNewsPage}/>
         </Switch>
       </BrowserRouter>
     </RecoilRoot>

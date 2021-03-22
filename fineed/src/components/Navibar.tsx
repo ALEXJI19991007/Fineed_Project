@@ -124,6 +124,10 @@ export function NaviBar() {
     history.push("/mynews");
   };
 
+  const companyNewsOnClick = () => {
+    history.push("/companynews");
+  }
+
   const logoutOnClick = async () => {
     await FirebaseAuth.logout();
     setCurUserUid("");
@@ -202,13 +206,13 @@ export function NaviBar() {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button className={classes.topMenu} color="secondary">
+            <Button className={classes.topMenu} color="secondary" onClick={companyNewsOnClick}>
               <Typography
                 className={classes.typography}
                 variant="subtitle1"
                 noWrap
               >
-                Coming Soon
+                COMPANY NEWS
               </Typography>
             </Button>
             <Button
