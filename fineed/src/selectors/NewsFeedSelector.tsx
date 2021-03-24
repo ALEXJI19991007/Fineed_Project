@@ -2,6 +2,7 @@ import { selector } from "recoil";
 import * as NewsAtoms from "../atoms/NewsListFilterAtom";
 import * as UserAtoms from "../atoms/FirebaseUserAtom";
 import {
+  fetchCompanyNews,
   getUserFavorite_v2,
   getUserHistory_v2,
   rssFetchPage,
@@ -20,13 +21,16 @@ export const filteredNewsListState = selector({
     // If we want to fetch user history or favorite
     if (filter.target === "user_history" || filter.target === "user_favorite") {
       return await getUserHistoryOrFavoriteHelper(filter.target, userId);
+    } else if (filter.target === "headlines") {
+      const rssFetchResp = await rssFetchPage({
+        target: "headlines",
+        pageIndex: pageIndex,
+      });
+      return rssFetchResp.data;
     }
-    const rssFetchResp = await rssFetchPage({
-      target: "headlines",
-      pageIndex: pageIndex,
-    });
-    // console.log(rssFetchResp.data);
-    return rssFetchResp.data;
+    const companyNewsResp = await fetchCompanyNews({ target: filter.target });
+    console.log(companyNewsResp.data);
+    return companyNewsResp.data;
   },
 });
 

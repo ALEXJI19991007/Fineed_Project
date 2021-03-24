@@ -187,7 +187,6 @@ export const NewsCardContainer = () => {
       return (
         <>
           <div>
-            {/* <NewsListFilter /> */}
             <NewsCardGrid newsList={NewsList(myNewsFeed)} />
             {myNewsFeed.target === "headlines" ? <PageDisplay pageCount={myNewsFeed.pageCount}/> : undefined}
           </div>

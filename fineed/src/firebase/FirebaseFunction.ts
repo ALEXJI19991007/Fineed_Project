@@ -33,3 +33,5 @@ export const updateUserFavorite_v2 = FirebaseFunction("updateUserFavorite_v2");
 export const updateUserProfile_v2 = FirebaseFunction("updateUserProfile_v2");
 export const updateUserHistory_v2 = FirebaseFunction("updateUserHistory_v2");
 export const updateUserPassword_v2 = FirebaseFunction("updateUserPassword_v2");
+
+export const fetchCompanyNews = FirebaseFunction("fetchCompanyNews");
