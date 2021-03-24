@@ -84,6 +84,9 @@ exports.createNewUser_v2 = CreateNewUser.createNewUser_v2;
 const CompanyNewsCache = require("./CompanyNewsCache");
 exports.companyNewsAccumulate = CompanyNewsCache.companyNewsAccumulate;
 
+const GetCompanyNews = require("./GetCompanyNews");
+exports.fetchCompanyNews = GetCompanyNews.fetchCompanyNews;
+
 const rssFetch = require("./rssFetch");
 exports.rssFetch = rssFetch.rssFetch;
 exports.rssFetchPage = rssFetch.rssFetchPage;
