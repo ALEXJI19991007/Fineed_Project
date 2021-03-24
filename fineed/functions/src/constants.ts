@@ -3,6 +3,17 @@ export const RSS_URL_MAP = new Map([
   ["market_watch-headlines", "https://rss.app/feeds/SmHR4u6DBoOLBb6o.xml"],
 ]);
 
+export const COMPANY_RSS_URL_MAP = new Map([
+  ["google", "https://rss.app/feeds/LF8a1g8ehgrPA9Sm.xml"],
+  ["facebook", "https://rss.app/feeds/koG5sCB05G0vNtKU.xml"],
+  ["apple", "https://rss.app/feeds/bsUftAlJUuq5fIu7.xml"],
+  ["microsoft", "https://rss.app/feeds/H8BMqOA9DnhtLXxC.xml"],
+  ["amazon", "https://rss.app/feeds/YXEqytNPL8kDpzAq.xml"],
+  // ["netflix", "https://rss.app/feeds/PcB7uQCjPLz1DvRw.xml"],
+  // ["linkedin", "https://rss.app/feeds/aa4OLhvVwVJJWHqM.xml"],
+  // ["goldman_sachs", "https://rss.app/feeds/piEYPen106XDL7nB.xml"],
+]);
+
 export const PAGE_SZIE = 40;
 
 export type Barrage = {

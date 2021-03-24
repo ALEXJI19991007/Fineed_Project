@@ -81,6 +81,9 @@ exports.createNewUser_v2 = CreateNewUser.createNewUser_v2;
 // exports.updateUserProfile = updateUserProfile.updateUserProfile;
 // exports.updateUserPassword= updateUserProfile.updateUserPassword;
 
+const CompanyNewsCache = require("./CompanyNewsCache");
+exports.companyNewsAccumulate = CompanyNewsCache.companyNewsAccumulate;
+
 const rssFetch = require("./rssFetch");
 exports.rssFetch = rssFetch.rssFetch;
 exports.rssFetchPage = rssFetch.rssFetchPage;

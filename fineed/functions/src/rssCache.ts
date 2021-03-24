@@ -6,8 +6,6 @@ const { JSDOM } = jsdom;
 const Parser = require("rss-parser");
 
 // Cache rss feed every 15 minutes
-// TODO: Rewrite so that we automatically create timeStamp
-// as documents are inserted
 exports.rssAccumulate = functions.pubsub
   .schedule("every 15 minutes") // run every 15 minute
   .timeZone("America/Chicago") // time zone: CST
@@ -22,20 +20,6 @@ exports.rssClearCache = functions.pubsub
   .schedule("every day 00:00") // clear cache everday 12:00 midnight
   .timeZone("America/Chicago") // time zone: CST
   .onRun(async (_content) => {
-    // await db.runTransaction(async (transaction) => {
-    //   // clear the cache
-    //   const newsCacheRef = db.collection("news_cache");
-    //   const docRefArray = await newsCacheRef.listDocuments();
-    //   docRefArray.forEach((docRef) => {
-    //     transaction.delete(docRef);
-    //   });
-    //   const timeStampRef = db.collection("time_stamp");
-    //   // reset the timestamp document
-    //   const timeStampDocRef = timeStampRef.doc("timeStamp");
-    //   transaction.update(timeStampDocRef, { count: 0 });
-    //   // then immediately fetch new feeds
-    //   //await fetchAndCacheAllFeeds(transaction, false);
-    // });
     const newsCacheRefArray = db.collection("news_cache").get();
     const batchArray:any[] = [];
     batchArray.push(db.batch());

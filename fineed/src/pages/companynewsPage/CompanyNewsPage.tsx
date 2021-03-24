@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import * as Atoms from "../../atoms/NewsListFilterAtom";
 import { useRecoilState } from "recoil";
-import Fade from '@material-ui/core/Fade';
 import { UserPageHeader } from "../../components/UserPageHeader";
 
-const FADETIMEOUT = 1000
 
 export function CompanyNewsPage() {
 //   const [, setFilter] = useRecoilState(Atoms.newsListFilterState);
