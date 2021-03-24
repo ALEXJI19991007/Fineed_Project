@@ -5,6 +5,34 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const Parser = require("rss-parser");
 
+exports.companyNewsClear = functions.pubsub
+  .schedule("every monday 00:00")
+  .timeZone("America/Chicago")
+  .onRun(async (_context) => {
+    for (let [key, _value] of COMPANY_RSS_URL_MAP) {
+      const newsCacheRefArray = db.collection(`news_${key}`).get();
+      const batchArray: any[] = [];
+      batchArray.push(db.batch());
+      let operationCounter = 0;
+      let batchIndex = 0;
+      (await newsCacheRefArray).forEach((documentSnapshot) => {
+        batchArray[batchIndex].delete(documentSnapshot.ref);
+        operationCounter++;
+
+        if (operationCounter === 499) {
+          batchArray.push(db.batch());
+          batchIndex++;
+          operationCounter = 0;
+        }
+      });
+      batchArray.push(db.batch());
+      const timeStampDocRef = db.collection("time_stamp").doc(`${key}`);
+      batchArray[batchIndex].update(timeStampDocRef, { count: 0 });
+      batchArray.forEach(async (batch) => await batch.commit());
+    }
+    return null;
+  });
+
 // Cache company news feed every 15 minutes
 exports.companyNewsAccumulate = functions.pubsub
   .schedule("every 15 minutes") // run every 15 minute
@@ -72,6 +100,7 @@ async function fetchAndCacheAllCompanyNews(
     const targetCompanyNewsCacheRef = db.collection(`news_${company}`);
     const itemTarget = await targetCompanyNewsCacheRef
       .where("link", "==", item.link)
+      .where("title", "==", item.title)
       .get();
     if (itemTarget.empty) {
       const docEntry = targetCompanyNewsCacheRef.doc();

@@ -88,10 +88,10 @@ async function fetchAndCacheAllFeeds(
       const newsItem = {
         link: item.link,
         target: source,
-        title: item.title,
-        content: item.contentSnippet,
-        imgUrl: imgUrl,
-        pubDate: item.pubDate,
+        title: item.title || "",
+        content: item.contentSnippet || "",
+        imgUrl: imgUrl || "",
+        pubDate: item.pubDate || "",
       };
       itemList.push(newsItem);
     });
@@ -109,6 +109,7 @@ async function fetchAndCacheAllFeeds(
           const newCacheRef = db.collection("news_cache");
           const itemTarget = await newCacheRef
             .where("link", "==", item.link)
+            .where("title", "==", item.title)
             .get();
           // construct a new database entry since it does not exist
           if (itemTarget.empty) {
@@ -119,7 +120,7 @@ async function fetchAndCacheAllFeeds(
               link: item.link,
               target: item.target,
               title: item.title,
-              content: item.content,
+              content: item.content || "",
               imgUrl: item.imgUrl,
               pubDate: item.pubDate,
               timeStamp: lastTimeStamp + numInserted, //timestamp
