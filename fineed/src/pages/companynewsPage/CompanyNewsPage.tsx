@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import * as Atoms from "../../atoms/NewsListFilterAtom";
 import { useRecoilState } from "recoil";
+import * as Atoms from "../../atoms/NewsListFilterAtom";
 import { NewsCardContainer } from "../homePage/homePageContainer/NewsCardContainer";
-import Button from "@material-ui/core/Button";
 import { UserPageHeader } from "../../components/UserPageHeader";
+import { NewsFilterAndSubscriber } from "./NewsFilterAndSubscriber";
 
 export function CompanyNewsPage() {
   const [, setFilter] = useRecoilState(Atoms.newsListFilterState);
@@ -21,22 +21,7 @@ export function CompanyNewsPage() {
     <div>
       <UserPageHeader username={"xyz"} />
       <div>
-        {/* <CompanyNewsSelector filter={filter} setFilter={setFilter} /> */}
-        <Button variant="contained" color="primary" onClick={() => setFilter({target: "amazon"})}>
-          Amazon
-        </Button>
-        <Button variant="contained" color="primary" onClick={() => setFilter({target: "facebook"})}>
-          Facebook
-        </Button>
-        <Button variant="contained" color="primary" onClick={() => setFilter({target: "google"})}>
-          Google
-        </Button>
-        <Button variant="contained" color="primary" onClick={() => setFilter({target: "apple"})}>
-          Apple
-        </Button>
-        <Button variant="contained" color="primary" onClick={() => setFilter({target: "microsoft"})}>
-          Microsoft
-        </Button>
+        <NewsFilterAndSubscriber setFilter={setFilter}/>
       </div>
       <NewsCardContainer />
     </div>

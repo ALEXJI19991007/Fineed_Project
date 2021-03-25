@@ -168,11 +168,20 @@ exports.addUserSubscription = functions.https.onCall(
         return response;
       }
       const targetCompany = `news_${data.target}`;
+      const companySubscriptionEntry = db.collection("subscription").doc(targetCompany);
+      const companySubscriptionData = (await companySubscriptionEntry.get()).data() || null;
+      if (companySubscriptionData === null) {
+        response.error = ERROR.PARAM_ERROR;
+        return response;
+      }
       userEntry.update({
         subscription: admin.firestore.FieldValue.arrayUnion(targetCompany),
       });
+      companySubscriptionEntry.update({
+        users: admin.firestore.FieldValue.arrayUnion(data.userId),
+      });
       response.resp = {
-        news: data.newsId,
+        userId: data.userId,
       };
       return response;
     } catch (error) {
@@ -202,11 +211,20 @@ exports.removeUserSubscription = functions.https.onCall(
         return response;
       }
       const targetCompany = `news_${data.target}`;
+      const companySubscriptionEntry = db.collection("subscription").doc(targetCompany);
+      const companySubscriptionData = (await companySubscriptionEntry.get()).data() || null;
+      if (companySubscriptionData === null) {
+        response.error = ERROR.PARAM_ERROR;
+        return response;
+      }
       userEntry.update({
         subscription: admin.firestore.FieldValue.arrayRemove(targetCompany),
       });
+      companySubscriptionEntry.update({
+        users: admin.firestore.FieldValue.arrayRemove(data.userId),
+      });
       response.resp = {
-        news: data.newsId,
+        userId: data.userId,
       };
       return response;
     } catch (error) {

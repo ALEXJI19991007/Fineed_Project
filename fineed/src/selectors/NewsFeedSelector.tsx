@@ -29,7 +29,7 @@ export const filteredNewsListState = selector({
       return rssFetchResp.data;
     }
     const companyNewsResp = await fetchCompanyNews({ target: filter.target });
-    console.log(companyNewsResp.data);
+    // console.log(companyNewsResp.data);
     return companyNewsResp.data;
   },
 });
