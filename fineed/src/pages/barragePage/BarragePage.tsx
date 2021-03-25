@@ -125,7 +125,7 @@ const BarrageItem = (props: BarrageItemProps) => {
         }
     }
     useEffect(() => {
-        if (curHoverTimeStampAtom > 0) {
+        if (curHoverTimeStampAtom > 0 && barrageArray.length !== 0) {
             let closestTime = sortedBarrageArray.sort((a, b) => Math.abs(curHoverTimeStampAtom - a.time) - Math.abs(curHoverTimeStampAtom - b.time))[0].time;
             const focusArray: BarrageItemWithFocus[] = sortedBarrageArray.map((barrage) => {
                 if (barrage.time === closestTime) {
