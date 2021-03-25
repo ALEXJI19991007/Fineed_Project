@@ -102,4 +102,5 @@ exports.rssClearCache = rssCache.rssClearCache;
 const barrage = require("./barrage");
 exports.storeUserBarrage = barrage.storeUserBarrage;
 exports.clearBarrage = barrage.clearBarrage;
+exports.clearStockChartData = barrage.clearStockChartData;
 exports.fetchFinnhubStockApiTMP = barrage.fetchFinnhubStockApiTMP;
