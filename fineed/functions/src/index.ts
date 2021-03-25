@@ -53,7 +53,7 @@ exports.updateUserPassword_v2 = UpdateUserInfo.updateUserPassword_v2;
 const UpdateNewsInfo = require("./UpdateNewsInfo");
 exports.updateNewsClick_v2 = UpdateNewsInfo.updateNewsClick_v2;
 
-const CreateNewUser = require("./createNewUser");
+const CreateNewUser = require("./CreateUser");
 exports.createNewUser_v2 = CreateNewUser.createNewUser_v2;
 
 // const CreateNewUser = require("./CreateNewUser")
