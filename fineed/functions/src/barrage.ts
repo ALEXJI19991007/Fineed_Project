@@ -25,8 +25,7 @@ export const storeUserBarrage = functions.https.onCall(async (data, _context) =>
 
 });
 
-exports.clearBarrage = functions.pubsub.schedule('every 100 minutes').onRun(async (context) => {
-
+exports.clearBarrage = functions.pubsub.schedule('every 1 minutes').onRun(async (context) => {
     const barrageDB = await db.collection('barrage').where('time', '<=', Date.now());
     barrageDB.get().then((querySnapshot) => {
         querySnapshot.forEach(function (doc) {
