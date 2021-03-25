@@ -49,6 +49,8 @@ exports.updateUserFavorite_v2 = UpdateUserInfo.updateUserFavorite_v2;
 exports.updateUserHistory_v2 = UpdateUserInfo.updateUserHistory_v2;
 exports.updateUserProfile_v2 = UpdateUserInfo.updateUserProfile_v2;
 exports.updateUserPassword_v2 = UpdateUserInfo.updateUserPassword_v2;
+exports.addUserSubscription = UpdateUserInfo.addUserSubscription;
+exports.removeUserSubscription = UpdateUserInfo.removeUserSubscription;
 
 const UpdateNewsInfo = require("./UpdateNewsInfo");
 exports.updateNewsClick_v2 = UpdateNewsInfo.updateNewsClick_v2;

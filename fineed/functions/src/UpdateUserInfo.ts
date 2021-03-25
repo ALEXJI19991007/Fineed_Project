@@ -147,3 +147,71 @@ exports.updateUserPassword_v2 = functions.https.onCall(
     }
   }
 );
+
+// @param data.userId -- string   The id of the user to update
+// @param data.target -- string   The company to subscribe
+exports.addUserSubscription = functions.https.onCall(
+  async (data, _context) => {
+    let response: Response = {
+      resp: null,
+      error: ERROR.NO_ERROR,
+    };
+    try {
+      if (data.userId === null || data.userId === "") {
+        response.error = ERROR.UNAUTHENTICATED;
+        return response;
+      }
+      const userEntry = db.collection("user").doc(data.userId);
+      const currentUserData = (await userEntry.get()).data() || null;
+      if (currentUserData === null) {
+        response.error = ERROR.NOT_FOUND;
+        return response;
+      }
+      const targetCompany = `news_${data.target}`;
+      userEntry.update({
+        subscription: admin.firestore.FieldValue.arrayUnion(targetCompany),
+      });
+      response.resp = {
+        news: data.newsId,
+      };
+      return response;
+    } catch (error) {
+      response.error = ERROR.FIRESTORE_ERROR;
+      return response;
+    }
+  }
+);
+
+// @param data.userId -- string   The id of the user to update
+// @param data.target -- string   The company to subscribe
+exports.removeUserSubscription = functions.https.onCall(
+  async (data, _context) => {
+    let response: Response = {
+      resp: null,
+      error: ERROR.NO_ERROR,
+    };
+    try {
+      if (data.userId === null || data.userId === "") {
+        response.error = ERROR.UNAUTHENTICATED;
+        return response;
+      }
+      const userEntry = db.collection("user").doc(data.userId);
+      const currentUserData = (await userEntry.get()).data() || null;
+      if (currentUserData === null) {
+        response.error = ERROR.NOT_FOUND;
+        return response;
+      }
+      const targetCompany = `news_${data.target}`;
+      userEntry.update({
+        subscription: admin.firestore.FieldValue.arrayRemove(targetCompany),
+      });
+      response.resp = {
+        news: data.newsId,
+      };
+      return response;
+    } catch (error) {
+      response.error = ERROR.FIRESTORE_ERROR;
+      return response;
+    }
+  }
+);

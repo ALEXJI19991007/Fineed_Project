@@ -28,6 +28,7 @@ exports.createNewUser_v2 = functions.https.onCall(async (data, _context) => {
       history: initialList,
       password: "",
       username: data.id,
+      subscription: initialList,
     };
     await userRef.doc(data.id).set(newUserData);
     response.resp = {

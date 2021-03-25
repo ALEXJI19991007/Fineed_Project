@@ -2,8 +2,7 @@ import * as functions from "firebase-functions";
 import { db } from "./index";
 import { NewsItem, TimeStampedNewsItem } from "./constants";
 
-// @param string[] --> company names
-// 
+
 exports.fetchCompanyNews = functions.https.onCall(async (data, _context) => {
     let timeStampedNewsList: TimeStampedNewsItem[] = [];
     const newsCacheSnapShot = await db.collection(`news_${data.target}`).get();
