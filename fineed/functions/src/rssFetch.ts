@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import { db } from "./index";
-import { NewsItem, TimeStampedNewsItem, PAGE_SZIE } from "./constants";
+import { NewsItem, TimeStampedNewsItem, PAGE_SZIE, FEED_MAX_LENGTH } from "./constants";
 
 exports.rssFetch = functions.https.onCall(async (data, _context) => {
   let timeStampedNewsList: TimeStampedNewsItem[] = [];
@@ -66,7 +66,8 @@ exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
       target: data.target,
       link: docData.link,
       title: docData.title,
-      content: docData.content,
+      // trucate the summary of the content down to 30 words, add ellipses at the end
+      content: docData.content.split(" ").splice(0, FEED_MAX_LENGTH + 1).join(" ") + "...",
       imgUrl: docData.imgUrl,
       pubDate: docData.pubDate,
     });
