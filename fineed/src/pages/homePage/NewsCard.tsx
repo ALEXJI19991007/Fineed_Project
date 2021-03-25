@@ -28,14 +28,14 @@ export type News = {
 const useStyles = makeStyles({
   root: {
     maxWidth: 300,
-    maxHeight: 800,
+    height: 600,
   },
   title: {
-    maxHeight: 200,
+    height: 150,
     overflow: "hidden",
   },
   content: {
-    maxHeight: 200,
+    height: 125,
     overflow: "hidden",
   },
   media: {
