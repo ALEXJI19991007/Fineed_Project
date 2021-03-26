@@ -18,13 +18,12 @@ import Collapse from '@material-ui/core/Collapse';
 import Zoom from '@material-ui/core/Zoom';
 import { curUserUidAtom } from '../../atoms/FirebaseUserAtom'
 import { useRecoilState, useRecoilValue } from "recoil";
-import { storeUserBarrage } from "../../firebase/FirebaseFunction";
+import { getUsername_v2, storeUserBarrage } from "../../firebase/FirebaseFunction";
 import { useBarrages } from "../../firebase/FirebaseFireStore";
 import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
 import { StockChart } from "./StockChart";
 import { BarrageHoverTimeStampAtom } from "../../atoms/BarrageHoverTimeStampAtom";
 import BarragePicture from "../../imageSrc/barragepage/barragePagePic2.jpg";
-
 
 const useStyles = makeStyles({
     page: {
@@ -139,17 +138,6 @@ const BarrageItem = (props: BarrageItemProps) => {
             setSortedBarrageArrayState(focusArray);
             if (focusRef.current && scrollRef.current) {
                 const element = focusRef.current;
-            //     const container = scrollRef.current;
-
-            //     const headerOffset = 45;
-            //     const elementPosition = element.getBoundingClientRect().top;
-            //     const offsetPosition = elementPosition - headerOffset;
-                
-            //     container.scrollTo({
-            //         top: offsetPosition,
-            //         behavior: "smooth"
-            //    });
-
                element.scrollIntoView({behavior: "smooth", block: 'center'})
             }
         } else {

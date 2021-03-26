@@ -10,16 +10,18 @@ export const storeUserBarrage = functions.https.onCall(async (data, _context) =>
     if (data.content.length === 0) {
         return;
     }
+    const userInfo = await (await db.collection('user').doc(data.uid).get()).data();
+    const userName = userInfo?userInfo.username:'anonymous';
     const barrageDocRef = db.collection("barrage").doc();
     barrageDocRef.set({
         uid: data.uid,
         tag: data.tag,
         time: data.time,
         content: data.content,
+        userName: userName,
     }).then(() => {
         console.log("Document successfully written!");
-    })
-        .catch((error) => {
+    }).catch((error) => {
             console.error("Error writing document: ", error);
         });
 
