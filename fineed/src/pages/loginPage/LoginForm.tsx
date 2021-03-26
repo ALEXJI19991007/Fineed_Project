@@ -14,6 +14,9 @@ import {
 import { Search } from "@trejgun/material-ui-icons-google";
 import { EmailPwdForm } from "./EmailPwdForm";
 import Typography from "@material-ui/core/Typography";
+import { curUserInfoAtom } from "../../atoms/UsernameAtom";
+import { getUserInfo } from "../../firebase/FirebaseFunction";
+import { ERROR } from "../../atoms/constants";
 
 const theme = createMuiTheme({
   palette: {
@@ -32,13 +35,17 @@ const theme = createMuiTheme({
 
 export function LoginForm() {
   const setCurUserUid = useSetRecoilState(curUserUidAtom);
-  //const setCurUsername = useSetRecoilState(curUsernameAtom);
+  const setCurUserInfo = useSetRecoilState(curUserInfoAtom);
   const history = useHistory();
 
   const googleLoginHandler = async () => {
     const userId = (await FirebaseAuth.loginWithGoogle()) ?? "";
-    //setCurUsername(getUsernameResp.data);
+    const getUsernameResp = (await getUserInfo({ userId: userId })).data;
+    if (getUsernameResp.error === ERROR.NO_ERROR) {
+      console.log(getUsernameResp.error);
+    }
     setCurUserUid(userId);
+    setCurUserInfo(getUsernameResp.resp);
     history.push('/profile');
   };
 

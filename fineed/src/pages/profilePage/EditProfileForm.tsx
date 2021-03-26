@@ -8,10 +8,11 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { updateUserProfile_v2 } from "../../firebase/FirebaseFunction";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import { ERROR } from "../../atoms/constants";
+import { curUserInfoAtom } from "../../atoms/UsernameAtom";
 
 const theme = createMuiTheme({
   palette: {
@@ -29,10 +30,11 @@ const theme = createMuiTheme({
 });
 
 export function EditProfileForm(props: any) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState(props.username);
+  const [firstName, setFirstName] = useState(props.userInfo.firstName);
+  const [lastName, setLastName] = useState(props.userInfo.lastName);
+  const [username, setUsername] = useState(props.userInfo.username);
   const [msg, setMsg] = useState("");
+  const [userInfo, setUserInfo] = useRecoilState(curUserInfoAtom);
   const userId = useRecoilValue(curUserUidAtom);
   const history = useHistory();
 
@@ -60,10 +62,17 @@ export function EditProfileForm(props: any) {
       console.log(updateUserProfileResp.error);
       return;
     }
+    const newUserInfo = {
+      firstName: firstName,
+      lastName: lastName,
+      username: username,
+      email: userInfo.email,
+    }
+    setUserInfo(newUserInfo);
     setMsg("Successfully updated profile!");
-    setFirstName("");
-    setLastName("");
-    setUsername("");
+    // setFirstName("");
+    // setLastName("");
+    // setUsername("");
     history.push("/profile");
   };
 

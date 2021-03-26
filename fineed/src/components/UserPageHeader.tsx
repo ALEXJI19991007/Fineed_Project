@@ -6,33 +6,32 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const imgCardStyle = makeStyles({
   card: {
-    position: 'relative',
+    position: "relative",
   },
   loginCard: {
-    position: 'absolute',
+    position: "absolute",
   },
   sloganPos: {
-    position: 'absolute',
-    left: '20px',
-    bottom: '490px',
-    color: 'black',
+    position: "absolute",
+    left: "20px",
+    bottom: "490px",
+    color: "black",
     marginBottom: 100,
     fontFamily: "-apple-system",
-},
+  },
 });
 
-export function UserPageHeader(props:any) {
-
+export function UserPageHeader(props: any) {
   const classes = imgCardStyle();
 
-  const username = props.username === "" ? "dear user" : props.username
+  const username =
+    props.userInfo === "" ? "dear user" : props.userInfo.username;
   return (
-    <Card elevation={0} style={{height:'250px'}}>
-      <CardMedia component="img" image={UserHeader}/>
-      <Typography variant="h3" 
-                  className={classes.sloganPos} >
-    Hi, {username}.
-    </Typography>
+    <Card elevation={0} style={{ height: "250px" }}>
+      <CardMedia component="img" image={UserHeader} />
+      <Typography variant="h3" className={classes.sloganPos}>
+        Hi, {username}.
+      </Typography>
     </Card>
   );
 }

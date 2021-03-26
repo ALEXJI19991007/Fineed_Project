@@ -22,7 +22,7 @@ export const storeUserBarrage = FirebaseFunction("storeUserBarrage");
 
 export const createNewUser_v2 = FirebaseFunction("createNewUser_v2");
 
-export const getUsername_v2 = FirebaseFunction("getUsername_v2");
+export const getUserInfo = FirebaseFunction("getUserInfo");
 export const getUserHistory_v2 = FirebaseFunction("getUserHistory_v2");
 export const getUserFavorite_v2 = FirebaseFunction("getUserFavorite_v2");
 export const getUserAuth_v2 = FirebaseFunction("getUserAuth_v2");

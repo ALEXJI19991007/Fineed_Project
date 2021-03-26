@@ -39,7 +39,7 @@ export const addEntry = functions.https.onCall(async (data, _context) => {
 // exports.updateNewsClick = updateNewsClick.updateNewsClick;
 
 const GetUserInfo = require("./GetUserInfo");
-exports.getUsername_v2 = GetUserInfo.getUsername_v2;
+exports.getUserInfo = GetUserInfo.getUserInfo;
 exports.getUserHistory_v2 = GetUserInfo.getUserHistory_v2;
 exports.getUserFavorite_v2 = GetUserInfo.getUserFavorite_v2;
 exports.getUserAuth_v2 = GetUserInfo.getUserAuth_v2;
