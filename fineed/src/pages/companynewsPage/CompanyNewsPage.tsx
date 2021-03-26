@@ -1,12 +1,14 @@
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import * as Atoms from "../../atoms/NewsListFilterAtom";
 import { NewsCardContainer } from "../homePage/homePageContainer/NewsCardContainer";
 import { UserPageHeader } from "../../components/UserPageHeader";
 import { NewsFilterAndSubscriber } from "./NewsFilterAndSubscriber";
+import { curUserInfoAtom } from "../../atoms/UsernameAtom";
 
 export function CompanyNewsPage() {
   const [, setFilter] = useRecoilState(Atoms.newsListFilterState);
+  const userInfo = useRecoilValue(curUserInfoAtom);
 
   // We change the state of the atom when Home page is loaded
   useEffect(() => {
@@ -19,7 +21,7 @@ export function CompanyNewsPage() {
 
   return (
     <div>
-      <UserPageHeader username={"xyz"} />
+      <UserPageHeader userInfo={userInfo} />
       <div>
         <NewsFilterAndSubscriber setFilter={setFilter}/>
       </div>

@@ -9,14 +9,15 @@ import {
 } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
-import { getUserAuth_v2 } from "../../firebase/FirebaseFunction";
+import { getUserAuth_v2, getUserInfo } from "../../firebase/FirebaseFunction";
 import { useHistory } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { ERROR } from "../../atoms/constants";
+import { curUserInfoAtom } from "../../atoms/UsernameAtom";
 
 export function EmailPwdForm() {
   const setCurUserUid = useSetRecoilState(curUserUidAtom);
-  //const setCurUsername = useSetRecoilState(curUsernameAtom);
+  const setCurUserInfo = useSetRecoilState(curUserInfoAtom);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
@@ -35,8 +36,12 @@ export function EmailPwdForm() {
       console.log(getUserAuthResp.error);
       return;
     }
-    console.log("Welcome ", getUserAuthResp.resp.username);
+    const getUserInfoResp = (await getUserInfo({ userId: getUserAuthResp.resp.username })).data;
+    if (getUserInfoResp.error === ERROR.NO_ERROR) {
+      console.log(getUserInfoResp.error);
+    }
     setCurUserUid(getUserAuthResp.resp.userId);
+    setCurUserInfo(getUserInfoResp.resp);
     history.push('/profile');
   }
 
