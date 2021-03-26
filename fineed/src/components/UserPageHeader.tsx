@@ -25,7 +25,7 @@ export function UserPageHeader(props: any) {
   const classes = imgCardStyle();
 
   const username =
-    props.userInfo === "" ? "dear user" : props.userInfo.username;
+    props.userInfo.username === "" ? "dear user" : props.userInfo.username;
   return (
     <Card elevation={0} style={{ height: "250px" }}>
       <CardMedia component="img" image={UserHeader} />

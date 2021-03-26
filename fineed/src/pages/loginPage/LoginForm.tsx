@@ -41,8 +41,9 @@ export function LoginForm() {
   const googleLoginHandler = async () => {
     const userId = (await FirebaseAuth.loginWithGoogle()) ?? "";
     const getUserInfoResp = (await getUserInfo({ userId: userId })).data;
-    if (getUserInfoResp.error === ERROR.NO_ERROR) {
+    if (getUserInfoResp.error !== ERROR.NO_ERROR) {
       console.log(getUserInfoResp.error);
+      return;
     }
     setCurUserUid(userId);
     setCurUserInfo(getUserInfoResp.resp);
@@ -52,8 +53,9 @@ export function LoginForm() {
   const githubLoginHandler = async () => {
     const userId = (await FirebaseAuth.loginWithGitHub()) ?? "";
     const getUserInfoResp = (await getUserInfo({ userId: userId })).data;
-    if (getUserInfoResp.error === ERROR.NO_ERROR) {
+    if (getUserInfoResp.error !== ERROR.NO_ERROR) {
       console.log(getUserInfoResp.error);
+      return;
     }
     setCurUserUid(userId);
     setCurUserInfo(getUserInfoResp.resp);

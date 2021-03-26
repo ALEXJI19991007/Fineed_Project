@@ -36,9 +36,10 @@ export function EmailPwdForm() {
       console.log(getUserAuthResp.error);
       return;
     }
-    const getUserInfoResp = (await getUserInfo({ userId: getUserAuthResp.resp.username })).data;
-    if (getUserInfoResp.error === ERROR.NO_ERROR) {
+    const getUserInfoResp = (await getUserInfo({ userId: getUserAuthResp.resp.userId })).data;
+    if (getUserInfoResp.error !== ERROR.NO_ERROR) {
       console.log(getUserInfoResp.error);
+      return;
     }
     setCurUserUid(getUserAuthResp.resp.userId);
     setCurUserInfo(getUserInfoResp.resp);
