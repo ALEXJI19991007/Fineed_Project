@@ -6,6 +6,7 @@ import { NaviBar } from './components/Navibar';
 import { NaviDrawer } from './components/NaviDrawer';
 import { HomePage } from './pages/homePage/HomePage';
 import { LoginPage } from './pages/loginPage/LoginPage';
+import { RegisterPage } from './pages/registerPage/RegisterPage';
 import { BarragePage } from './pages/barragePage/BarragePage';
 import { ProfilePage } from './pages/profilePage/ProfilePage';
 import { PromoVideoPage } from './pages/promoVideoPage/PromoVideoPage';
@@ -22,6 +23,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={PromoVideoPage} />
           <Route path="/login" component={LoginPage} />
+          <Route path="/register" component={RegisterPage} />
           <Route path="/barrage" component={BarragePage} />
           <Route path="/mynews" component={MyNewsPage} />
           <Route path="/profile" component={ProfilePage} />
