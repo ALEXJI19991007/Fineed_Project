@@ -5,6 +5,7 @@ export type Barrage = {
   content: string;
   time: number;
   tag: string;
+  userName: string;
 };
 
 export const BarrageSnapShotAtom = atom<Barrage[]>({

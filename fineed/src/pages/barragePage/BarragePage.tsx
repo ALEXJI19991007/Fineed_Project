@@ -18,7 +18,7 @@ import Collapse from '@material-ui/core/Collapse';
 import Zoom from '@material-ui/core/Zoom';
 import { curUserUidAtom } from '../../atoms/FirebaseUserAtom'
 import { useRecoilState, useRecoilValue } from "recoil";
-import { getUsername_v2, storeUserBarrage } from "../../firebase/FirebaseFunction";
+import { storeUserBarrage } from "../../firebase/FirebaseFunction";
 import { useBarrages } from "../../firebase/FirebaseFireStore";
 import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
 import { StockChart } from "./StockChart";
@@ -93,6 +93,7 @@ type BarrageItemWithFocus = {
     content: string,
     time: number,
     tag: string,
+    userName: string,
     focus: boolean,
 }
 
@@ -161,7 +162,7 @@ const BarrageItem = (props: BarrageItemProps) => {
                             <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
                         </Grid>
                         <Grid item xs={12}>
-                            <ListItemText className={classes.listItemText} secondary={timeConverter(barrage.time)}></ListItemText>
+                            <ListItemText className={classes.listItemText} secondary={"from "+barrage.userName+" at "+timeConverter(barrage.time)}></ListItemText>
                         </Grid>
                     </Grid>) :
                     (<Grid container>
@@ -169,7 +170,7 @@ const BarrageItem = (props: BarrageItemProps) => {
                             <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
                         </Grid>
                         <Grid item xs={12}>
-                            <ListItemText className={classes.listItemText} secondary={timeConverter(barrage.time)}></ListItemText>
+                            <ListItemText className={classes.listItemText} secondary={"from "+barrage.userName+" at "+timeConverter(barrage.time)}></ListItemText>
                         </Grid>
                     </Grid>)
                 }
