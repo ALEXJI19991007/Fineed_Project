@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import { Response, ERROR } from "./constants";
 import { db } from "./index";
 
-exports.getUsername_v2 = functions.https.onCall(async (data, _context) => {
+exports.getUserInfo = functions.https.onCall(async (data, _context) => {
   let response: Response = {
     resp: null,
     error: ERROR.NO_ERROR,
@@ -20,6 +20,9 @@ exports.getUsername_v2 = functions.https.onCall(async (data, _context) => {
     }
     response.resp = {
       username: userData.username,
+      lastName: userData.last_name,
+      firstName: userData.first_name,
+      email: userData.email,
     };
     return response;
   } catch (error) {

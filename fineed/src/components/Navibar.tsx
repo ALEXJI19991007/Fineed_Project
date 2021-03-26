@@ -20,8 +20,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import StarsIcon from '@material-ui/icons/Stars';
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import StarsIcon from "@material-ui/icons/Stars";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
@@ -29,6 +29,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { FirebaseAuth } from "../firebase/FirebaseAuth";
 import { ListItemIcon } from "@material-ui/core";
+import { curUserInfoAtom } from "../atoms/UsernameAtom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -98,7 +99,7 @@ export function NaviBar() {
     setMobileMoreAnchorEl,
   ] = React.useState<null | HTMLElement>(null);
   const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
-  //const setCurUsername = useSetRecoilState(curUsernameAtom);
+  const setCurUserInfo = useSetRecoilState(curUserInfoAtom);
   const setNaviDrawerState = useSetRecoilState(NaviDrawerOpenStateAtom);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -126,13 +127,18 @@ export function NaviBar() {
 
   const companyNewsOnClick = () => {
     history.push("/companynews");
-  }
+  };
 
   const logoutOnClick = async () => {
     await FirebaseAuth.logout();
     setCurUserUid("");
-    // setCurUsername("");
-    // console.log(curUserUidAtom);
+    const emptyUserInfo = {
+      username: "",
+      lastName: "",
+      firstName: "",
+      email: "",
+    };
+    setCurUserInfo(emptyUserInfo);
     handleMenuClose();
     history.push("/home");
   };
@@ -149,15 +155,15 @@ export function NaviBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={logoutOnClick}>
-        <ExitToAppIcon/>
+        <ExitToAppIcon />
         Logout
       </MenuItem>
       <MenuItem onClick={profileOnClick}>
-        <AccountBoxIcon/>
+        <AccountBoxIcon />
         Profile
       </MenuItem>
       <MenuItem onClick={myNewsOnClick}>
-        <StarsIcon/>
+        <StarsIcon />
         My News
       </MenuItem>
     </Menu>
@@ -206,7 +212,11 @@ export function NaviBar() {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button className={classes.topMenu} color="secondary" onClick={companyNewsOnClick}>
+            <Button
+              className={classes.topMenu}
+              color="secondary"
+              onClick={companyNewsOnClick}
+            >
               <Typography
                 className={classes.typography}
                 variant="subtitle1"

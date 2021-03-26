@@ -79,7 +79,7 @@ export function ProfileTab(props:any) {
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <EditProfileForm username={props.username}/>
+          <EditProfileForm userInfo={props.userInfo}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <EditPwdForm />
