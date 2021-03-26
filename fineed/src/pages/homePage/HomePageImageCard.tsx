@@ -5,7 +5,7 @@ import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import HomePageImagePic from "../../imageSrc/homepage/HomePageImagePic.png";
 import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles,ThemeProvider,createMuiTheme } from "@material-ui/core/styles";
 
@@ -55,6 +55,7 @@ export function HomePageImageCard() {
   const [loginButtonBottom, setLoginButtonBottom] = useState(INITLOGINBUTTONBOTTOM);
   const [loginButtonPaddingLeft,setLoginButtonPaddingLeft] = useState(INITSLOGINBUTTONPADDINGLEFT);
   const [scrollState,setScrollState] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     if (scrollY <= 330 && !scrollState) {
@@ -80,7 +81,7 @@ export function HomePageImageCard() {
       <Grid item xs={2}></Grid>
       <Grid item xs={5}>
         <ThemeProvider theme={theme}>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={()=> {history.push('/register')}}>
             Start Now
           </Button>
         </ThemeProvider>
