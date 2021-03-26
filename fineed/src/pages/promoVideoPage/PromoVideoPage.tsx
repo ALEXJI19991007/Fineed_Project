@@ -13,16 +13,12 @@ import samplePromoVideo from "../../videoSrc/IntroVideo.mp4";
 
 
 const useStyles = makeStyles({
-    page:{
-        zIndex: 1,
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        backgroundColor: yellow['A400'],
-        float:'left',
-    },
     player:{
-       
+        position: 'fixed',
+        top:0,
+        bottom:0,
+        left:0,
+        right:0
         // position: 'absolute'
     },
     button: {
@@ -73,7 +69,7 @@ export function PromoVideoPage() {
     }
     return(
         <Fade in={checked} timeout={1300}>
-    <div className={classes.page}>
+    <div>
         {isVideoMuted?<VolumeUpIcon className={classes.button} onClick={handleVolume}/>:<SkipNextIcon className={classes.button} onClick={()=>{history.push("/home")}}/>}
         <ReactPlayer 
            className={classes.player}
