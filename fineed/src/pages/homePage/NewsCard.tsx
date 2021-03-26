@@ -6,7 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import sampleTeslaNewsImage from "../../imageSrc/homepage/teslaNewsimg.jpg";
+import fineedDefaultNewsPicture from "../../imageSrc/homepage/FineedDefaultNewsPicture.jpg";
 import {
   updateNewsClick_v2,
   updateUserFavorite_v2,
@@ -15,6 +15,8 @@ import {
 import { useRecoilValue } from "recoil";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { ERROR } from "../../atoms/constants";
+
+const YAHOONEWSDEFAULTPICTUREURL:string = 'https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png';
 
 export type News = {
   target: string;
@@ -115,7 +117,7 @@ export function NewsCard(props: News) {
       return;
     }
   };
-
+  console.log('here is the url',props.imgUrl)
   return (
     <Card className={classes.root}>
       <CardActionArea
@@ -126,7 +128,7 @@ export function NewsCard(props: News) {
         <CardMedia
           className={classes.media}
           // TODO - Need to find a new placeholder image in case no image url is present in the feed
-          image={props.imgUrl ? props.imgUrl : sampleTeslaNewsImage}
+          image={(props.imgUrl && props.imgUrl!==YAHOONEWSDEFAULTPICTUREURL) ? props.imgUrl : fineedDefaultNewsPicture}
           title={props.title}
         />
         <CardContent className={classes.title}>
