@@ -117,7 +117,7 @@ export function NewsCard(props: News) {
       return;
     }
   };
-  console.log('here is the url',props.imgUrl)
+  // console.log('here is the url',props.imgUrl)
   return (
     <Card className={classes.root}>
       <CardActionArea

@@ -16,7 +16,7 @@ export type NewsItem = {
   pubDate?: string;
 };
 
-type NewsState = {
+export type NewsState = {
   target: string,
 }
 
