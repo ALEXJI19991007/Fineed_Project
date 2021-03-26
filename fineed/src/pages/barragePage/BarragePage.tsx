@@ -27,15 +27,15 @@ import BarragePicture from "../../imageSrc/barragepage/barragePagePic2.jpg";
 
 const useStyles = makeStyles({
     page: {
-        backgroundImage:`url(${BarragePicture})`,
-        backgroundPosition:'center',
-        backgroundSize:'cover',
-        backgroundRepeat:'no-repeat',
+        backgroundImage: `url(${BarragePicture})`,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
         position: 'fixed',
-        top:0,
-        bottom:0,
-        left:0,
-        right:0
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
     },
     table: {
         float: 'left',
@@ -45,8 +45,8 @@ const useStyles = makeStyles({
         height: '700px',
         width: '700px',
         float: 'left',
-        marginLeft:'40px',
-        marginTop:'80px'
+        marginLeft: '40px',
+        marginTop: '80px'
     },
     chatSection: {
         borderRadius: 8,
@@ -69,6 +69,15 @@ const useStyles = makeStyles({
     },
     sendMessageArea: {
         padding: '4px'
+    },
+    focusItem: {
+        backgroundColor: '#81d4fa',
+        borderRadius: 7, 
+        paddingRight: '10px', 
+        paddingLeft: '10px'
+    },
+    nonFocusItem: {
+
     }
 });
 
@@ -104,7 +113,25 @@ type isInTheViewParaType = {
     containerScrollTop: number,
 }
 
-const BarrageItem = (props: BarrageItemProps) => {
+type BarrageListPropsType = {
+    barrage: BarrageItemWithFocus
+}
+
+function BarrageList(props: BarrageListPropsType) {
+    const classes = useStyles();
+    const  {barrage}  = props;
+    return (<Grid container className={barrage.focus? classes.focusItem:classes.nonFocusItem} >
+        <Grid item xs={12}>
+            <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
+        </Grid>
+        <Grid item xs={12}>
+            <ListItemText className={classes.listItemText} secondary={"from " + barrage.userName + " at " + timeConverter(barrage.time)}></ListItemText>
+        </Grid>
+    </Grid>)
+
+}
+
+const BarrageBox = (props: BarrageItemProps) => {
     const classes = useStyles();
     const scrollRef = useRef<HTMLUListElement>(null);
     const focusRef = useRef<HTMLDivElement>(null);
@@ -139,7 +166,7 @@ const BarrageItem = (props: BarrageItemProps) => {
             setSortedBarrageArrayState(focusArray);
             if (focusRef.current && scrollRef.current) {
                 const element = focusRef.current;
-               element.scrollIntoView({behavior: "smooth", block: 'center'})
+                element.scrollIntoView({ behavior: "smooth", block: 'center' })
             }
         } else {
             if (scrollRef.current) {
@@ -154,26 +181,9 @@ const BarrageItem = (props: BarrageItemProps) => {
 
     }, [scrollRef, focusRef, barrageArray, scrollHeight, curHoverTimeStampAtom])
     return (
-        <List  className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
+        <List className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
             {sortedBarrageArrayState.map((barrage: BarrageItemWithFocus, i: number) => (<ListItem key={i}>
-                {barrage.focus ? (
-                    <Grid container style={{ backgroundColor: '#81d4fa', borderRadius: 7, paddingRight: '10px', paddingLeft: '10px' }} ref={focusRef}>
-                        <Grid item xs={12}>
-                            <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ListItemText className={classes.listItemText} secondary={"from "+barrage.userName+" at "+timeConverter(barrage.time)}></ListItemText>
-                        </Grid>
-                    </Grid>) :
-                    (<Grid container>
-                        <Grid item xs={12}>
-                            <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ListItemText className={classes.listItemText} secondary={"from "+barrage.userName+" at "+timeConverter(barrage.time)}></ListItemText>
-                        </Grid>
-                    </Grid>)
-                }
+                <BarrageList barrage={barrage}/>
             </ListItem>))}
         </List>
 
@@ -207,31 +217,31 @@ export function BarragePage() {
 
     return (<div className={classes.page}>
         {curUid ?
-        <div style={{ marginTop: '100px', display: 'inline-block', width: '100%'}} onKeyPress={async (event) => { handleEnter(event) }}>
-            <Zoom in={checked} timeout={1000}>
-            <div className={classes.stockChart}>
-                <StockChart />
-            </div>
-            </Zoom>
-            <Fade in={checked} timeout={2000}>
-            <Grid container component={Paper} className={classes.chatSection} >
-                <Grid item xs={12}>
-                    <BarrageItem barrageArray={barragesAtom} />
-                    <Divider />
-                    <Grid container className={classes.sendMessageArea}>
-                        <Grid item xs={11}>
-                            <TextField id="outlined-basic-email" label="Type Barrage!" fullWidth value={textContent} onChange={(event) => { setTextContent(event.target.value) }} />
-                        </Grid>
-                        <Grid xs={1} >
-                            <div >
-                            <Fab color="primary" aria-label="add" size='large'  onClick={async () => { sendBarrage() }}><SendIcon /></Fab>
-                            </div>
+            <div style={{ marginTop: '100px', display: 'inline-block', width: '100%' }} onKeyPress={async (event) => { handleEnter(event) }}>
+                <Zoom in={checked} timeout={1000}>
+                    <div className={classes.stockChart}>
+                        <StockChart />
+                    </div>
+                </Zoom>
+                <Fade in={checked} timeout={2000}>
+                    <Grid container component={Paper} className={classes.chatSection} >
+                        <Grid item xs={12}>
+                            <BarrageBox barrageArray={barragesAtom} />
+                            <Divider />
+                            <Grid container className={classes.sendMessageArea}>
+                                <Grid item xs={11}>
+                                    <TextField id="outlined-basic-email" label="Type Barrage!" fullWidth value={textContent} onChange={(event) => { setTextContent(event.target.value) }} />
+                                </Grid>
+                                <Grid xs={1} >
+                                    <div >
+                                        <Fab color="primary" aria-label="add" size='large' onClick={async () => { sendBarrage() }}><SendIcon /></Fab>
+                                    </div>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-            </Grid>
-            </Fade>
-        </div> : <div style={{ marginTop: '100px' }}>u should log in first</div>}
-        </div>
+                </Fade>
+            </div> : <div style={{ marginTop: '100px' }}>u should log in first</div>}
+    </div>
     );
 }
