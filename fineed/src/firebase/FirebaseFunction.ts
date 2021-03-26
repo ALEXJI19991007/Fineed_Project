@@ -26,6 +26,7 @@ export const getUsername_v2 = FirebaseFunction("getUsername_v2");
 export const getUserHistory_v2 = FirebaseFunction("getUserHistory_v2");
 export const getUserFavorite_v2 = FirebaseFunction("getUserFavorite_v2");
 export const getUserAuth_v2 = FirebaseFunction("getUserAuth_v2");
+export const getUserSubscription = FirebaseFunction("getUserSubscription");
 
 export const updateNewsClick_v2 = FirebaseFunction("updateNewsClick_v2");
 

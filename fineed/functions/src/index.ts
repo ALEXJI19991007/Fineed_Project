@@ -43,6 +43,7 @@ exports.getUsername_v2 = GetUserInfo.getUsername_v2;
 exports.getUserHistory_v2 = GetUserInfo.getUserHistory_v2;
 exports.getUserFavorite_v2 = GetUserInfo.getUserFavorite_v2;
 exports.getUserAuth_v2 = GetUserInfo.getUserAuth_v2;
+exports.getUserSubscription = GetUserInfo.getUserSubscription;
 
 const UpdateUserInfo = require("./UpdateUserInfo");
 exports.updateUserFavorite_v2 = UpdateUserInfo.updateUserFavorite_v2;

@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { addUserSubscription } from "../../firebase/FirebaseFunction";
 import { ERROR } from "../../atoms/constants";
+import { useState } from "react";
 
 export function NewsFilterAndSubscriber(props: any) {
   const userId = useRecoilValue(Atoms.curUserUidAtom);
@@ -31,8 +32,8 @@ export function NewsFilterAndSubscriber(props: any) {
       >
         Amazon
       </Button>
-      <IconButton style={{ marginRight: "30px" }} onClick={() => {subscribeOnClick("amazon")}}>
-        <AddCircleIcon fontSize="small" color="action"/>
+      <IconButton style={{ marginRight: "30px" }}>
+        <AddCircleIcon fontSize="small" color="action" onClick={() => {subscribeOnClick("amazon")}}/>
       </IconButton>
 
       <Button
@@ -42,8 +43,8 @@ export function NewsFilterAndSubscriber(props: any) {
       >
         Facebook
       </Button>
-      <IconButton style={{ marginRight: "30px" }} onClick={() => {subscribeOnClick("facebook")}}>
-        <AddCircleIcon fontSize="small" color="action" />
+      <IconButton style={{ marginRight: "30px" }}>
+        <AddCircleIcon fontSize="small" color="action" onClick={() => {subscribeOnClick("facebook")}}/>
       </IconButton>
       <Button
         variant="contained"
@@ -52,8 +53,8 @@ export function NewsFilterAndSubscriber(props: any) {
       >
         Google
       </Button>
-      <IconButton style={{ marginRight: "30px" }} onClick={() => {subscribeOnClick("google")}}>
-        <AddCircleIcon fontSize="small" color="action" />
+      <IconButton style={{ marginRight: "30px" }}>
+        <AddCircleIcon fontSize="small" color="action" onClick={() => {subscribeOnClick("google")}}/>
       </IconButton>
       <Button
         variant="contained"
@@ -62,8 +63,8 @@ export function NewsFilterAndSubscriber(props: any) {
       >
         Apple
       </Button>
-      <IconButton style={{ marginRight: "30px" }} onClick={() => {subscribeOnClick("apple")}}>
-        <AddCircleIcon fontSize="small" color="action" />
+      <IconButton style={{ marginRight: "30px" }}>
+        <AddCircleIcon fontSize="small" color="action" onClick={() => {subscribeOnClick("apple")}}/>
       </IconButton>
       <Button
         variant="contained"
@@ -72,8 +73,8 @@ export function NewsFilterAndSubscriber(props: any) {
       >
         Microsoft
       </Button>
-      <IconButton style={{ marginRight: "30px" }} onClick={() => {subscribeOnClick("microsoft")}}>
-        <AddCircleIcon fontSize="small" color="action" />
+      <IconButton style={{ marginRight: "30px" }}>
+        <AddCircleIcon fontSize="small" color="action" onClick={() => {subscribeOnClick("microsoft")}}/>
       </IconButton>
     </div>
   );
