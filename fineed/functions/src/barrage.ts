@@ -2,11 +2,12 @@ import * as functions from "firebase-functions";
 import { db } from "./index";
 
 const firebase_tools = require('firebase-tools');
-
 const finnhub = require('finnhub');
+const Filter = require('bad-words');
 
 export const storeUserBarrage = functions.https.onCall(async (data, _context) => {
     //TODO besides the length check for content we should also add the bad word check
+    const filter = new Filter();
     if (data.content.length === 0) {
         return;
     }
@@ -17,7 +18,7 @@ export const storeUserBarrage = functions.https.onCall(async (data, _context) =>
         uid: data.uid,
         tag: data.tag,
         time: data.time,
-        content: data.content,
+        content: filter.clean(data.content),
         userName: userName,
     }).then(() => {
         console.log("Document successfully written!");
