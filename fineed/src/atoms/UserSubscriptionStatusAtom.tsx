@@ -13,12 +13,10 @@ export type ColorType = "secondary" | "inherit" | "primary" | "disabled" | "acti
 // 2. facebook
 // 3. google
 // 4. microsoft
-const subscriptionList: ColorType[] = ["action", "action", "action", "action", "action"]
+const subscriptionList: ColorType[] = ["action", "action", "action", "action", "action"];
 
 export const userSubscriptionStatusAtom = atom({
   key: "userSubscriptionStatusAtom",
-  default: {
-      subscriptionStatus: subscriptionList,
-  },
+  default: subscriptionList,
   effects_UNSTABLE: [persistAtom],
 });
