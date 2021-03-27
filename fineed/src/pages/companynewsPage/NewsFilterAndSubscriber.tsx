@@ -3,9 +3,11 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import {
   addUserSubscription,
   getUserSubscription,
+  removeUserSubscription,
 } from "../../firebase/FirebaseFunction";
 import {
   ERROR,
@@ -56,8 +58,6 @@ export function NewsFilterAndSubscriber() {
       const currentNewsState = {
         target: "amazon",
       };
-      console.log("111: ", subscriptionStatus);
-      console.log("222: ", newSubscriptionList);
       setSubscriptionStatus(newSubscriptionList);
       setFilter(currentNewsState);
     };
@@ -81,6 +81,22 @@ export function NewsFilterAndSubscriber() {
     setSubscriptionStatus(newSubscriptionStatus);
   };
 
+  const unsubscribeOnClick = async (sub: string) => {
+    const data = {
+      userId: userId,
+      target: sub,
+    };
+    const removeUserSubscriptionResp = (await removeUserSubscription(data)).data;
+    if (removeUserSubscriptionResp.error !== ERROR.NO_ERROR) {
+      console.log(removeUserSubscriptionResp.error);
+      return;
+    }
+    let newSubscriptionStatus: ColorType[] = [...subscriptionStatus];
+    const index: number = COMPANY_NUMBER_MAP.get(sub) || 0;
+    newSubscriptionStatus[index] = "action";
+    setSubscriptionStatus(newSubscriptionStatus);
+  }
+
   const getColor = (index: number): ColorType => {
     return subscriptionStatus[index];
   };
@@ -96,12 +112,21 @@ export function NewsFilterAndSubscriber() {
         >
           {COMPANY_COMPANY_SHOWN_NAME_MAP.get(newsTarget)}
         </Button>
-        <IconButton style={{ marginRight: "30px" }}>
+        <IconButton>
           <AddCircleIcon
             fontSize="small"
             color={getColor(COMPANY_NUMBER_MAP.get(newsTarget) || 0)}
             onClick={() => {
               subscribeOnClick(target);
+            }}
+          />
+        </IconButton>
+        <IconButton style={{ marginRight: "30px" }}>
+          <RemoveCircleIcon
+            fontSize="small"
+            color={getColor(COMPANY_NUMBER_MAP.get(newsTarget) || 0)}
+            onClick={() => {
+              unsubscribeOnClick(target);
             }}
           />
         </IconButton>
