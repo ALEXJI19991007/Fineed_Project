@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      justify:'center',
     },
     paper: {
       padding: theme.spacing(2),
@@ -152,7 +153,7 @@ function NewsCardGrid(props: NewsCardGridProps) {
   const [checked, setChecked] = useState(true);
   return (
     <div className={classes.root}>
-      <Grid container spacing={5}>
+      <Grid container spacing={6}>
         {props.newsList.map((news: News, index: number) => {
           return (
             <Grid item xs={3} key={index}>

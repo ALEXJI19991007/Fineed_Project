@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -27,18 +27,21 @@ export type News = {
   pubDate: string;
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme)=>createStyles({
   root: {
-    maxWidth: 300,
-    height: 600,
+    maxWidth: 380,
+    height: 520,
   },
   title: {
-    height: 150,
+    height: 80,
     overflow: "hidden",
+    margin: theme.spacing(1),
   },
   content: {
     height: 125,
     overflow: "hidden",
+    wordWrap: "break-word",
+    padding: theme.spacing(1),
   },
   media: {
     height: 200,
@@ -49,7 +52,7 @@ const useStyles = makeStyles({
   cardAction: {
     marginTop: 10,
   },
-});
+}));
 
 export function NewsCard(props: News) {
   const classes = useStyles();
