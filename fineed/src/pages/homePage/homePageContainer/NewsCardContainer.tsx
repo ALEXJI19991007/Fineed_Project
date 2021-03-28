@@ -16,7 +16,6 @@ import Fade from '@material-ui/core/Fade';
 import Collapse from '@material-ui/core/Collapse';
 import { Pagination } from "@material-ui/lab";
 import * as NewsAtoms from "../../../atoms/NewsListFilterAtom";
-import NewsCardBackgroundImg from "../../../imageSrc/homepage/NewsCardBackgroundImg.jpg";
 
 type NewsCardGridProps = {
   newsList: List<News>;

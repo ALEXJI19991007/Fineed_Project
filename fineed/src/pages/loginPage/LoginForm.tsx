@@ -74,7 +74,7 @@ export function LoginForm() {
         >
           <Avatar src={LogoPic} style={{ height: "80px", width: "80px" }} />
 
-          <Grid item xs={2}>
+          <Grid item xs={4}>
             <EmailPwdForm />
           </Grid>
 
