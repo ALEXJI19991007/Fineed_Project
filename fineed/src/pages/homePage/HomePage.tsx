@@ -13,7 +13,8 @@ import green from '@material-ui/core/colors/green';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      backgroundColor: lightGreen[50]
+      // there are errors after deploy, remove it now
+      // backgroundColor: lightGreen[50]
     },
   })
 );
