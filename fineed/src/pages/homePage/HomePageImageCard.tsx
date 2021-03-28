@@ -74,7 +74,7 @@ export function HomePageImageCard() {
     }
   }, [scrollY,scrollState]);
   return (
-    <Card elevation={0} style={{height:imgHeight}}>
+    <Card elevation={1} style={{height:imgHeight}}>
       <CardMedia className={classes.cardImg} component="img" image={HomePageImagePic}/>
       <Typography variant="h3" className={classes.sloganPos} style={{bottom: solganBottom,paddingLeft: sloganPaddingLeft}}> Feed the financial news you are most interested in</Typography>
       <Grid container spacing={0} className={classes.loginButton} style={{bottom:loginButtonBottom,paddingLeft: loginButtonPaddingLeft}}>

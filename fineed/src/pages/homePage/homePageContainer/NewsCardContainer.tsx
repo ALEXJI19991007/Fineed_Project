@@ -15,7 +15,8 @@ import Grow from '@material-ui/core/Grow';
 import Fade from '@material-ui/core/Fade';
 import Collapse from '@material-ui/core/Collapse';
 import { Pagination } from "@material-ui/lab";
-import * as NewsAtoms from "../../../atoms/NewsListFilterAtom"
+import * as NewsAtoms from "../../../atoms/NewsListFilterAtom";
+import NewsCardBackgroundImg from "../../../imageSrc/homepage/NewsCardBackgroundImg.jpg";
 
 type NewsCardGridProps = {
   newsList: List<News>;
@@ -66,6 +67,12 @@ const useStyles = makeStyles((theme: Theme) =>
     loadingCardMedia: {
       height: 300,
     },
+    backgroundCardImg: {
+      top:0,
+      bottom:0,
+      position: 'fixed',
+      zIndex: 0
+    }
   })
 );
 
@@ -178,6 +185,7 @@ function NewsCardGrid(props: NewsCardGridProps) {
 }
 
 export const NewsCardContainer = () => {
+  const classes = useStyles();
   const newsFeedLoadable = useRecoilValueLoadable(
     Selectors.filteredNewsListState
   );
@@ -191,13 +199,14 @@ export const NewsCardContainer = () => {
             <NewsCardGrid newsList={NewsList(myNewsFeed)} />
             {myNewsFeed.target === "headlines" ? <PageDisplay pageCount={myNewsFeed.pageCount}/> : undefined}
           </div>
+           
         </>
       );
     case "hasError":
       return <div>damn...</div>;
     case "loading":
       return (
-        <div>
+        <div >
           {/* <NewsListFilter /> */}
           <NewsCardGridLoading />
         </div>
