@@ -246,7 +246,6 @@ export function NaviBar() {
                 history.push("/barrage");
               }}
             >
-
               <Typography
                 className={classes.typography}
                 variant="subtitle1"
