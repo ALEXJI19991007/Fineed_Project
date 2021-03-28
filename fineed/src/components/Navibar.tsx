@@ -27,6 +27,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import Tooltip from '@material-ui/core/Tooltip';
 import { FirebaseAuth } from "../firebase/FirebaseAuth";
 import { ListItemIcon } from "@material-ui/core";
 import { curUserInfoAtom } from "../atoms/UsernameAtom";
@@ -225,13 +226,27 @@ export function NaviBar() {
                 COMPANY NEWS
               </Typography>
             </Button>
-            <Button
+            {!currentUserUid ? <Tooltip title="You should login first">
+              <Button
+                className={classes.topMenu}
+                color="secondary"
+              >
+                <Typography
+                  className={classes.typography}
+                  variant="subtitle1"
+                  noWrap
+                >
+                  Barrage
+              </Typography>
+              </Button>
+            </Tooltip> : <Button
               className={classes.topMenu}
               color="secondary"
               onClick={() => {
                 history.push("/barrage");
               }}
             >
+
               <Typography
                 className={classes.typography}
                 variant="subtitle1"
@@ -239,7 +254,7 @@ export function NaviBar() {
               >
                 Barrage
               </Typography>
-            </Button>
+            </Button>}
             {currentUserUid ? (
               <IconButton
                 edge="end"
