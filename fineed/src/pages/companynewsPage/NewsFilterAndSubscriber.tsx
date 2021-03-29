@@ -21,16 +21,15 @@ import {
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useEffect } from "react";
 
-// type NewsFilterAndSubscriberProps = {
-//   setFilter: SetterOrUpdater<NewsState>,
-//   subscriptionStatus: ColorType[],
-//   setSubscriptionStatus: SetterOrUpdater<any>,
-// }
+type NewsFilterAndSubscriberProps = {
+  buttonColorStatus: ColorType[],
+}
 
-export function NewsFilterAndSubscriber() {
+export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
   const [subscriptionStatus, setSubscriptionStatus] = useRecoilState(
     userSubscriptionStatusAtom
   );
+  // const setSubscriptionStatus = useSetRecoilState(userSubscriptionStatusAtom);
   const setFilter = useSetRecoilState(newsListFilterState);
   const userId = useRecoilValue(curUserUidAtom);
 
@@ -48,12 +47,12 @@ export function NewsFilterAndSubscriber() {
       const subscriptionList: string[] =
         getUserSubscriptionResp.resp.subscriptionList;
       // The current subscription list (the atom); We need to modify it according to subscriptionList
-      let newSubscriptionList: ColorType[] = [...subscriptionStatus];
+      let newSubscriptionList: boolean[] = [...subscriptionStatus];
 
       // console.log(subscriptionList);
       for (let sub of subscriptionList) {
         const index: number = COMPANY_NUMBER_MAP.get(sub) || 0;
-        newSubscriptionList[index] = "secondary";
+        newSubscriptionList[index] = true;
       }
       const currentNewsState = {
         target: "amazon",
@@ -75,9 +74,10 @@ export function NewsFilterAndSubscriber() {
       console.log(addUserSubscriptionResp.error);
       return;
     }
-    let newSubscriptionStatus: ColorType[] = [...subscriptionStatus];
-    const index: number = COMPANY_NUMBER_MAP.get(sub) || 0;
-    newSubscriptionStatus[index] = "secondary";
+    let newSubscriptionStatus: boolean[] = [...subscriptionStatus];
+    const index: number = COMPANY_NUMBER_MAP.get(`news_${sub}`) || 0;
+    console.log("add: ", index);
+    newSubscriptionStatus[index] = true;
     setSubscriptionStatus(newSubscriptionStatus);
   };
 
@@ -91,14 +91,15 @@ export function NewsFilterAndSubscriber() {
       console.log(removeUserSubscriptionResp.error);
       return;
     }
-    let newSubscriptionStatus: ColorType[] = [...subscriptionStatus];
-    const index: number = COMPANY_NUMBER_MAP.get(sub) || 0;
-    newSubscriptionStatus[index] = "action";
+    let newSubscriptionStatus: boolean[] = [...subscriptionStatus];
+    const index: number = COMPANY_NUMBER_MAP.get(`news_${sub}`) || 0;
+    console.log("remove: ", index);
+    newSubscriptionStatus[index] = false;
     setSubscriptionStatus(newSubscriptionStatus);
   }
 
   const getColor = (index: number): ColorType => {
-    return subscriptionStatus[index];
+    return props.buttonColorStatus[index];
   };
 
   const getButtonComponent = (target: string) => {

@@ -67,17 +67,3 @@ const getUserHistoryOrFavoriteHelper = async (target: string, userId: string) =>
     list: newsList,
   };
 };
-
-// const getNewsFromParticularSourceAndCompany = async (filter: Atoms.NewsState) => {
-//   // If we want to fetch news from a particular source
-//   let url: string = Atoms.RSS_URL_MAP.get(`${filter.source}-${filter.company}`) || "";
-
-//   const urlData = {
-//     url: url,
-//     company: filter.company,
-//     source: filter.source,
-//   };
-//   const feedData = await rssFetch(urlData);
-//   // console.log(feedData.data);
-//   return feedData.data;
-// }
