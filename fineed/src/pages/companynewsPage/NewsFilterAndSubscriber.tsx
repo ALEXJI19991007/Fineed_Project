@@ -3,7 +3,6 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import {
   addUserSubscription,
   getUserSubscription,
@@ -14,16 +13,14 @@ import {
   COMPANY_NUMBER_MAP,
   COMPANY_COMPANY_SHOWN_NAME_MAP,
 } from "../../atoms/constants";
-import {
-  ColorType,
-  userSubscriptionStatusAtom,
-} from "../../atoms/UserSubscriptionStatusAtom";
+import { userSubscriptionStatusAtom } from "../../atoms/UserSubscriptionStatusAtom";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useEffect } from "react";
+import { ColorType } from "../../selectors/SubscriptionButtonSelector";
 
 type NewsFilterAndSubscriberProps = {
-  buttonColorStatus: ColorType[],
-}
+  buttonColorStatus: ColorType[];
+};
 
 export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
   const [subscriptionStatus, setSubscriptionStatus] = useRecoilState(
@@ -48,8 +45,6 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
         getUserSubscriptionResp.resp.subscriptionList;
       // The current subscription list (the atom); We need to modify it according to subscriptionList
       let newSubscriptionList: boolean[] = [...subscriptionStatus];
-
-      // console.log(subscriptionList);
       for (let sub of subscriptionList) {
         const index: number = COMPANY_NUMBER_MAP.get(sub) || 0;
         newSubscriptionList[index] = true;
@@ -69,34 +64,25 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
       userId: userId,
       target: sub,
     };
-    const addUserSubscriptionResp = (await addUserSubscription(data)).data;
-    if (addUserSubscriptionResp.error !== ERROR.NO_ERROR) {
-      console.log(addUserSubscriptionResp.error);
+    const index: number = COMPANY_NUMBER_MAP.get(`news_${sub}`) || 0;
+    // The current subscription status of one particular company's news
+    let curSubStatus: boolean = subscriptionStatus[index];
+    let newSubscriptionStatus: boolean[] = [...subscriptionStatus];
+    // Reverse the status & Set the new value to the atom
+    newSubscriptionStatus[index] = !curSubStatus;
+    setSubscriptionStatus(newSubscriptionStatus);
+    // Send request to the corresponding backend function
+    let modifySubscriptionResp = curSubStatus
+      ? (await removeUserSubscription(data)).data
+      : (await addUserSubscription(data)).data;
+    if (modifySubscriptionResp.error !== ERROR.NO_ERROR) {
+      // If an error occurs, we need to roll back our frontend changes
+      newSubscriptionStatus[index] = curSubStatus;
+      setSubscriptionStatus(newSubscriptionStatus);
+      console.log(modifySubscriptionResp.error);
       return;
     }
-    let newSubscriptionStatus: boolean[] = [...subscriptionStatus];
-    const index: number = COMPANY_NUMBER_MAP.get(`news_${sub}`) || 0;
-    console.log("add: ", index);
-    newSubscriptionStatus[index] = true;
-    setSubscriptionStatus(newSubscriptionStatus);
   };
-
-  const unsubscribeOnClick = async (sub: string) => {
-    const data = {
-      userId: userId,
-      target: sub,
-    };
-    const removeUserSubscriptionResp = (await removeUserSubscription(data)).data;
-    if (removeUserSubscriptionResp.error !== ERROR.NO_ERROR) {
-      console.log(removeUserSubscriptionResp.error);
-      return;
-    }
-    let newSubscriptionStatus: boolean[] = [...subscriptionStatus];
-    const index: number = COMPANY_NUMBER_MAP.get(`news_${sub}`) || 0;
-    console.log("remove: ", index);
-    newSubscriptionStatus[index] = false;
-    setSubscriptionStatus(newSubscriptionStatus);
-  }
 
   const getColor = (index: number): ColorType => {
     return props.buttonColorStatus[index];
@@ -119,15 +105,6 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
             color={getColor(COMPANY_NUMBER_MAP.get(newsTarget) || 0)}
             onClick={() => {
               subscribeOnClick(target);
-            }}
-          />
-        </IconButton>
-        <IconButton style={{ marginRight: "30px" }}>
-          <RemoveCircleIcon
-            fontSize="small"
-            color={getColor(COMPANY_NUMBER_MAP.get(newsTarget) || 0)}
-            onClick={() => {
-              unsubscribeOnClick(target);
             }}
           />
         </IconButton>

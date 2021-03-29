@@ -6,8 +6,6 @@ const { persistAtom } = recoilPersist({
   storage: sessionStorage,
 });
 
-export type ColorType = "secondary" | "inherit" | "primary" | "disabled" | "action" | "error" | undefined;
-
 // 0. amazon
 // 1. apple
 // 2. facebook
