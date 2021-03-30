@@ -99,7 +99,6 @@ async function fetchAndCacheAllCompanyNews(
     const item: NewsItem = itemList[i];
     const targetCompanyNewsCacheRef = db.collection(`news_${company}`);
     const itemTarget = await targetCompanyNewsCacheRef
-      .where("link", "==", item.link)
       .where("title", "==", item.title)
       .get();
     if (itemTarget.empty) {

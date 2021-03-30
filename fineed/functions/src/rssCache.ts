@@ -108,7 +108,6 @@ async function fetchAndCacheAllFeeds(
         if (item.link !== undefined) {
           const newCacheRef = db.collection("news_cache");
           const itemTarget = await newCacheRef
-            .where("link", "==", item.link)
             .where("title", "==", item.title)
             .get();
           // construct a new database entry since it does not exist
