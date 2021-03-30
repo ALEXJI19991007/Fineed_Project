@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { ERROR } from "../../atoms/constants";
 import { curUserInfoAtom } from "../../atoms/UsernameAtom";
+import Alert from '@material-ui/lab/Alert';
 
 export function EmailPwdForm() {
   const setCurUserUid = useSetRecoilState(curUserUidAtom);
@@ -21,6 +22,9 @@ export function EmailPwdForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+
+  // state for the login error message
+  let [alert, setAlert] = useState(false);
   
   const emailOnChange = (event: React.ChangeEvent<{ value: string }>) => {
     setEmail(event.target.value);
@@ -34,6 +38,8 @@ export function EmailPwdForm() {
     const getUserAuthResp = (await getUserAuth_v2({email: email, password: password})).data;
     if (getUserAuthResp.error !== ERROR.NO_ERROR) {
       console.log(getUserAuthResp.error);
+      // show the login error message
+      setAlert(true);
       return;
     }
     const getUserInfoResp = (await getUserInfo({ userId: getUserAuthResp.resp.userId })).data;
@@ -52,6 +58,7 @@ export function EmailPwdForm() {
         Sign in with Fineed Account
       </Typography>
       <br />
+      {alert ? (<Alert severity="error">Incorrect email or password</Alert>) : null}
       <form noValidate>
         <Grid
           container
