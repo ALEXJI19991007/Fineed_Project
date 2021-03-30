@@ -94,6 +94,7 @@ export function LoginForm() {
                 marginRight: "3px",
                 width: 40,
                 height: 40,
+                cursor: "pointer",
               }}
               color="primary"
               onClick={googleLoginHandler}
@@ -104,6 +105,7 @@ export function LoginForm() {
                 marginLeft: "3px",
                 width: 40,
                 height: 40,
+                cursor: "pointer",
               }}
               color="secondary"
               onClick={githubLoginHandler}

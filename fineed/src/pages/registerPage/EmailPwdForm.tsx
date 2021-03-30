@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import { getUserAuth_v2 } from "../../firebase/FirebaseFunction";
 import { useHistory } from "react-router-dom";
 import { KeyboardReturnOutlined } from "@material-ui/icons";
+import Alert from '@material-ui/lab/Alert';
 
 
 export function EmailPwdForm() {
@@ -19,6 +20,9 @@ export function EmailPwdForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+
+  // state for the login error message
+  let [alert, setAlert] = useState(false);
   
   const emailOnChange = (event: React.ChangeEvent<{ value: string }>) => {
     setEmail(event.target.value);
@@ -50,9 +54,12 @@ export function EmailPwdForm() {
       setCurUserUid(user.uid)
     })
     .catch((error) => {
+      // show the login error message
+      setAlert(true);
+
       var errorCode = error.code;
       var errorMessage = error.message;
-      console.log(errorMessage)
+      console.log(errorMessage);
     });
   }
 
@@ -62,6 +69,7 @@ export function EmailPwdForm() {
         Sign up to get your customized news feed!
       </Typography>
       <br />
+      {alert ? (<Alert severity="error">Email already in use</Alert>) : null}
       <form noValidate>
         <Grid
           container

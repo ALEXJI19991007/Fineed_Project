@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import { db } from "./index";
-import { NewsItem, TimeStampedNewsItem, PAGE_SZIE, FEED_MAX_LENGTH } from "./constants";
+import { NewsItem, TimeStampedNewsItem, PAGE_SZIE, FEED_MAX_CHAR } from "./constants";
 
 exports.rssFetch = functions.https.onCall(async (data, _context) => {
   let timeStampedNewsList: TimeStampedNewsItem[] = [];
@@ -66,8 +66,7 @@ exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
       target: data.target,
       link: docData.link,
       title: docData.title,
-      // trucate the summary of the content down to 30 words, add ellipses at the end
-      content: docData.content.split(" ").splice(0, FEED_MAX_LENGTH + 1).join(" ") + "...",
+      content: truncateContent(docData.content),
       imgUrl: docData.imgUrl,
       pubDate: docData.pubDate,
     });
@@ -81,3 +80,26 @@ exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
     pageCount: pageCount,
   };
 });
+
+function truncateContent(content: string) {
+  // truncate the summary further if it is more than 180 characters
+  if(content.length > FEED_MAX_CHAR) {
+    let strArr = content.split(" ");
+    content = content.slice(0, FEED_MAX_CHAR);
+    strArr = content.split(" ");
+
+    // skip the last word
+    content = strArr.splice(0, strArr.length - 1).join(" ");
+
+    // check for puncuations: ./,/?/!/%
+    let lastChar = content.substr(-1);
+    if(".,?!%".indexOf(lastChar) > -1) {
+      // remove the last character
+      content = content.slice(0, -1);
+    }
+    // append the ellipses
+    content += "...";
+  }
+
+  return content;
+}
