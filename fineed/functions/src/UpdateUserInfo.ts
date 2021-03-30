@@ -2,6 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { Response, ERROR } from "./constants";
 import { db } from "./index";
+import {Md5} from "md5-typescript";
 
 exports.updateUserFavorite_v2 = functions.https.onCall(
   async (data, _context) => {
@@ -130,12 +131,12 @@ exports.updateUserPassword_v2 = functions.https.onCall(
         return response;
       }
       const oldPassword = currentUserData.password;
-      if (oldPassword !== data.oldPassword) {
+      if (oldPassword !== Md5.init(data.oldPassword)) {
         response.error = ERROR.UNAUTHORIZED_ACCESS;
         return response;
       }
       userEntry.update({
-        password: data.newPassword,
+        password: Md5.init(data.newPassword),
       });
       response.resp = {
         userId: data.userId,

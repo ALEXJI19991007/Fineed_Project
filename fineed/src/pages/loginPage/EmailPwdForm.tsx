@@ -2,11 +2,6 @@ import { Fragment, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import {
-  makeStyles,
-  ThemeProvider,
-  createMuiTheme,
-} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { getUserAuth_v2, getUserInfo } from "../../firebase/FirebaseFunction";

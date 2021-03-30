@@ -8,9 +8,7 @@ import { useSetRecoilState } from "recoil";
 import { curUserInfoAtom } from "../../atoms/UsernameAtom";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import Grid from "@material-ui/core/Grid";
-import { getUserAuth_v2 } from "../../firebase/FirebaseFunction";
 import { useHistory } from "react-router-dom";
-import { KeyboardReturnOutlined } from "@material-ui/icons";
 import Alert from '@material-ui/lab/Alert';
 
 
@@ -31,16 +29,6 @@ export function EmailPwdForm() {
   const passwordOnChange = (event: React.ChangeEvent<{ value: string }>) => {
     setPassword(event.target.value);
   };
-
-  const emailLoginHandler = async () => {
-    const getUserAuthResp = await getUserAuth_v2({email: email, password: password});
-    if (getUserAuthResp.data === null) {
-      console.log("Get User Authentication Failed");
-    }
-    //setCurUsername(getUserAuthResp.data.username);
-    setCurUserUid(getUserAuthResp.data.userId);
-    history.push('/profile');
-  }
   
   const registerHandler = async() => {
     firebase.auth().createUserWithEmailAndPassword(email, password)

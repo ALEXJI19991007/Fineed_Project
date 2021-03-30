@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import { Response, ERROR } from "./constants";
 import { db } from "./index";
+import {Md5} from "md5-typescript";
 
 exports.getUserInfo = functions.https.onCall(async (data, _context) => {
   let response: Response = {
@@ -128,7 +129,8 @@ exports.getUserAuth_v2 = functions.https.onCall(async (data, _context) => {
       username = entryData.username;
       userId = entryData.id;
     });
-    if (data.password !== userPwd) {
+    // compare the md5 hash instead of the plain text password
+    if (Md5.init(data.password) !== userPwd) {
       response.error = ERROR.UNAUTHORIZED_ACCESS;
       return response;
     }
