@@ -16,7 +16,7 @@ export const COMPANY_RSS_URL_MAP = new Map([
 
 export const PAGE_SZIE = 40;
 
-export const FEED_MAX_LENGTH = 30;
+export const FEED_MAX_CHAR = 180;
 
 export type Barrage = {
   uid: string,
