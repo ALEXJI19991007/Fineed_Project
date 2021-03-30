@@ -20,7 +20,8 @@
     "firebase-functions": "^3.13.2",
     "firebase-tools": "^9.4.0",
     "jsdom": "16.4.0",
-    "rss-parser": "^3.11.0"
+    "rss-parser": "^3.11.0",
+    "md5-typescript":"^1.0.5"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.2.0",
