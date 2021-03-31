@@ -12,7 +12,7 @@ export function CompanyNewsPage() {
   return (
     <div>
       <UserPageHeader userInfo={userInfo} />
-      <div>
+      <div style={{marginTop:'20px'}}>
         <NewsFilterAndSubscriber buttonColorStatus={buttonColorStatus} />
       </div>
       <NewsCardContainer />

@@ -16,7 +16,9 @@ import { userSubscriptionStatusAtom } from "../../atoms/UserSubscriptionStatusAt
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { useEffect } from "react";
 import { ColorType } from "../../selectors/SubscriptionButtonSelector";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles,
+  ThemeProvider,
+  createMuiTheme, } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 
@@ -30,6 +32,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+
+const thm = createMuiTheme({
+  palette: {
+    primary: { main: "#8FEF6D" }, //green
+    secondary: { main: "#FFBE40" }, //orange
+  },
+});
+
 
 type NewsFilterAndSubscriberProps = {
   buttonColorStatus: ColorType[];
@@ -104,7 +115,7 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
   };
 
   const getChipColor = (target: string) => {
-    return filter.target === target ? "secondary" : "default";
+    return filter.target === target ? "primary" : "default";
   }
 
   const getButtonComponent = (target: string) => {
@@ -112,16 +123,17 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
     const companyShownName: string = COMPANY_COMPANY_SHOWN_NAME_MAP.get(newsTarget) || "C";
     return (
       <>
+      <ThemeProvider theme={thm}>
         <Chip
           size="medium"
-          avatar={<Avatar>{companyShownName.charAt(0)}</Avatar>}
+          // avatar={<Avatar style={{color:'white'}}>{companyShownName.charAt(0)}</Avatar>}
           label={companyShownName}
           clickable
           color={getChipColor(target)}
           onClick={() => setFilter({ target: target })}
           
         />
-        <IconButton style={{paddingTop: "6px", marginLeft: "-10px"}}>
+        <IconButton style={{paddingTop: "6px", marginLeft: "-10px"}} color={getChipColor(target)}>
           <AddCircleIcon
             fontSize="small"
             color={getIconColor(COMPANY_NUMBER_MAP.get(newsTarget) || 0)}
@@ -130,6 +142,7 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
             }}
           />
         </IconButton>
+        </ThemeProvider>
       </>
     );
   };
@@ -142,5 +155,6 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
       {getButtonComponent("google")}
       {getButtonComponent("microsoft")}
     </div>
+    
   );
 }
