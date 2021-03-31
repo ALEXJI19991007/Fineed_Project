@@ -10,7 +10,8 @@ import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import Alert from '@material-ui/lab/Alert';
-
+import { createNewUser_v2 } from "../../firebase/FirebaseFunction";
+import { ERROR } from "../../atoms/constants";
 
 export function EmailPwdForm() {
   const setCurUserUid = useSetRecoilState(curUserUidAtom);
@@ -31,7 +32,16 @@ export function EmailPwdForm() {
   };
   
   const registerHandler = async() => {
-    firebase.auth().createUserWithEmailAndPassword(email, password)
+    const getCreateUserResp = (await createNewUser_v2({email: email, password: password})).data;
+    if (getCreateUserResp.error !== ERROR.NO_ERROR) {
+      console.log(getCreateUserResp.error);
+      // show the login error message
+      setAlert(true);
+      return;
+    }
+    setCurUserUid(getCreateUserResp.resp.id);
+    history.push('/profile');
+    /*firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
@@ -48,7 +58,7 @@ export function EmailPwdForm() {
       var errorCode = error.code;
       var errorMessage = error.message;
       console.log(errorMessage);
-    });
+    });*/
   }
 
   return (
