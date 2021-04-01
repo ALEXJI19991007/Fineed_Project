@@ -3,14 +3,13 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import "firebase/auth";
-import firebase from "firebase/app";
 import { useSetRecoilState } from "recoil";
 import { curUserInfoAtom } from "../../atoms/UsernameAtom";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import Alert from '@material-ui/lab/Alert';
-import { createNewUser_v2 } from "../../firebase/FirebaseFunction";
+import { createNewUser_v2, getUserInfo } from "../../firebase/FirebaseFunction";
 import { ERROR } from "../../atoms/constants";
 
 export function EmailPwdForm() {
@@ -39,26 +38,14 @@ export function EmailPwdForm() {
       setAlert(true);
       return;
     }
-    setCurUserUid(getCreateUserResp.resp.id);
+    const getUserInfoResp = (await getUserInfo({ userId: getCreateUserResp.resp.userId })).data;
+    if (getUserInfoResp.error !== ERROR.NO_ERROR) {
+      console.log(getUserInfoResp.error);
+      return;
+    }
+    setCurUserUid(getCreateUserResp.resp.userId);
+    setCurUserInfo(getUserInfoResp.resp);
     history.push('/profile');
-    /*firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      if (user === null){
-        console.log("error: return null for uid")
-        return;
-      }
-      setCurUserUid(user.uid)
-    })
-    .catch((error) => {
-      // show the login error message
-      setAlert(true);
-
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorMessage);
-    });*/
   }
 
   return (
