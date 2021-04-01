@@ -34,6 +34,36 @@ exports.updateUserFavorite_v2 = functions.https.onCall(
   }
 );
 
+exports.removeUserFavorite = functions.https.onCall(
+  async (data, _context) => {
+    let response: Response = {
+      resp: null,
+      error: ERROR.NO_ERROR,
+    };
+    try {
+      if (data.userId === null || data.userId === "") {
+        response.error = ERROR.UNAUTHENTICATED;
+        return response;
+      }
+      if (data.newsId === null || data.newsId === "") {
+        response.error = ERROR.PARAM_ERROR;
+        return response;
+      }
+      const userEntry = db.collection("user").doc(data.userId);
+      userEntry.update({
+        favorite: admin.firestore.FieldValue.arrayRemove(data.newsId),
+      });
+      response.resp = {
+        news: data.newsId,
+      };
+      return response;
+    } catch (error) {
+      response.error = ERROR.FIRESTORE_ERROR;
+      return response;
+    }
+  }
+);
+
 exports.updateUserHistory_v2 = functions.https.onCall(
   async (data, _context) => {
     let response: Response = {

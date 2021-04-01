@@ -40,6 +40,7 @@ export type FeedListArray = {
 };
 
 export type TimeStampedNewsItem = {
+  id: string,
   target: string;
   link: string;
   title: string;

@@ -8,6 +8,7 @@ exports.rssFetch = functions.https.onCall(async (data, _context) => {
   newsCacheSnapShot.forEach((doc) => {
     const docData = doc.data();
     timeStampedNewsList.push({
+      id: data.id,
       target: data.target,
       link: docData.link,
       title: docData.title,
@@ -24,6 +25,7 @@ exports.rssFetch = functions.https.onCall(async (data, _context) => {
   let newsList: NewsItem[] = [];
   timeStampedNewsList.forEach((obj) => {
     newsList.push({
+      id: obj.id,
       target: data.target,
       link: obj.link,
       title: obj.title,
