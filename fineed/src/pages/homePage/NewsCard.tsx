@@ -19,6 +19,7 @@ import { ERROR } from "../../atoms/constants";
 const YAHOONEWSDEFAULTPICTUREURL:string = 'https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png';
 
 export type News = {
+  id: string,
   target: string;
   link: string;
   title: string;
@@ -64,6 +65,7 @@ export function NewsCard(props: News) {
     // isNormalClick == false: it is a click on the favorite button.
     const clickData = {
       isNormalClick: true,
+      id: props.id,
       target: props.target,
       link: props.link,
       title: props.title,
@@ -94,6 +96,7 @@ export function NewsCard(props: News) {
   const markNewsFavorite = async () => {
     const clickData = {
       isNormalClick: false,
+      id: props.id,
       target: props.target,
       link: props.link,
       title: props.title,
@@ -120,7 +123,7 @@ export function NewsCard(props: News) {
       return;
     }
   };
-  // console.log('here is the url',props.imgUrl)
+
   return (
     <Card className={classes.root}>
       <CardActionArea

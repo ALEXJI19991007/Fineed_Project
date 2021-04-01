@@ -63,6 +63,7 @@ exports.rssFetchPage = functions.https.onCall(async (data, _context) => {
   cachePageSnapshot.forEach((doc) => {
     const docData = doc.data();
     newsList.push({
+      id: docData.id,
       target: data.target,
       link: docData.link,
       title: docData.title,

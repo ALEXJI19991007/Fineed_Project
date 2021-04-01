@@ -8,12 +8,12 @@ import { useRecoilValueLoadable, useRecoilState } from "recoil";
 import * as Selectors from "../../../selectors/NewsFeedSelector";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
+// import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+// import CardMedia from "@material-ui/core/CardMedia";
 import Grow from '@material-ui/core/Grow';
-import Fade from '@material-ui/core/Fade';
-import Collapse from '@material-ui/core/Collapse';
+// import Fade from '@material-ui/core/Fade';
+// import Collapse from '@material-ui/core/Collapse';
 import { Pagination } from "@material-ui/lab";
 import * as NewsAtoms from "../../../atoms/NewsListFilterAtom";
 
@@ -24,17 +24,9 @@ type NewsCardGridProps = {
 //simualte the backend existed data
 function NewsList(myNewsFeed: any): List<News> {
   const arr = [];
-
-  //   const sampleNews = {
-  //     link: "abc",
-  //     title: "Tesla",
-  //     content:
-  //       "Tesla is a transportation and energy company. It sells vehicles under its ‘Tesla Motors’ division and stationary battery packs for home, commercial and utility-scale projects under its ‘Tesla Energy’ division.",
-  //     imgUrl: "not even exist, we should have a web imgUrl",
-  //   };
-  // we shouldn't use for loop anywhere in our code, since this is only for demo
   for (let i = 0; i < myNewsFeed.list.length; i++) {
     let sampleNews = {
+      id: myNewsFeed.list[i].id,
       target: myNewsFeed.list[i].target,
       link: myNewsFeed.list[i].link,
       title: myNewsFeed.list[i].title,
@@ -132,7 +124,7 @@ function NewsCardLoading() {
 
 function NewsCardGridLoading() {
   const classes = useStyles();
-  const [checked, setChecked] = useState(true);
+  const [checked, ] = useState(true);
   //generate 8 loading card to demo on the screen.
   const loadingList = [1, 1, 1, 1, 1, 1, 1, 1];
   return (
@@ -156,7 +148,7 @@ function NewsCardGridLoading() {
 
 function NewsCardGrid(props: NewsCardGridProps) {
   const classes = useStyles();
-  const [checked, setChecked] = useState(true);
+  const [checked, ] = useState(true);
   return (
     <div className={classes.root}>
       <Grid container spacing={6}>
@@ -166,6 +158,7 @@ function NewsCardGrid(props: NewsCardGridProps) {
               <Grow in={checked} timeout={500}>
               <div className={classes.paper}>
                 <NewsCard
+                  id={news.id}
                   target={news.target}
                   link={news.link}
                   title={news.title}
@@ -184,7 +177,7 @@ function NewsCardGrid(props: NewsCardGridProps) {
 }
 
 export const NewsCardContainer = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const newsFeedLoadable = useRecoilValueLoadable(
     Selectors.filteredNewsListState
   );

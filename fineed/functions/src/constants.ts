@@ -26,6 +26,7 @@ export type Barrage = {
 }
 
 export type NewsItem = {
+  id?: string,
   target?: string;
   link?: string;
   title?: string;

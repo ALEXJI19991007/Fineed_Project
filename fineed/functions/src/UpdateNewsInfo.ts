@@ -18,11 +18,12 @@ exports.updateNewsClick_v2 = functions.https.onCall(async (data, _context) => {
       return response;
     }
     const newsRef = db.collection("news_item");
-    const newsTarget = await newsRef.where("link", "==", data.link).get();
+    const newsSnapShot = await newsRef.doc(data.id).get();
+    // const newsTarget = await newsRef.where("id", "==", data.id).get();
     let newsItem;
-    if (newsTarget.empty) {
+    if (!newsSnapShot.exists) {
       try {
-        const entry = newsRef.doc();
+        const entry = newsRef.doc(data.id);
         newsItem = {
           id: entry.id,
           click_count: data.isNormalClick ? 1 : 0,
@@ -44,9 +45,9 @@ exports.updateNewsClick_v2 = functions.https.onCall(async (data, _context) => {
         return response;
       }
     } else {
-      let itemId = newsTarget.docs[0].id;
-      const entry = db.collection("news_item").doc(itemId);
-      const currentData = (await entry.get()).data() || {};
+      // let itemId = newsTarget.docs[0].id;
+      const entry = db.collection("news_item").doc(data.id);
+      const currentData = (await newsSnapShot.data()) || {};
       if (currentData === {}) {
         response.error = ERROR.NOT_FOUND;
         return response;
