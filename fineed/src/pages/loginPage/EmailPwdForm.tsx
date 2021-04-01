@@ -24,8 +24,13 @@ export function EmailPwdForm(props: any) {
   const [password, setPassword] = useState("");
   const history = useHistory();
 
-  // state for the login warning message
-  let [warning, setWarning] = useState("");
+  // states for the login warning message
+  let [emailWarning, setEmailWarning] = useState("");
+  let [passwdWarning, setPasswdWarning] = useState("");
+  const clearWarnings = () => {
+    setEmailWarning(""); 
+    setPasswdWarning("");
+  };
   
   const emailOnChange = (event: React.ChangeEvent<{ value: string }>) => {
     setEmail(event.target.value);
@@ -36,11 +41,28 @@ export function EmailPwdForm(props: any) {
   };
 
   const emailLoginHandler = async () => {
+    let isOk: boolean = true;
+    clearWarnings();
+    if(!email){ // check for if there is email
+      setEmailWarning("Please enter your email address.");
+      isOk = false;
+    }
+    else if(!isValidEmail(email)){ // check for proper email format
+      setEmailWarning("Please enter an email with a valid format.");
+      isOk = false;
+    }
+
+    if(!password) { // check if there is password
+      setPasswdWarning("Please enter your password.");
+      isOk = false;
+    }
+    if(!isOk) return;
+
     const getUserAuthResp = (await props.userHookFunc({email: email, password: password})).data;
     if (getUserAuthResp.error !== ERROR.NO_ERROR) {
       console.log(getUserAuthResp.error);
       // show the login error message
-      setWarning(props.errorMsg);
+      setEmailWarning(props.errorMsg);
       return;
     }
     const getUserInfoResp = (await getUserInfo({ userId: getUserAuthResp.resp.userId })).data;
@@ -78,8 +100,8 @@ export function EmailPwdForm(props: any) {
             autoComplete="email"
             autoFocus
             onChange={emailOnChange}
-            helperText={warning}
-            error={warning !== ""}
+            helperText={emailWarning}
+            error={emailWarning !== ""}
           />
           <TextField
             variant="outlined"
@@ -92,6 +114,8 @@ export function EmailPwdForm(props: any) {
             id="password"
             autoComplete="current-password"
             onChange={passwordOnChange}
+            helperText={passwdWarning}
+            error={passwdWarning !== ""}
           />
           <br />
           <Button
@@ -105,4 +129,10 @@ export function EmailPwdForm(props: any) {
       </form>
     </Fragment>
   );
+}
+
+// helper function for checking if an email is properly formatted
+const isValidEmail = (email: string) => {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return email.match(re)? true : false;
 }
