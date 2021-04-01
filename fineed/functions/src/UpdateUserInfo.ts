@@ -94,6 +94,12 @@ exports.updateUserHistory_v2 = functions.https.onCall(
   }
 );
 
+// helper functions to strip html tags from string
+// to prevent injected script attack
+function sanitize(str: string) {
+  return str.replace(/<(?:.|\n)*?>/gm, "");
+}
+
 exports.updateUserProfile_v2 = functions.https.onCall(
   async (data, _context) => {
     let response: Response = {
@@ -122,13 +128,14 @@ exports.updateUserProfile_v2 = functions.https.onCall(
         response.error = ERROR.NOT_FOUND;
         return response;
       }
+      // sanitize strings before saving to the database
       userEntry.update({
         first_name:
-          data.firstName === "" ? currentUserData.first_name : data.firstName,
+          data.firstName === sanitize("" ? currentUserData.first_name : data.firstName),
         last_name:
-          data.lastName === "" ? currentUserData.last_name : data.lastName,
+          data.lastName === sanitize("" ? currentUserData.last_name : data.lastName),
         username:
-          data.username === "" ? currentUserData.username : data.username,
+          data.username === sanitize("" ? currentUserData.username : data.username),
       });
       response.resp = {
         username: data.username,
