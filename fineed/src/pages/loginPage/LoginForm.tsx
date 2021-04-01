@@ -17,6 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import { curUserInfoAtom } from "../../atoms/UsernameAtom";
 import { getUserInfo } from "../../firebase/FirebaseFunction";
 import { ERROR } from "../../atoms/constants";
+import { getUserAuth_v2 } from "../../firebase/FirebaseFunction";
 
 const theme = createMuiTheme({
   palette: {
@@ -75,7 +76,9 @@ export function LoginForm() {
           <Avatar src={LogoPic} style={{ height: "80px", width: "80px" }} />
 
           <Grid item xs={4}>
-            <EmailPwdForm />
+            <EmailPwdForm userHookFunc={getUserAuth_v2} 
+              prompt="Sign in with Fineed Account"
+              errorMsg="Incorrect email/password." buttonText="Sign In"/>
           </Grid>
 
           <Typography

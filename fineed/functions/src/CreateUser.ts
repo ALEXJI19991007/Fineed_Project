@@ -8,6 +8,7 @@ const initialList: string[] = [];
 // For now I am ignoring data.id -- I am assuming that
 // this function is soley used for creating a new user and
 // nothing else.
+//
 // expected data: { email:string, password:string }
 exports.createNewUser_v2 = functions.https.onCall(async (data, _context) => {
   let response: Response = {
@@ -53,7 +54,7 @@ exports.createNewUser_v2 = functions.https.onCall(async (data, _context) => {
 
     userDocumentRef.set(newUserData);
     response.resp = {
-        id: userDocumentRef.id,
+      userId: userDocumentRef.id,
     }
     return response;
   } catch (error) {
