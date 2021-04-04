@@ -4,14 +4,14 @@ import { Response, ERROR } from "./constants";
 
 const initialList: string[] = [];
 
-// expected data: { id:string, email:string }
+// expected data: { id:string, email:string, verified:boolean }
 exports.createNewUser_v2 = functions.https.onCall(async (data, _context) => {
   let response: Response = {
     resp: null,
     error: ERROR.NO_ERROR,
   };
   try {
-    if (!data.email || !data.id) {
+    if (!data.email || !data.id || data.verified === undefined || data.verified === null) {
       response.error = ERROR.PARAM_ERROR;
       return response;
     }
@@ -42,6 +42,7 @@ exports.createNewUser_v2 = functions.https.onCall(async (data, _context) => {
       history: initialList,
       username: data.email, // use email as default username
       subscription: initialList,
+      verified: data.verified,
     };
 
     userDocumentRef.set(newUserData);

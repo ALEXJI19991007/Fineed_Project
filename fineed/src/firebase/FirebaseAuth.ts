@@ -13,7 +13,7 @@ export const FirebaseAuth = {
       );
       if (result?.additionalUserInfo?.isNewUser) {
         FirebaseAnalytics.logEvent('sign_up', { method: 'Google' });
-        createUser(result.user?.uid, result.user?.email);
+        createUser(result.user?.uid, result.user?.email, true);
       }
       FirebaseAnalytics.logEvent('login', { method: 'Google' });
       return result.user?.uid;
@@ -30,7 +30,7 @@ export const FirebaseAuth = {
       );
       if (result?.additionalUserInfo?.isNewUser) {
         FirebaseAnalytics.logEvent('sign_up', { method: 'GitHub' });
-        createUser(result.user?.uid, result.user?.email);
+        createUser(result.user?.uid, result.user?.email, true);
       }
       FirebaseAnalytics.logEvent('login', { method: 'GitHub' });
       return result.user?.uid;
@@ -43,7 +43,8 @@ export const FirebaseAuth = {
   async registerWithEmail(email: string, password: string) {
     return await firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(async (userCredential) => {
-        let resp = await createUser(userCredential.user?.uid, email);
+        console.log("test");
+        let resp = await createUser(userCredential.user?.uid, email, false);
         // only log analytics if both firebase and our auth succeed
         if(resp.error === ERROR.NO_ERROR) {
           FirebaseAnalytics.logEvent('sign_up', { method: 'Email' });
@@ -77,13 +78,14 @@ export const FirebaseAuth = {
   },
 };
 
-const createUser = async(id: string | undefined, email: string | null | undefined) => {
+const createUser = async(id: string | undefined, email: string | null | undefined, verified: boolean) => {
   if (id === undefined || email === null || email === undefined) {
     throw new Error("undefined id or email");
   }
   const userData = {
     id: id,
     email: email,
+    verified: verified,
   }
   const resp = (await createNewUser_v2(userData)).data;
   return resp;

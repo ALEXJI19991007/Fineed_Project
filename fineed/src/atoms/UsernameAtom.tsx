@@ -13,6 +13,7 @@ export const curUserInfoAtom = atom({
     lastName: "",
     firstName: "",
     email: "",
+    verified: false,
   },
   effects_UNSTABLE: [persistAtom],
 });
