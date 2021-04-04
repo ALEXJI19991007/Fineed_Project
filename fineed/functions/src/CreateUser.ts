@@ -32,7 +32,7 @@ exports.createNewUser_v2 = functions.https.onCall(async (data, _context) => {
     }
     
     // create new user in the db
-    const userDocumentRef = userCollectionRef.doc();
+    const userDocumentRef = userCollectionRef.doc(data.id);
     const newUserData = {
       id: data.id,
       email: data.email,

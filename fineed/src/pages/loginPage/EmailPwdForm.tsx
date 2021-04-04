@@ -15,8 +15,8 @@ import { curUserInfoAtom } from "../../atoms/UsernameAtom";
 // userHookFunc is the firebase function that should be called by the
 // button onClick eventhandler.
 // 
-// if registering: userHookFunc should be createNewUser_v2
-// if logining in: userHookFunc should be getUserAuth_v2
+// if registering: userHookFunc should be FirebaseAuth.registerWithEmail(password, email)
+// if logining in: userHookFunc should be FirebaseAuth.loginWithEmail(password, email)
 export function EmailPwdForm(props: any) {
   const setCurUserUid = useSetRecoilState(curUserUidAtom);
   const setCurUserInfo = useSetRecoilState(curUserInfoAtom);
@@ -133,6 +133,6 @@ export function EmailPwdForm(props: any) {
 
 // helper function for checking if an email is properly formatted
 const isValidEmail = (email: string) => {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return email.match(re)? true : false;
 }

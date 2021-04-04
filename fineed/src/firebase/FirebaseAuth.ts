@@ -52,8 +52,24 @@ export const FirebaseAuth = {
         return resp;
       })
       .catch((error) => {
-        return {error: ERROR.FIRESTORE_ERROR, msg: error};
+        // mock the error and let the frontend handle it
+        return {error: ERROR.FIRESTORE_ERROR, msg: error.message};
       });
+  },
+
+  async loginWithEmail(email:string, password: string) {
+    return await firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(async (userCredential) => {
+        // mock the success response
+        return {
+          error: ERROR.NO_ERROR, 
+          resp:{ userId: userCredential.user?.uid }
+        };
+      })
+      .catch((error) => {
+        // mock the error and let the frontend handle it
+        return {error: ERROR.FIRESTORE_ERROR, msg: error.message};
+      })
   },
 
   async logout() {
