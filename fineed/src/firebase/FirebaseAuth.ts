@@ -1,6 +1,8 @@
 import { Auth } from './Firebase';
 import { FirebaseAnalytics } from './FirebaseAnalytics';
 import { createNewUser_v2 } from './FirebaseFunction';
+import firebase from "firebase";
+import { ERROR } from "../atoms/constants";
 
 export const FirebaseAuth = {
 
@@ -38,6 +40,22 @@ export const FirebaseAuth = {
     }
   },
 
+  async registerWithEmail(email: string, password: string) {
+    return await firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(async (userCredential) => {
+        let resp = await createUser(userCredential.user?.uid, email);
+        // only log analytics if both firebase and our auth succeed
+        if(resp.error === ERROR.NO_ERROR) {
+          FirebaseAnalytics.logEvent('sign_up', { method: 'Email' });
+          FirebaseAnalytics.logEvent('login', { method: 'Email' });  
+        }
+        return resp;
+      })
+      .catch((error) => {
+        return {error: ERROR.FIRESTORE_ERROR, msg: error};
+      });
+  },
+
   async logout() {
     return Auth().signOut();
   },
@@ -51,5 +69,6 @@ const createUser = async(id: string | undefined, email: string | null | undefine
     id: id,
     email: email,
   }
-  const resp = await createNewUser_v2(userData);
+  const resp = (await createNewUser_v2(userData)).data;
+  return resp;
 }

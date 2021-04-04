@@ -58,7 +58,7 @@ export function EmailPwdForm(props: any) {
     }
     if(!isOk) return;
 
-    const getUserAuthResp = (await props.userHookFunc({email: email, password: password})).data;
+    const getUserAuthResp = await props.userHookFunc(email, password);
     if (getUserAuthResp.error !== ERROR.NO_ERROR) {
       console.log(getUserAuthResp.error);
       // show the login error message
