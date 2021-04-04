@@ -24,6 +24,7 @@ exports.getUserInfo = functions.https.onCall(async (data, _context) => {
       lastName: userData.last_name,
       firstName: userData.first_name,
       email: userData.email,
+      verified: userData.verified,
     };
     return response;
   } catch (error) {

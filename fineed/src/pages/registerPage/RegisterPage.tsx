@@ -9,7 +9,7 @@ import LogoPic from "../../imageSrc/pageIcon.png";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {Link} from "react-router-dom";
-import { createNewUser_v2 } from "../../firebase/FirebaseFunction";
+import { FirebaseAuth } from "../../firebase/FirebaseAuth";
 
 const theme = createMuiTheme({
     palette: {
@@ -39,7 +39,7 @@ export function RegisterPage () {
           <Avatar src={LogoPic} style={{ height: "80px", width: "80px" }} />
 
           <Grid item xs={2}>
-            <EmailPwdForm userHookFunc={createNewUser_v2} 
+            <EmailPwdForm userHookFunc={FirebaseAuth.registerWithEmail} 
               prompt="Sign up to get your customized news feed!"
               errorMsg="Email already in use." buttonText="Sign Up"/>
           </Grid>

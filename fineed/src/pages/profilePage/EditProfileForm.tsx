@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import { ERROR } from "../../atoms/constants";
 import { curUserInfoAtom } from "../../atoms/UsernameAtom";
+import firebase from "firebase";
 
 const theme = createMuiTheme({
   palette: {
@@ -76,6 +77,22 @@ export function EditProfileForm(props: any) {
     history.push("/profile");
   };
 
+  // function for sending verification email
+  const handleVerify = () => {
+    const user = firebase.auth().currentUser;
+    let actionCodeSettings = {
+      url: 'https://fineed.io/profile',
+    };
+    user?.sendEmailVerification(actionCodeSettings)
+      .then(() => {
+        // Verification email sent.
+        console.log("Email sent");
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
+
   return (
     <div>
       <ThemeProvider theme={theme}>
@@ -137,6 +154,14 @@ export function EditProfileForm(props: any) {
                 Edit
               </Button>
             </form>
+            <Typography>Verified: {userInfo.verified ? "Yes" : "No"}</Typography>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={handleVerify}
+              >
+                Verify
+              </Button>
           </Grid>
         </Grid>
       </ThemeProvider>
