@@ -30,6 +30,9 @@ const theme = createMuiTheme({
   },
 });
 
+// TODO -- update info when the page is refreshed.
+// otherwise when user verifies email the effect
+// is not visible until next login
 export function EditProfileForm(props: any) {
   const [firstName, setFirstName] = useState(props.userInfo.firstName);
   const [lastName, setLastName] = useState(props.userInfo.lastName);
@@ -80,12 +83,17 @@ export function EditProfileForm(props: any) {
   // function for sending verification email
   const handleVerify = () => {
     const user = firebase.auth().currentUser;
+    // unauthenticated - do nothing
+    if(!user) return;
+
+    // Send the email
     let actionCodeSettings = {
-      url: 'https://fineed.io/profile',
+      url: `https://fineed.io/verify?userId=${user.uid}`,
     };
-    user?.sendEmailVerification(actionCodeSettings)
+    user.sendEmailVerification(actionCodeSettings)
       .then(() => {
         // Verification email sent.
+        // TODO: Frontend -- inform user email is sent
         console.log("Email sent");
       })
       .catch((error) => {

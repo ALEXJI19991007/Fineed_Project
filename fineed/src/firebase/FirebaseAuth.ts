@@ -43,7 +43,6 @@ export const FirebaseAuth = {
   async registerWithEmail(email: string, password: string) {
     return await firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(async (userCredential) => {
-        console.log("test");
         let resp = await createUser(userCredential.user?.uid, email, false);
         // only log analytics if both firebase and our auth succeed
         if(resp.error === ERROR.NO_ERROR) {

@@ -53,6 +53,7 @@ exports.updateUserProfile_v2 = UpdateUserInfo.updateUserProfile_v2;
 exports.updateUserPassword_v2 = UpdateUserInfo.updateUserPassword_v2;
 exports.addUserSubscription = UpdateUserInfo.addUserSubscription;
 exports.removeUserSubscription = UpdateUserInfo.removeUserSubscription;
+exports.verifyUser = UpdateUserInfo.verifyUser;
 
 const UpdateNewsInfo = require("./UpdateNewsInfo");
 exports.updateNewsClick_v2 = UpdateNewsInfo.updateNewsClick_v2;
