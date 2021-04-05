@@ -271,3 +271,32 @@ exports.removeUserSubscription = functions.https.onCall(
     }
   }
 );
+
+// set a user's verified field to true
+// @param data.userId -- string   The id of the user to update
+exports.verifyUser = functions.https.onCall(
+  async (data, _context) => {
+    let response: Response = {
+      resp: null,
+      error: ERROR.NO_ERROR,
+    };
+    try{
+      if(!data.userId) { // mssing param
+        response.error = ERROR.PARAM_ERROR;
+        return response;
+      }
+      const userEntry = db.collection("user").doc(data.userId);
+      const userDoc = await userEntry.get();
+      if(!userDoc.exists) { //user not found
+        response.error = ERROR.NOT_FOUND;
+        return response;
+      }
+      // set verified to true
+      userEntry.update({ verified: true });
+      return response;
+    } catch (error) {
+      response.error = ERROR.FIRESTORE_ERROR;
+      return response;
+    }
+  }
+);

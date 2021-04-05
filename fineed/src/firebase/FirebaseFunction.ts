@@ -27,5 +27,6 @@ export const updateUserHistory_v2 = FirebaseFunction("updateUserHistory_v2");
 export const updateUserPassword_v2 = FirebaseFunction("updateUserPassword_v2");
 export const addUserSubscription = FirebaseFunction("addUserSubscription");
 export const removeUserSubscription = FirebaseFunction("removeUserSubscription");
+export const verifyUser = FirebaseFunction("verifyUser");
 
 export const fetchCompanyNews = FirebaseFunction("fetchCompanyNews");
