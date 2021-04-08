@@ -73,8 +73,8 @@ const useStyles = makeStyles({
     },
     focusItem: {
         backgroundColor: '#81d4fa',
-        borderRadius: 7, 
-        paddingRight: '10px', 
+        borderRadius: 7,
+        paddingRight: '10px',
         paddingLeft: '10px'
     },
     nonFocusItem: {
@@ -120,8 +120,8 @@ type BarrageListPropsType = {
 
 function BarrageList(props: BarrageListPropsType) {
     const classes = useStyles();
-    const  {barrage}  = props;
-    return (<Grid container className={barrage.focus? classes.focusItem:classes.nonFocusItem} >
+    const { barrage } = props;
+    return (<Grid container className={barrage.focus ? classes.focusItem : classes.nonFocusItem} >
         <Grid item xs={12}>
             <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
         </Grid>
@@ -154,25 +154,27 @@ const BarrageBox = (props: BarrageItemProps) => {
         }
     }
     useEffect(() => {
+        let closestBarrageTimeArr:number[] = [];
         if (curHoverTimeStampAtom > 0 && barrageArray.length !== 0) {
-            
-           
-            if(Math.abs(sortedBarrageArray[0].time - curHoverTimeStampAtom) < curBarrageFocusTimeRangeAtom * 60 * 1000){
-                let closestTime = sortedBarrageArray.sort((a, b) => Math.abs(curHoverTimeStampAtom - a.time) - Math.abs(curHoverTimeStampAtom - b.time))[0].time;
-                const focusArray: BarrageItemWithFocus[] = sortedBarrageArray.map((barrage) => {
-                    if (Math.abs(barrage.time - closestTime) < curBarrageFocusTimeRangeAtom * 60 * 1000 ) {
-                        console.log(Math.abs(barrage.time - closestTime))
-                        return { ...barrage, focus: true }
-                    } else {
-                        return { ...barrage, focus: false }
-                    }
-                }).sort((barrageA: BarrageItemWithFocus, barrageB: BarrageItemWithFocus) => {
-                    return barrageA.time - barrageB.time;
-                });
-                setSortedBarrageArrayState(focusArray);
-            }
+            sortedBarrageArray.map((barrage) => {
+                if (Math.abs(barrage.time - curHoverTimeStampAtom) < curBarrageFocusTimeRangeAtom * 60 * 1000) {
+                    closestBarrageTimeArr.push(barrage.time)
+                }
+            })
+            const focusArray: BarrageItemWithFocus[] = sortedBarrageArray.map((barrage) => {
+                if (closestBarrageTimeArr.includes(barrage.time)) {
+                    
+                    return { ...barrage, focus: true }
+                } else {
+                    return { ...barrage, focus: false }
+                }
+            }).sort((barrageA: BarrageItemWithFocus, barrageB: BarrageItemWithFocus) => {
+                return barrageA.time - barrageB.time;
+            });
+            setSortedBarrageArrayState(focusArray);
 
-            
+
+
             if (focusRef.current && scrollRef.current) {
                 const element = focusRef.current;
                 element.scrollIntoView({ behavior: "smooth", block: 'center' })
@@ -192,7 +194,7 @@ const BarrageBox = (props: BarrageItemProps) => {
     return (
         <List className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
             {sortedBarrageArrayState.map((barrage: BarrageItemWithFocus, i: number) => (<ListItem key={i}>
-                <BarrageList barrage={barrage}/>
+                <BarrageList barrage={barrage} />
             </ListItem>))}
         </List>
 
