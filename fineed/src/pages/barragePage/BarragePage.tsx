@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -23,6 +23,7 @@ import { useBarrages } from "../../firebase/FirebaseFireStore";
 import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
 import { StockChart } from "./StockChart";
 import { BarrageHoverTimeStampAtom } from "../../atoms/BarrageHoverTimeStampAtom";
+import { BarrageFocusTimeRangeAtom } from "../../atoms/BarrageFocusTimeRangeAtom";
 import BarragePicture from "../../imageSrc/barragepage/barragePagePic2.jpg";
 
 const useStyles = makeStyles({
@@ -138,6 +139,7 @@ const BarrageBox = (props: BarrageItemProps) => {
     const [scrollHeight, setScrollHeight] = useState<number>(0);
     const [scrollTop, setScrollTop] = useState<number>(0);
     const curHoverTimeStampAtom = useRecoilValue(BarrageHoverTimeStampAtom);
+    const curBarrageFocusTimeRangeAtom = useRecoilValue(BarrageFocusTimeRangeAtom);
     const { barrageArray } = props;
     let sortedBarrageArray = [...barrageArray];
 
@@ -155,7 +157,7 @@ const BarrageBox = (props: BarrageItemProps) => {
         if (curHoverTimeStampAtom > 0 && barrageArray.length !== 0) {
             let closestTime = sortedBarrageArray.sort((a, b) => Math.abs(curHoverTimeStampAtom - a.time) - Math.abs(curHoverTimeStampAtom - b.time))[0].time;
             const focusArray: BarrageItemWithFocus[] = sortedBarrageArray.map((barrage) => {
-                if (barrage.time === closestTime) {
+                if (Math.abs(barrage.time - closestTime) < curBarrageFocusTimeRangeAtom * 60 * 1000 ) {
                     return { ...barrage, focus: true }
                 } else {
                     return { ...barrage, focus: false }
@@ -189,6 +191,7 @@ const BarrageBox = (props: BarrageItemProps) => {
 
     )
 }
+
 
 export function BarragePage() {
     const classes = useStyles();

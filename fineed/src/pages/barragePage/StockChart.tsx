@@ -6,16 +6,50 @@ import priceData from './fakeStockData.json';
 import Highcharts from "highcharts";
 import HighchartsReact from 'highcharts-react-official';
 import { useStockData } from "../../firebase/FirebaseFireStore";
+import Slider from '@material-ui/core/Slider';
 import { StockSnapShotAtom } from "../../atoms/StockSnapShotAtom";
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/core";
+import { BarrageFocusTimeRangeAtom } from "../../atoms/BarrageFocusTimeRangeAtom";
 
 const useStyles=makeStyles({
   stockChart: {
   }
 })
+
+const BarrageFocusTimeSlidingBar = withStyles({
+  root: {
+    color: '#52af77',
+    height: 6,
+    width: '200px',
+  },
+  thumb: {
+    height: 24,
+    width: 24,
+    backgroundColor: '#fff',
+    border: '2px solid currentColor',
+    marginTop: -8,
+    marginLeft: -12,
+    '&:focus, &:hover, &$active': {
+      boxShadow: 'inherit',
+    },
+  },
+  active: {},
+  valueLabel: {
+    left: 'calc(-50% + 4px)',
+  },
+  track: {
+    height: 8,
+    borderRadius: 4,
+  },
+  rail: {
+    height: 8,
+    borderRadius: 4,
+  },
+})(Slider);
+
 
 export function StockChart() {
   const classes = useStyles();
@@ -34,6 +68,7 @@ export function StockChart() {
   }, [stockSnapShotAtom]);
 
   const [_curHoverTimeStampAtom, setCurHoverTimeStampAtom] = useRecoilState(BarrageHoverTimeStampAtom);
+  const [curBarrageFocusTimeRangeAtom,setBarrageFocusTimeRangeAtom] = useRecoilState(BarrageFocusTimeRangeAtom)
   const handleMouseOver = (event: any) => {
     const curHoverTimeStamp = event.target.x;
 
@@ -42,6 +77,10 @@ export function StockChart() {
   const handleMouseOut = (event: any) => {
     setCurHoverTimeStampAtom(-1);
   }
+
+  const handleFocusTimeChange = (event: any, newValue: number | number[]) => {
+    setBarrageFocusTimeRangeAtom(newValue as number);
+  };
   const config = {
     chart: {
       type: 'line',
@@ -212,15 +251,23 @@ export function StockChart() {
         />} 
         label="Try Beta version(error trending)" color="primary"/>
       </div>
-      {isBeta ? <HighchartsReact
+      {isBeta ? 
+      <div>
+      <BarrageFocusTimeSlidingBar valueLabelDisplay="auto" aria-label="pretto slider" defaultValue={curBarrageFocusTimeRangeAtom} min={1} max={60} onChange={handleFocusTimeChange}/>
+      <HighchartsReact
         className={classes.stockChart}
         highcharts={Highcharts}
         options={betaConfig}
-      /> : <HighchartsReact
+      /> 
+      </div>
+      : <div>
+      <BarrageFocusTimeSlidingBar valueLabelDisplay="auto" aria-label="pretto slider" defaultValue={curBarrageFocusTimeRangeAtom} min={1} max={60} onChange={handleFocusTimeChange}/>
+      <HighchartsReact
         className={classes.stockChart}
         highcharts={Highcharts}
         options={config}
-      />}
+      /> 
+      </div>}
     </div>
   )
 }
