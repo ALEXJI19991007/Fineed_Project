@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -115,20 +115,33 @@ type isInTheViewParaType = {
 }
 
 type BarrageListPropsType = {
-    barrage: BarrageItemWithFocus
+    barrage: BarrageItemWithFocus,
+    focusRef: RefObject<HTMLDivElement>|null,
 }
 
 function BarrageList(props: BarrageListPropsType) {
     const classes = useStyles();
-    const { barrage } = props;
-    return (<Grid container className={barrage.focus ? classes.focusItem : classes.nonFocusItem} >
-        <Grid item xs={12}>
-            <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
-        </Grid>
-        <Grid item xs={12}>
-            <ListItemText className={classes.listItemText} secondary={"from " + barrage.userName + " at " + timeConverter(barrage.time)}></ListItemText>
-        </Grid>
-    </Grid>)
+    const { barrage , focusRef} = props;
+    if(focusRef){
+        return (<Grid container className={barrage.focus ? classes.focusItem : classes.nonFocusItem} ref={focusRef}>
+            <Grid item xs={12}>
+                <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
+            </Grid>
+            <Grid item xs={12}>
+                <ListItemText className={classes.listItemText} secondary={"from " + barrage.userName + " at " + timeConverter(barrage.time)}></ListItemText>
+            </Grid>
+        </Grid>)
+    }else{
+        return (<Grid container className={barrage.focus ? classes.focusItem : classes.nonFocusItem}>
+            <Grid item xs={12}>
+                <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
+            </Grid>
+            <Grid item xs={12}>
+                <ListItemText className={classes.listItemText} secondary={"from " + barrage.userName + " at " + timeConverter(barrage.time)}></ListItemText>
+            </Grid>
+        </Grid>)
+    }
+    
 
 }
 
@@ -154,7 +167,7 @@ const BarrageBox = (props: BarrageItemProps) => {
         }
     }
     useEffect(() => {
-        let closestBarrageTimeArr:number[] = [];
+        let closestBarrageTimeArr: number[] = [];
         if (curHoverTimeStampAtom > 0 && barrageArray.length !== 0) {
             sortedBarrageArray.map((barrage) => {
                 if (Math.abs(barrage.time - curHoverTimeStampAtom) < curBarrageFocusTimeRangeAtom * 60 * 1000) {
@@ -163,7 +176,7 @@ const BarrageBox = (props: BarrageItemProps) => {
             })
             const focusArray: BarrageItemWithFocus[] = sortedBarrageArray.map((barrage) => {
                 if (closestBarrageTimeArr.includes(barrage.time)) {
-                    
+
                     return { ...barrage, focus: true }
                 } else {
                     return { ...barrage, focus: false }
@@ -190,9 +203,20 @@ const BarrageBox = (props: BarrageItemProps) => {
     }, [scrollRef, focusRef, barrageArray, scrollHeight, curHoverTimeStampAtom])
     return (
         <List className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
-            {sortedBarrageArrayState.map((barrage: BarrageItemWithFocus, i: number) => (<ListItem key={i}>
-                <BarrageList barrage={barrage} />
-            </ListItem>))}
+            {sortedBarrageArrayState.map((barrage: BarrageItemWithFocus, i: number) => {
+                if(barrage.focus){
+                    return (
+                        <ListItem key={i} >
+                            <BarrageList barrage={barrage} focusRef={focusRef}/>
+                        </ListItem>)
+                }else{
+                    return (
+                        <ListItem key={i}>
+                            <BarrageList barrage={barrage} focusRef={null}/>
+                        </ListItem>)
+                }
+                
+            })}
         </List>
 
     )
