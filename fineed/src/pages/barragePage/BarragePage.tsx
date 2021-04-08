@@ -24,7 +24,7 @@ import { Barrage, BarrageSnapShotAtom } from "../../atoms/BarrageSnapShotAtom";
 import { StockChart } from "./StockChart";
 import { BarrageHoverTimeStampAtom } from "../../atoms/BarrageHoverTimeStampAtom";
 import { BarrageFocusTimeRangeAtom } from "../../atoms/BarrageFocusTimeRangeAtom";
-import BarragePicture from "../../imageSrc/barragepage/barragePagePic2.jpg";
+import BarragePicture from "../../imageSrc/barragepage/barragePagePic3.jpg";
 
 const useStyles = makeStyles({
     page: {
@@ -172,9 +172,6 @@ const BarrageBox = (props: BarrageItemProps) => {
                 return barrageA.time - barrageB.time;
             });
             setSortedBarrageArrayState(focusArray);
-
-
-
             if (focusRef.current && scrollRef.current) {
                 const element = focusRef.current;
                 element.scrollIntoView({ behavior: "smooth", block: 'center' })
