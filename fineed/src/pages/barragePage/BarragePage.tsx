@@ -155,17 +155,24 @@ const BarrageBox = (props: BarrageItemProps) => {
     }
     useEffect(() => {
         if (curHoverTimeStampAtom > 0 && barrageArray.length !== 0) {
-            let closestTime = sortedBarrageArray.sort((a, b) => Math.abs(curHoverTimeStampAtom - a.time) - Math.abs(curHoverTimeStampAtom - b.time))[0].time;
-            const focusArray: BarrageItemWithFocus[] = sortedBarrageArray.map((barrage) => {
-                if (Math.abs(barrage.time - closestTime) < curBarrageFocusTimeRangeAtom * 60 * 1000 ) {
-                    return { ...barrage, focus: true }
-                } else {
-                    return { ...barrage, focus: false }
-                }
-            }).sort((barrageA: BarrageItemWithFocus, barrageB: BarrageItemWithFocus) => {
-                return barrageA.time - barrageB.time;
-            });
-            setSortedBarrageArrayState(focusArray);
+            
+           
+            if(Math.abs(sortedBarrageArray[0].time - curHoverTimeStampAtom) < curBarrageFocusTimeRangeAtom * 60 * 1000){
+                let closestTime = sortedBarrageArray.sort((a, b) => Math.abs(curHoverTimeStampAtom - a.time) - Math.abs(curHoverTimeStampAtom - b.time))[0].time;
+                const focusArray: BarrageItemWithFocus[] = sortedBarrageArray.map((barrage) => {
+                    if (Math.abs(barrage.time - closestTime) < curBarrageFocusTimeRangeAtom * 60 * 1000 ) {
+                        console.log(Math.abs(barrage.time - closestTime))
+                        return { ...barrage, focus: true }
+                    } else {
+                        return { ...barrage, focus: false }
+                    }
+                }).sort((barrageA: BarrageItemWithFocus, barrageB: BarrageItemWithFocus) => {
+                    return barrageA.time - barrageB.time;
+                });
+                setSortedBarrageArrayState(focusArray);
+            }
+
+            
             if (focusRef.current && scrollRef.current) {
                 const element = focusRef.current;
                 element.scrollIntoView({ behavior: "smooth", block: 'center' })

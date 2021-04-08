@@ -10,11 +10,12 @@ import Slider from '@material-ui/core/Slider';
 import { StockSnapShotAtom } from "../../atoms/StockSnapShotAtom";
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles, withStyles } from "@material-ui/core";
 import { BarrageFocusTimeRangeAtom } from "../../atoms/BarrageFocusTimeRangeAtom";
 
-const useStyles=makeStyles({
+const useStyles = makeStyles({
   stockChart: {
   }
 })
@@ -68,7 +69,7 @@ export function StockChart() {
   }, [stockSnapShotAtom]);
 
   const [_curHoverTimeStampAtom, setCurHoverTimeStampAtom] = useRecoilState(BarrageHoverTimeStampAtom);
-  const [curBarrageFocusTimeRangeAtom,setBarrageFocusTimeRangeAtom] = useRecoilState(BarrageFocusTimeRangeAtom)
+  const [curBarrageFocusTimeRangeAtom, setBarrageFocusTimeRangeAtom] = useRecoilState(BarrageFocusTimeRangeAtom)
   const handleMouseOver = (event: any) => {
     const curHoverTimeStamp = event.target.x;
 
@@ -248,26 +249,41 @@ export function StockChart() {
           name="checkedB"
           color="primary"
 
-        />} 
-        label="Try Beta version(error trending)" color="primary"/>
+        />}
+          label="Try Beta version(error trending)" color="primary" />
       </div>
-      {isBeta ? 
-      <div>
-      <BarrageFocusTimeSlidingBar valueLabelDisplay="auto" aria-label="pretto slider" defaultValue={curBarrageFocusTimeRangeAtom} min={1} max={60} onChange={handleFocusTimeChange}/>
-      <HighchartsReact
-        className={classes.stockChart}
-        highcharts={Highcharts}
-        options={betaConfig}
-      /> 
-      </div>
-      : <div>
-      <BarrageFocusTimeSlidingBar valueLabelDisplay="auto" aria-label="pretto slider" defaultValue={curBarrageFocusTimeRangeAtom} min={1} max={60} onChange={handleFocusTimeChange}/>
-      <HighchartsReact
-        className={classes.stockChart}
-        highcharts={Highcharts}
-        options={config}
-      /> 
-      </div>}
+      {isBeta ?
+        <div>
+          <Tooltip title="slide this bar to control the time range(min) you want the barrage focus" placement="right">
+            <BarrageFocusTimeSlidingBar
+              valueLabelDisplay="auto"
+              aria-label="pretto slider"
+              defaultValue={curBarrageFocusTimeRangeAtom}
+              min={1}
+              max={60}
+              onChange={handleFocusTimeChange} />
+          </Tooltip>
+          <HighchartsReact
+            className={classes.stockChart}
+            highcharts={Highcharts}
+            options={betaConfig}
+          />
+        </div>
+        : <div>
+          <Tooltip title="slide this bar to control the time range(min) you want the barrage focus" placement="right">
+            <BarrageFocusTimeSlidingBar
+              valueLabelDisplay="auto"
+              aria-label="pretto slider"
+              defaultValue={curBarrageFocusTimeRangeAtom}
+              min={1}
+              max={60}
+              onChange={handleFocusTimeChange} />
+          </Tooltip>        <HighchartsReact
+            className={classes.stockChart}
+            highcharts={Highcharts}
+            options={config}
+          />
+        </div>}
     </div>
   )
 }
