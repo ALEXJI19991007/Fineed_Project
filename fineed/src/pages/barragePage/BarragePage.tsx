@@ -150,7 +150,7 @@ type BarrageListPropsType = {
 function BarrageItem(props: BarrageItemProps) {
     const classes = useStyles();
     if(props.tag === 'news'&& props.NBTitle && props.NBImgUrl){
-        return <Card className={classes.NBCardRoot}>
+        return <Card className={classes.NBCardRoot} ref={props.focusRef}>
         <CardActionArea
           onClick={async () => {
           }}

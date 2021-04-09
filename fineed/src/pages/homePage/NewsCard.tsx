@@ -15,8 +15,9 @@ import {
 import { useRecoilValue } from "recoil";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { ERROR } from "../../atoms/constants";
+import { useEffect, useState } from "react";
 
-export const YAHOONEWSDEFAULTPICTUREURL:string = 'https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png';
+export const YAHOONEWSDEFAULTPICTUREURL: string = 'https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png';
 
 export type News = {
   id: string,
@@ -28,7 +29,7 @@ export type News = {
   pubDate: string;
 };
 
-const useStyles = makeStyles((theme: Theme)=>createStyles({
+const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     maxWidth: 380,
     height: 520,
@@ -58,6 +59,7 @@ const useStyles = makeStyles((theme: Theme)=>createStyles({
 export function NewsCard(props: News) {
   const classes = useStyles();
   const curUid = useRecoilValue(curUserUidAtom);
+  const [sharedNewsID, setSharedNewsID] = useState('');
 
   const newsOnClick = async () => {
     window.open(props.link, "_blank");
@@ -93,6 +95,34 @@ export function NewsCard(props: News) {
     }
   };
 
+  const shareNews = async () => {
+    let newsId = '';
+    const clickData = {
+      isNormalClick: true,
+      id: props.id,
+      target: props.target,
+      link: props.link,
+      title: props.title,
+      content: props.content,
+      imgUrl: props.imgUrl,
+      pubDate: props.pubDate,
+    };
+    const updateNewsClickResp = (await updateNewsClick_v2(clickData)).data;
+    setSharedNewsID(updateNewsClickResp.resp.newsId);
+    if (updateNewsClickResp.error !== ERROR.NO_ERROR) {
+      setSharedNewsID('failed to copy news ID ');
+    }
+    const userData = {
+      userId: curUid === "" ? "ExHvLJq2sPe5aPKfuPSJ" : curUid,
+      newsId: updateNewsClickResp.resp.newsId,
+    };
+    const updateUserHistoryResp = (await updateUserHistory_v2(userData)).data;
+    if (updateUserHistoryResp.error !== ERROR.NO_ERROR) {
+      setSharedNewsID('failed to copy news ID ');
+    }
+
+  }
+
   const markNewsFavorite = async () => {
     const clickData = {
       isNormalClick: false,
@@ -123,7 +153,14 @@ export function NewsCard(props: News) {
       return;
     }
   };
-
+  useEffect(() => {
+    const el = document.createElement('textarea');
+    el.value = sharedNewsID;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }, [sharedNewsID])
   return (
     <Card className={classes.root}>
       <CardActionArea
@@ -134,7 +171,7 @@ export function NewsCard(props: News) {
         <CardMedia
           className={classes.media}
           // TODO - Need to find a new placeholder image in case no image url is present in the feed
-          image={(props.imgUrl && props.imgUrl!==YAHOONEWSDEFAULTPICTUREURL) ? props.imgUrl : fineedDefaultNewsPicture}
+          image={(props.imgUrl && props.imgUrl !== YAHOONEWSDEFAULTPICTUREURL) ? props.imgUrl : fineedDefaultNewsPicture}
           title={props.title}
         />
         <CardContent className={classes.title}>
@@ -159,7 +196,14 @@ export function NewsCard(props: News) {
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.cardAction}>
-        <Button size="small" color="primary">
+        <Button
+          size="small"
+          color="primary"
+          onClick={async () => {
+            await shareNews();
+          }
+          }
+        >
           Share
         </Button>
         <Button
