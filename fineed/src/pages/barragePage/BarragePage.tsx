@@ -94,11 +94,13 @@ function timeConverter(UNIX_timestamp: number): string {
     var time = month + ' ' + date + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
     return time;
 }
-type BarrageItemProps = {
+type BarrageBoxProps = {
     barrageArray: Barrage[],
 }
 
-type BarrageItemWithFocus = Barrage & {focus: boolean};
+type BarrageItemWithFocus = Barrage & { focus: boolean };
+
+type BarrageItemProps = BarrageItemWithFocus & {focusRef: RefObject<HTMLDivElement> | null};
 
 type isInTheViewParaType = {
     elementClientHeight: number,
@@ -109,36 +111,56 @@ type isInTheViewParaType = {
 
 type BarrageListPropsType = {
     barrage: BarrageItemWithFocus,
-    focusRef: RefObject<HTMLDivElement>|null,
+    focusRef: RefObject<HTMLDivElement> | null,
+}
+
+function BarrageItem(props: BarrageItemProps) {
+    const classes = useStyles();
+    return <Grid container className={props.focus ? classes.focusItem : classes.nonFocusItem} ref={props.focusRef}>
+        <Grid item xs={12}>
+            <ListItemText className={classes.listItemText} primary={props.content}></ListItemText>
+        </Grid>
+        <Grid item xs={12}>
+            <ListItemText className={classes.listItemText} secondary={"from " + props.userName + " at " + timeConverter(props.time)}></ListItemText>
+        </Grid>
+    </Grid>
 }
 
 function BarrageList(props: BarrageListPropsType) {
     const classes = useStyles();
-    const { barrage , focusRef} = props;
-    if(focusRef){
-        return (<Grid container className={barrage.focus ? classes.focusItem : classes.nonFocusItem} ref={focusRef}>
-            <Grid item xs={12}>
-                <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-                <ListItemText className={classes.listItemText} secondary={"from " + barrage.userName + " at " + timeConverter(barrage.time)}></ListItemText>
-            </Grid>
-        </Grid>)
-    }else{
-        return (<Grid container className={barrage.focus ? classes.focusItem : classes.nonFocusItem}>
-            <Grid item xs={12}>
-                <ListItemText className={classes.listItemText} primary={barrage.content}></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-                <ListItemText className={classes.listItemText} secondary={"from " + barrage.userName + " at " + timeConverter(barrage.time)}></ListItemText>
-            </Grid>
-        </Grid>)
+    const { barrage, focusRef } = props;
+    if (focusRef) {
+        return <BarrageItem
+        uid={barrage.uid}
+        content={barrage.content}
+        time={barrage.time}
+        NBImgUrl={barrage.NBImgUrl}
+        NBTitle={barrage.NBTitle}
+        NBcontent={barrage.NBcontent}
+        tag={barrage.tag}
+        userName={barrage.userName}
+        focus={barrage.focus} 
+        focusRef={focusRef}
+        />
+    } else {
+        return <BarrageItem
+            uid={barrage.uid}
+            content={barrage.content}
+            time={barrage.time}
+            NBImgUrl={barrage.NBImgUrl}
+            NBTitle={barrage.NBTitle}
+            NBcontent={barrage.NBcontent}
+            tag={barrage.tag}
+            userName={barrage.userName}
+            focus={barrage.focus} 
+            focusRef={null}
+            />
     }
-    
+
 
 }
 
-const BarrageBox = (props: BarrageItemProps) => {
+const BarrageBox = (props: BarrageBoxProps) => {
     const classes = useStyles();
     const scrollRef = useRef<HTMLUListElement>(null);
     const focusRef = useRef<HTMLDivElement>(null);
@@ -197,18 +219,18 @@ const BarrageBox = (props: BarrageItemProps) => {
     return (
         <List className={classes.messageArea} ref={scrollRef} onScroll={onScroll}>
             {sortedBarrageArrayState.map((barrage: BarrageItemWithFocus, i: number) => {
-                if(barrage.focus){
+                if (barrage.focus) {
                     return (
                         <ListItem key={i} >
-                            <BarrageList barrage={barrage} focusRef={focusRef}/>
+                            <BarrageList barrage={barrage} focusRef={focusRef} />
                         </ListItem>)
-                }else{
+                } else {
                     return (
                         <ListItem key={i}>
-                            <BarrageList barrage={barrage} focusRef={null}/>
+                            <BarrageList barrage={barrage} focusRef={null} />
                         </ListItem>)
                 }
-                
+
             })}
         </List>
 
