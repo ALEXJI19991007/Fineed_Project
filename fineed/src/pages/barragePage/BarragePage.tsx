@@ -98,14 +98,7 @@ type BarrageItemProps = {
     barrageArray: Barrage[],
 }
 
-type BarrageItemWithFocus = {
-    uid: string,
-    content: string,
-    time: number,
-    tag: string,
-    userName: string,
-    focus: boolean,
-}
+type BarrageItemWithFocus = Barrage & {focus: boolean};
 
 type isInTheViewParaType = {
     elementClientHeight: number,
