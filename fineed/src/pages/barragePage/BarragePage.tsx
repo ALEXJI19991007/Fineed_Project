@@ -235,6 +235,7 @@ const BarrageBox = (props: BarrageBoxProps) => {
     sortedBarrageArray.sort((barrageA: Barrage, barrageB: Barrage) => {
         return barrageA.time - barrageB.time;
     });
+    
     const [sortedBarrageArrayState, setSortedBarrageArrayState] = useState<BarrageItemWithFocus[]>(sortedBarrageArray.map((barrage) => { return { ...barrage, focus: false } }))
 
     const onScroll = () => {
