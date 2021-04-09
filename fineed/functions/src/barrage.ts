@@ -6,14 +6,35 @@ const finnhub = require('finnhub');
 const Filter = require('bad-words');
 
 export const storeUserBarrage = functions.https.onCall(async (data, _context) => {
-    //TODO besides the length check for content we should also add the bad word check
     const filter = new Filter();
     if (data.content.length === 0) {
         return;
     }
+
     const userInfo = await (await db.collection('user').doc(data.uid).get()).data();
     const userName = userInfo?userInfo.username:'anonymous';
     const barrageDocRef = db.collection("barrage").doc();
+
+    const newsItemRef = db.collection("news_item");
+    const newsSearchResultArr = (await newsItemRef.where('id','==',data.content).get()).docs.map((doc) => doc.data());
+    if(newsSearchResultArr.length > 0){
+        console.log('user sent us a news as a barrage')
+        const news = newsSearchResultArr[0];
+        barrageDocRef.set({
+            uid: data.uid,
+            tag: 'news',
+            time: data.time,
+            NBcontent: news.content,
+            NBTitle: news.title,
+            NBImgUrl: news.image_url,
+            userName: userName,
+        }).then(() => {
+            console.log("Document successfully written!");
+        }).catch((error) => {
+                console.error("Error writing document: ", error);
+            });
+        return    
+    }     
     barrageDocRef.set({
         uid: data.uid,
         tag: data.tag,
