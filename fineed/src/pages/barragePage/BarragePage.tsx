@@ -1,5 +1,11 @@
 import React, { RefObject, useEffect, useRef, useState } from "react";
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles,Theme,createStyles } from '@material-ui/core/styles';
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -14,6 +20,7 @@ import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
 import Grow from '@material-ui/core/Grow';
 import Fade from '@material-ui/core/Fade';
+import fineedDefaultNewsPicture from "../../imageSrc/homepage/FineedDefaultNewsPicture.jpg";
 import Collapse from '@material-ui/core/Collapse';
 import Zoom from '@material-ui/core/Zoom';
 import { curUserUidAtom } from '../../atoms/FirebaseUserAtom'
@@ -25,8 +32,34 @@ import { StockChart } from "./StockChart";
 import { BarrageHoverTimeStampAtom } from "../../atoms/BarrageHoverTimeStampAtom";
 import { BarrageFocusTimeRangeAtom } from "../../atoms/BarrageFocusTimeRangeAtom";
 import BarragePicture from "../../imageSrc/barragepage/barragePagePic3.jpg";
+import { YAHOONEWSDEFAULTPICTUREURL } from "../homePage/NewsCard";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme)=>createStyles({
+    NBCardRoot: {
+        width:'100vh',
+        height: 200,
+      },
+      NBCardtitle: {
+        height: 40,
+        overflow: "hidden",
+        margin: theme.spacing(1),
+      },
+      NBCardcontent: {
+        height: 40,
+        overflow: "hidden",
+        wordWrap: "break-word",
+        padding: theme.spacing(1),
+      },
+      NBCardmedia: {
+        height: 100,
+      },
+      NBCardtext: {
+        wordWrap: "break-word",
+      },
+      NBCardcardAction: {
+        marginTop: 10,
+      },
+
     page: {
         backgroundImage: `url(${BarragePicture})`,
         backgroundPosition: 'center',
@@ -80,7 +113,7 @@ const useStyles = makeStyles({
     nonFocusItem: {
 
     }
-});
+}));
 
 function timeConverter(UNIX_timestamp: number): string {
     var a = new Date(UNIX_timestamp);
@@ -116,7 +149,52 @@ type BarrageListPropsType = {
 
 function BarrageItem(props: BarrageItemProps) {
     const classes = useStyles();
-    return <Grid container className={props.focus ? classes.focusItem : classes.nonFocusItem} ref={props.focusRef}>
+    if(props.tag === 'news'&& props.NBTitle && props.NBImgUrl){
+        return <Card className={classes.NBCardRoot}>
+        <CardActionArea
+          onClick={async () => {
+          }}
+        >
+          <CardMedia
+            className={classes.NBCardmedia}
+            image={(props.NBImgUrl && props.NBImgUrl!==YAHOONEWSDEFAULTPICTUREURL) ? props.NBImgUrl : fineedDefaultNewsPicture}
+            title={props.NBTitle??'fineed news'}
+          />
+          <CardContent className={classes.NBCardtitle}>
+            <Typography
+              className={classes.NBCardtext}
+              gutterBottom
+              variant="h5"
+              component="h2"
+            >
+              {props.NBTitle}
+            </Typography>
+          </CardContent>
+          <CardContent className={classes.NBCardcontent}>
+            <Typography
+              className={classes.NBCardtext}
+              variant="body2"
+              color="textSecondary"
+              component="p"
+            >
+              {props.content}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions className={classes.NBCardcardAction}>
+          <Button size="small" color="primary">
+            Share
+          </Button>
+          <Button
+            size="small"
+            color="primary"
+          >
+            Favorite
+          </Button>
+        </CardActions>
+      </Card>
+    }else{
+        return <Grid container className={props.focus ? classes.focusItem : classes.nonFocusItem} ref={props.focusRef}>
         <Grid item xs={12}>
             <ListItemText className={classes.listItemText} primary={props.content}></ListItemText>
         </Grid>
@@ -124,26 +202,13 @@ function BarrageItem(props: BarrageItemProps) {
             <ListItemText className={classes.listItemText} secondary={"from " + props.userName + " at " + timeConverter(props.time)}></ListItemText>
         </Grid>
     </Grid>
+    }
 }
 
 function BarrageList(props: BarrageListPropsType) {
     const classes = useStyles();
     const { barrage, focusRef } = props;
-    if (focusRef) {
-        return <BarrageItem
-        uid={barrage.uid}
-        content={barrage.content}
-        time={barrage.time}
-        NBImgUrl={barrage.NBImgUrl}
-        NBTitle={barrage.NBTitle}
-        NBcontent={barrage.NBcontent}
-        tag={barrage.tag}
-        userName={barrage.userName}
-        focus={barrage.focus} 
-        focusRef={focusRef}
-        />
-    } else {
-        return <BarrageItem
+    return <BarrageItem
             uid={barrage.uid}
             content={barrage.content}
             time={barrage.time}
@@ -153,11 +218,7 @@ function BarrageList(props: BarrageListPropsType) {
             tag={barrage.tag}
             userName={barrage.userName}
             focus={barrage.focus} 
-            focusRef={null}
-            />
-    }
-
-
+            focusRef={focusRef} />
 }
 
 const BarrageBox = (props: BarrageBoxProps) => {

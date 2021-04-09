@@ -16,7 +16,7 @@ import { useRecoilValue } from "recoil";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { ERROR } from "../../atoms/constants";
 
-const YAHOONEWSDEFAULTPICTUREURL:string = 'https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png';
+export const YAHOONEWSDEFAULTPICTUREURL:string = 'https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png';
 
 export type News = {
   id: string,
