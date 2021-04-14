@@ -10,6 +10,7 @@ import Fade from '@material-ui/core/Fade';
 import Collapse from '@material-ui/core/Collapse';
 import Zoom from '@material-ui/core/Zoom';
 import samplePromoVideo from "../../videoSrc/IntroVideo.mp4";
+import screenfull from 'screenfull'
 
 
 const useStyles = makeStyles({
@@ -38,6 +39,7 @@ export function PromoVideoPage() {
     const [isVideoMuted,setIsVideoMuted] = useState(true);
     const [isVideoPlayed,setIsVideoPlayed] = useState(true);
     const [checked, setChecked] = useState(true);
+    const playerRef = useRef<any>(null);
 
     // const videoRef = useRef<ReactPlayer|null>(null);
     // const [seekToState,setSeekToState] = useState(0.0);
@@ -67,6 +69,12 @@ export function PromoVideoPage() {
     const handleVolume =()=>{
         setIsVideoMuted(false);
     }
+    const handleClickFullscreen = () => {
+        if (screenfull.isEnabled) {
+            screenfull.request(playerRef.current?.wrapper);
+        }
+      };
+
     return(
         <Fade in={checked} timeout={1300}>
     <div>
@@ -75,10 +83,12 @@ export function PromoVideoPage() {
            className={classes.player}
            width='100%'
            height='100%'
-           muted={isVideoMuted}
-           playing={isVideoPlayed}
+           playing
+           controls
            url={samplePromoVideo}
            onEnded={()=>{history.push("/home")}}
+           onPlay={handleClickFullscreen}
+           ref={playerRef}
            />
            
         </div>

@@ -88,6 +88,7 @@ export function StockChart() {
       borderRadius: 10,
       height: 450,
       width: 650,
+      backgroundColor: '#DEB887'
     },
     title: {
       text: 'GameStop Inc.'
@@ -109,9 +110,9 @@ export function StockChart() {
       },
     },
     yAxis: {
-      title: {
-        text: 'Price USD',
-      },
+      gridLineWidth: 0,
+      title: null,
+      "startOnTick": true
     },
     xAxis: [{
       type: 'datetime',
@@ -124,25 +125,38 @@ export function StockChart() {
         day: '%b %e',
         week: '%b %e'
       },
-      labels: {
-        rotation: -60, align: 'right'
-      }
+      lineWidth: 0,
+            tickWidth: 0,
     }],
     series: [
       {
         name: 'Price USD',
-        data: chartData
+        data: chartData,
+        showInLegend: false,
+        color: '#FFFF00',
+        lineWidth: 3,
+        step: true
       }
     ],
+    credits: {
+      enabled: false
+    },
   };
 
   const betaConfig = {
+    title: {
+      text: 'GameStop Inc.'
+    },
+    subtitle: {
+      text: 'Level 2 info '
+    },
     chart: {
       alignTicks: false,
       borderRadius: 10,
       zoomType: 'x',
       height: 450,
       width: 650,
+      
     },
 
     credits: {
