@@ -111,9 +111,17 @@ export function EditProfileForm(props: any) {
           alignItems="center"
           justify="center"
         >
+          <Grid item xs = {8}>
+          <form noValidate>
+          <Grid
+          container
+          spacing={3}
+          direction="column"
+          alignItems="center"
+          justify="center"
+        >
           <Typography>{msg}</Typography>
-          <Grid item xs={2}>
-            <form noValidate>
+          
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -153,7 +161,6 @@ export function EditProfileForm(props: any) {
                 Current username:{" "}
                 {props.username === "" ? "not set yet" : props.username}
               </Typography> */}
-              <br />
               <Button
                 variant="contained"
                 color="primary"
@@ -161,8 +168,12 @@ export function EditProfileForm(props: any) {
               >
                 Edit
               </Button>
-            </form>
-            <Typography>Verified: {userInfo.verified ? "Yes" : "No"}</Typography>
+            <Typography            
+            style={{ marginTop: "15px" }}
+            variant="body2"
+            color="textSecondary"
+            align="center"> Verified: {userInfo.verified ? "Yes" : "No"}
+              </Typography>
             <Button
                 variant="contained"
                 color="primary"
@@ -170,7 +181,9 @@ export function EditProfileForm(props: any) {
               >
                 Verify
               </Button>
-          </Grid>
+        </Grid>
+        </form>
+        </Grid>
         </Grid>
       </ThemeProvider>
     </div>
