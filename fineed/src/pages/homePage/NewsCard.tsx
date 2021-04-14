@@ -16,6 +16,12 @@ import { useRecoilValue } from "recoil";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { ERROR } from "../../atoms/constants";
 import { useEffect, useState } from "react";
+import { Snackbar} from '@material-ui/core';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export const YAHOONEWSDEFAULTPICTUREURL: string = 'https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png';
 
@@ -60,6 +66,8 @@ export function NewsCard(props: News) {
   const classes = useStyles();
   const curUid = useRecoilValue(curUserUidAtom);
   const [sharedNewsID, setSharedNewsID] = useState('');
+  const [open, setOpen] = useState(false);
+  const [exist, setExist] = useState(false);
 
   const newsOnClick = async () => {
     window.open(props.link, "_blank");
@@ -124,6 +132,7 @@ export function NewsCard(props: News) {
   }
 
   const markNewsFavorite = async () => {
+    setOpen(true);
     const clickData = {
       isNormalClick: false,
       id: props.id,
@@ -161,6 +170,21 @@ export function NewsCard(props: News) {
     document.execCommand('copy');
     document.body.removeChild(el);
   }, [sharedNewsID])
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const handleCloseWarn = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setExist(false);
+  };
+
   return (
     <Card className={classes.root}>
       <CardActionArea
@@ -216,6 +240,16 @@ export function NewsCard(props: News) {
           Favorite
         </Button>
       </CardActions>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          Successfully added news to favorite list.
+        </Alert>
+      </Snackbar>
+      <Snackbar open={exist} autoHideDuration={3000} onClose={handleCloseWarn}>
+        <Alert onClose={handleClose} severity="warning">
+          News already existed in favorite list.
+        </Alert>
+      </Snackbar>
     </Card>
   );
 }

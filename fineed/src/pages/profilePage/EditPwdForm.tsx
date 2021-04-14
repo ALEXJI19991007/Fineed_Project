@@ -74,9 +74,15 @@ export function EditPwdForm() {
           alignItems="center"
           justify="center"
         >
-          <Grid item xs={3}>
+          <form noValidate>
+          <Grid
+          container
+          spacing={3}
+          direction="column"
+          alignItems="center"
+          justify="center"
+        >
            <Typography>{notify}</Typography>
-           <form noValidate>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -114,8 +120,8 @@ export function EditPwdForm() {
               >
                 Change Password
               </Button>
-              </form>
-          </Grid>
+              </Grid>
+        </form>
         </Grid>
       </ThemeProvider>
     </div>
