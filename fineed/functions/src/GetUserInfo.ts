@@ -90,7 +90,7 @@ exports.getUserFavorite_v2 = functions.https.onCall(async (data, _context) => {
     const userFavorite = userData.favorite;
     const favoriteNews: FirebaseFirestore.DocumentData[] = [];
     // Get news objects
-    for (let i = 0; i < userFavorite.length; ++i) {
+    for (let i = userFavorite.length - 1; i >= 0; --i) {
       let entry = db.collection("news_item").doc(userFavorite[i]);
       let newsData = (await entry.get()).data() || {};
       if (newsData !== {}) {

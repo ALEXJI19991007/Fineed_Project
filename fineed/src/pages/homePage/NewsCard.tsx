@@ -103,13 +103,12 @@ export function NewsCard(props: News) {
       console.log(updateUserHistoryResp.error);
       return;
     }
-    const newsSet: Set<string> = new Set(curUserInfo.history);
-    if (!newsSet.has(props.id)) {
+    if (curUserInfo.history.indexOf(props.id) === -1) {
       const newUserHistoryList: string[] = [...curUserInfo.history];
       newUserHistoryList.push(props.id);
       setCurUserInfo({
         ...curUserInfo,
-        history: newUserHistoryList
+        history: newUserHistoryList,
       })
     }
   };
@@ -139,7 +138,6 @@ export function NewsCard(props: News) {
     if (updateUserHistoryResp.error !== ERROR.NO_ERROR) {
       setSharedNewsID('failed to copy news ID ');
     }
-
   }
 
   const markNewsFavorite = async () => {
@@ -171,6 +169,14 @@ export function NewsCard(props: News) {
     if (updateUserFavoriteResp.error !== ERROR.NO_ERROR) {
       console.log(updateUserFavoriteResp.error);
       return;
+    }
+    if (curUserInfo.favorite.indexOf(props.id) === -1) {
+      const newUserFavoriteList: string[] = [...curUserInfo.favorite];
+      newUserFavoriteList.push(props.id);
+      setCurUserInfo({
+        ...curUserInfo,
+        favorite: newUserFavoriteList,
+      })
     }
   };
   useEffect(() => {

@@ -8,7 +8,6 @@ import {
   rssFetchPage,
 } from "../firebase/FirebaseFunction";
 import { ERROR } from "../atoms/constants";
-import { curUserInfoAtom, userInfoAtom } from "../atoms/UsernameAtom";
 
 // The filteredNewsListState internally keeps track of three atom
 // dependencies: newsListFilterState, newsListState and newsListPageIndexState

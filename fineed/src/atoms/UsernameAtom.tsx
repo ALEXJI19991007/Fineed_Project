@@ -6,16 +6,6 @@ const { persistAtom } = recoilPersist({
   storage: sessionStorage,
 });
 
-export type userInfoAtom = {
-  username: string,
-  lastName: string,
-  firstName: string,
-  email: string,
-  favorite: string[];
-  history: string[];
-  verified: boolean;
-};
-
 const emptyList: string[] = [];
 export const curUserInfoAtom = atom({
   key: "curUserInfoAtom",
