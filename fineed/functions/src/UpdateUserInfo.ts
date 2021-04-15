@@ -214,18 +214,6 @@ exports.addUserSubscription_v2 = functions.https.onCall(
         response.error = ERROR.PARAM_ERROR;
         return response;
       }
-      // let subsObj;
-      // if (targetCompany === "news_amazon") {
-      //   subsObj = { news_amazon: companyTimeStampData.count };
-      // } else if (targetCompany === "news_apple") {
-      //   subsObj = { news_apple: companyTimeStampData.count };
-      // } else if (targetCompany === "news_facebook") {
-      //   subsObj = { news_facebook: companyTimeStampData.count };
-      // } else if (targetCompany === "news_google") {
-      //   subsObj = { news_google: companyTimeStampData.count };
-      // } else if (targetCompany === "news_microsoft") {
-      //   subsObj = { news_microsoft: companyTimeStampData.count };
-      // }
       userEntry.set({
         "subscription": {
           [targetCompany]: companyTimeStampData.count,
