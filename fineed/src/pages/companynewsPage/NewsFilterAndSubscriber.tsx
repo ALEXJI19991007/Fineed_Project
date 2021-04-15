@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import {
-  addUserSubscription,
+  addUserSubscription_v2,
   getUserSubscription,
   removeUserSubscription,
 } from "../../firebase/FirebaseFunction";
@@ -66,15 +66,19 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
         console.log(getUserSubscriptionResp.error);
         return;
       }
+      // console.log(getUserSubscriptionResp.resp.subscriptionList);
       // The list of companies that user subscribes to.
-      const subscriptionList: string[] =
-        getUserSubscriptionResp.resp.subscriptionList;
+      const subscriptionList: string[] = Object.keys(getUserSubscriptionResp.resp.subscriptionList);
       // The current subscription list (the atom); We need to modify it according to subscriptionList
       let newSubscriptionList: boolean[] = [...subscriptionStatus];
-      for (let sub of subscriptionList) {
-        const index: number = COMPANY_NUMBER_MAP.get(sub) || 0;
+      subscriptionList.forEach((company: string) => {
+        const index: number = COMPANY_NUMBER_MAP.get(company) || 0;
         newSubscriptionList[index] = true;
-      }
+      })
+      // for (let sub of subscriptionList) {
+      //   const index: number = COMPANY_NUMBER_MAP.get(sub) || 0;
+      //   newSubscriptionList[index] = true;
+      // }
       const currentNewsState = {
         target: "amazon",
       };
@@ -100,7 +104,7 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
     // Send request to the corresponding backend function
     let modifySubscriptionResp = curSubStatus
       ? (await removeUserSubscription(data)).data
-      : (await addUserSubscription(data)).data;
+      : (await addUserSubscription_v2(data)).data;
     if (modifySubscriptionResp.error !== ERROR.NO_ERROR) {
       // If an error occurs, we need to roll back our frontend changes
       newSubscriptionStatus[index] = curSubStatus;

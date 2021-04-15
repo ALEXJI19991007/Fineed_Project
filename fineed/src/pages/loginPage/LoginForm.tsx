@@ -47,7 +47,6 @@ export function LoginForm() {
     }
     setCurUserUid(userId);
     setCurUserInfo(getUserInfoResp.resp);
-    // setCurUserHistory(getUserInfoResp.resp.history);
     history.push('/profile');
   };
 

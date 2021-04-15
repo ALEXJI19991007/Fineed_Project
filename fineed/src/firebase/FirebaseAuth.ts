@@ -1,6 +1,6 @@
 import { Auth } from './Firebase';
 import { FirebaseAnalytics } from './FirebaseAnalytics';
-import { createNewUser_v2 } from './FirebaseFunction';
+import { createNewUser_v3 } from './FirebaseFunction';
 import firebase from "firebase";
 import { ERROR } from "../atoms/constants";
 
@@ -86,6 +86,6 @@ const createUser = async(id: string | undefined, email: string | null | undefine
     email: email,
     verified: verified,
   }
-  const resp = (await createNewUser_v2(userData)).data;
+  const resp = (await createNewUser_v3(userData)).data;
   return resp;
 }

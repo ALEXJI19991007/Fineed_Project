@@ -52,6 +52,7 @@ exports.updateUserHistory_v2 = UpdateUserInfo.updateUserHistory_v2;
 exports.updateUserProfile_v2 = UpdateUserInfo.updateUserProfile_v2;
 exports.updateUserPassword_v2 = UpdateUserInfo.updateUserPassword_v2;
 exports.addUserSubscription = UpdateUserInfo.addUserSubscription;
+exports.addUserSubscription_v2 = UpdateUserInfo.addUserSubscription_v2;
 exports.removeUserSubscription = UpdateUserInfo.removeUserSubscription;
 exports.verifyUser = UpdateUserInfo.verifyUser;
 
@@ -60,6 +61,7 @@ exports.updateNewsClick_v2 = UpdateNewsInfo.updateNewsClick_v2;
 
 const CreateNewUser = require("./CreateUser");
 exports.createNewUser_v2 = CreateNewUser.createNewUser_v2;
+exports.createNewUser_v3 = CreateNewUser.createNewUser_v3;
 
 // const CreateNewUser = require("./CreateNewUser")
 // exports.createNewUser_v2 = CreateNewUser.createNewUser_v2;

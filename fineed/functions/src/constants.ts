@@ -14,6 +14,14 @@ export const COMPANY_RSS_URL_MAP = new Map([
   // ["goldman_sachs", "https://rss.app/feeds/piEYPen106XDL7nB.xml"],
 ]);
 
+export const INITIAL_SUB_LIST = {
+  "amazon": -1,
+  "apple": -1,
+  "facebook": -1,
+  "google": -1,
+  "microsoft": -1,
+}
+
 export const PAGE_SZIE = 40;
 
 export const FEED_MAX_CHAR = 180;

@@ -188,7 +188,7 @@ exports.updateUserPassword_v2 = functions.https.onCall(
 
 // @param data.userId -- string   The id of the user to update
 // @param data.target -- string   The company to subscribe
-exports.addUserSubscription = functions.https.onCall(
+exports.addUserSubscription_v2 = functions.https.onCall(
   async (data, _context) => {
     let response: Response = {
       resp: null,
@@ -207,14 +207,30 @@ exports.addUserSubscription = functions.https.onCall(
       }
       const targetCompany = `news_${data.target}`;
       const companySubscriptionEntry = db.collection("subscription").doc(targetCompany);
+      const companyTimeStampEntry = db.collection("time_stamp").doc(data.target);
+      const companyTimeStampData = (await companyTimeStampEntry.get()).data() || null;
       const companySubscriptionData = (await companySubscriptionEntry.get()).data() || null;
-      if (companySubscriptionData === null) {
+      if (companySubscriptionData === null || companyTimeStampData === null) {
         response.error = ERROR.PARAM_ERROR;
         return response;
       }
-      userEntry.update({
-        subscription: admin.firestore.FieldValue.arrayUnion(targetCompany),
-      });
+      // let subsObj;
+      // if (targetCompany === "news_amazon") {
+      //   subsObj = { news_amazon: companyTimeStampData.count };
+      // } else if (targetCompany === "news_apple") {
+      //   subsObj = { news_apple: companyTimeStampData.count };
+      // } else if (targetCompany === "news_facebook") {
+      //   subsObj = { news_facebook: companyTimeStampData.count };
+      // } else if (targetCompany === "news_google") {
+      //   subsObj = { news_google: companyTimeStampData.count };
+      // } else if (targetCompany === "news_microsoft") {
+      //   subsObj = { news_microsoft: companyTimeStampData.count };
+      // }
+      userEntry.set({
+        "subscription": {
+          [targetCompany]: companyTimeStampData.count,
+        },
+      }, {merge: true});
       companySubscriptionEntry.update({
         users: admin.firestore.FieldValue.arrayUnion(data.userId),
       });
@@ -255,9 +271,11 @@ exports.removeUserSubscription = functions.https.onCall(
         response.error = ERROR.PARAM_ERROR;
         return response;
       }
-      userEntry.update({
-        subscription: admin.firestore.FieldValue.arrayRemove(targetCompany),
-      });
+      userEntry.set({
+        subscription: {
+          [targetCompany]: admin.firestore.FieldValue.delete(),
+        }
+      }, {merge: true});
       companySubscriptionEntry.update({
         users: admin.firestore.FieldValue.arrayRemove(data.userId),
       });
