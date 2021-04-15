@@ -131,11 +131,11 @@ exports.updateUserProfile_v2 = functions.https.onCall(
       // sanitize strings before saving to the database
       userEntry.update({
         first_name:
-          data.firstName === sanitize("" ? currentUserData.first_name : data.firstName),
+          data.firstName = sanitize("" ? currentUserData.first_name : data.firstName),
         last_name:
-          data.lastName === sanitize("" ? currentUserData.last_name : data.lastName),
+          data.lastName = sanitize("" ? currentUserData.last_name : data.lastName),
         username:
-          data.username === sanitize("" ? currentUserData.username : data.username),
+          data.username = sanitize("" ? currentUserData.username : data.username),
       });
       response.resp = {
         username: data.username,

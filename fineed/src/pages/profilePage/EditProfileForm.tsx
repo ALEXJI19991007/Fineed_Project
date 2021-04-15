@@ -89,6 +89,7 @@ export function EditProfileForm(props: any) {
     // Send the email
     let actionCodeSettings = {
       url: `https://fineed.io/verify?userId=${user.uid}`,
+      handleCodeInApp: true,
     };
     user.sendEmailVerification(actionCodeSettings)
       .then(() => {
