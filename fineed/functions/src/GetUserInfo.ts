@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import { Response, ERROR } from "./constants";
 import { db } from "./index";
-import {Md5} from "md5-typescript";
+import { Md5 } from "md5-typescript";
 
 exports.getUserInfo = functions.https.onCall(async (data, _context) => {
   let response: Response = {
@@ -24,6 +24,8 @@ exports.getUserInfo = functions.https.onCall(async (data, _context) => {
       lastName: userData.last_name,
       firstName: userData.first_name,
       email: userData.email,
+      favorite: userData.favorite,
+      history: userData.history,
       verified: userData.verified,
     };
     return response;
@@ -52,7 +54,7 @@ exports.getUserHistory_v2 = functions.https.onCall(async (data, _context) => {
     const userHistory = userData.history;
     const newsHistory: FirebaseFirestore.DocumentData[] = [];
     // Get news objects
-    for (let i = 0; i < userHistory.length; ++i) {
+    for (let i = userHistory.length - 1; i >= 0; --i) {
       let entry = db.collection("news_item").doc(userHistory[i]);
       let newsData = (await entry.get()).data() || {};
       if (newsData !== {}) {
@@ -168,3 +170,44 @@ exports.getUserSubscription = functions.https.onCall(async (data, _context) => {
     return response;
   }
 });
+
+// exports.getSubscriptionUpdateNumbers = functions.https.onCall(
+//   async (data, _context) => {
+//     let response: Response = {
+//       resp: null,
+//       error: ERROR.NO_ERROR,
+//     };
+//     try {
+//       if (data.userId === null || data.userId === "") {
+//         response.error = ERROR.UNAUTHENTICATED;
+//         return response;
+//       }
+//       if (data.subscriptionList.length === 0) {
+//         return response;
+//       }
+//       const userEntry = db.collection("user").doc(data.userId);
+//       const userData = (await userEntry.get()).data() || null;
+//       if (userData === null) {
+//         response.error = ERROR.NOT_FOUND;
+//         return response;
+//       }
+//       const userSubscriptionTimeStamp = userData.subscription_map;
+//       const timeStampCollection = db.collection("time_stamp");
+//       for (let i = 0; i < data.subscriptionList.length; ++i) {
+//         const timeStampDoc = await timeStampCollection
+//           .doc(data.subscriptionList[i])
+//           .get();
+//         const timeStampData = timeStampDoc.data();
+//         if (!timeStampData) {
+//           response.error = ERROR.NOT_FOUND;
+//           return response;
+//         }
+//         const lastTimeStamp = timeStampData["count"];
+//       }
+//       return response;
+//     } catch (error) {
+//       response.error = ERROR.FIRESTORE_ERROR;
+//       return response;
+//     }
+//   }
+// );
