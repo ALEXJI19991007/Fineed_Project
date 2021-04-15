@@ -8,6 +8,7 @@ import {
   rssFetchPage,
 } from "../firebase/FirebaseFunction";
 import { ERROR } from "../atoms/constants";
+import { curUserInfoAtom, userInfoAtom } from "../atoms/UsernameAtom";
 
 // The filteredNewsListState internally keeps track of three atom
 // dependencies: newsListFilterState, newsListState and newsListPageIndexState
@@ -17,6 +18,7 @@ export const filteredNewsListState = selector({
   get: async ({ get }) => {
     const filter = get(NewsAtoms.newsListFilterState);
     const userId = get(UserAtoms.curUserUidAtom);
+    // const userInfo = get(curUserInfoAtom);
     const pageIndex = get(NewsAtoms.headlinePageIndexState);
     // If we want to fetch user history or favorite
     if (filter.target === "user_history" || filter.target === "user_favorite") {

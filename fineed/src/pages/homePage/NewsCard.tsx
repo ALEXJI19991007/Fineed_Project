@@ -12,12 +12,13 @@ import {
   updateUserFavorite_v2,
   updateUserHistory_v2,
 } from "../../firebase/FirebaseFunction";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { ERROR } from "../../atoms/constants";
 import { useEffect, useState } from "react";
 import { Snackbar} from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import { curUserInfoAtom } from "../../atoms/UsernameAtom";
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -65,6 +66,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 export function NewsCard(props: News) {
   const classes = useStyles();
   const curUid = useRecoilValue(curUserUidAtom);
+  const [curUserInfo, setCurUserInfo] = useRecoilState(curUserInfoAtom);
   const [sharedNewsID, setSharedNewsID] = useState('');
   const [open, setOpen] = useState(false);
   const [exist, setExist] = useState(false);
@@ -100,6 +102,15 @@ export function NewsCard(props: News) {
     if (updateUserHistoryResp.error !== ERROR.NO_ERROR) {
       console.log(updateUserHistoryResp.error);
       return;
+    }
+    const newsSet: Set<string> = new Set(curUserInfo.history);
+    if (!newsSet.has(props.id)) {
+      const newUserHistoryList: string[] = [...curUserInfo.history];
+      newUserHistoryList.push(props.id);
+      setCurUserInfo({
+        ...curUserInfo,
+        history: newUserHistoryList
+      })
     }
   };
 
