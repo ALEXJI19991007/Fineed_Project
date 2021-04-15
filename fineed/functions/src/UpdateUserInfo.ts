@@ -216,7 +216,7 @@ exports.addUserSubscription_v2 = functions.https.onCall(
       }
       userEntry.set({
         "subscription": {
-          [targetCompany]: companyTimeStampData.count,
+          [data.target]: companyTimeStampData.count,
         },
       }, {merge: true});
       companySubscriptionEntry.update({
@@ -261,7 +261,7 @@ exports.removeUserSubscription = functions.https.onCall(
       }
       userEntry.set({
         subscription: {
-          [targetCompany]: admin.firestore.FieldValue.delete(),
+          [data.target]: admin.firestore.FieldValue.delete(),
         }
       }, {merge: true});
       companySubscriptionEntry.update({

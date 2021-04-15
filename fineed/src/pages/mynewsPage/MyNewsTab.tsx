@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { HistoryPage } from "./history & favorite page/HistoryPage";
 import { FavoritePage } from "./history & favorite page/FavoritePage";
+import { SubscriptionPage } from "./SubscriptionPage";
 
 const thm = createMuiTheme({
   palette: {
@@ -73,14 +74,18 @@ export function MyNewsTab() {
       <ThemeProvider theme={thm}>
         <AppBar position="static" color="secondary" elevation={0}>
           <Tabs value={value} onChange={handleChange} centered>
-            <Tab label="Your History" {...a11yProps(0)} />
-            <Tab label="Your Favorite" {...a11yProps(1)} />
+            <Tab label="Subscribed News" {...a11yProps(0)} />
+            <Tab label="Your History" {...a11yProps(1)} />
+            <Tab label="Your Favorite" {...a11yProps(2)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <HistoryPage />
+          <SubscriptionPage />
         </TabPanel>
         <TabPanel value={value} index={1}>
+          <HistoryPage />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
           <FavoritePage />
         </TabPanel>
       </ThemeProvider>

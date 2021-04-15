@@ -72,7 +72,7 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
       // The current subscription list (the atom); We need to modify it according to subscriptionList
       let newSubscriptionList: boolean[] = [...subscriptionStatus];
       subscriptionList.forEach((company: string) => {
-        const index: number = COMPANY_NUMBER_MAP.get(company) || 0;
+        const index: number = COMPANY_NUMBER_MAP.get(`news_${company}`) || 0;
         newSubscriptionList[index] = true;
       })
       // for (let sub of subscriptionList) {

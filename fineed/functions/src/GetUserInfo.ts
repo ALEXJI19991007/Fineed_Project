@@ -171,43 +171,53 @@ exports.getUserSubscription = functions.https.onCall(async (data, _context) => {
   }
 });
 
-// exports.getSubscriptionUpdateNumbers = functions.https.onCall(
-//   async (data, _context) => {
-//     let response: Response = {
-//       resp: null,
-//       error: ERROR.NO_ERROR,
-//     };
-//     try {
-//       if (data.userId === null || data.userId === "") {
-//         response.error = ERROR.UNAUTHENTICATED;
-//         return response;
-//       }
-//       if (data.subscriptionList.length === 0) {
-//         return response;
-//       }
-//       const userEntry = db.collection("user").doc(data.userId);
-//       const userData = (await userEntry.get()).data() || null;
-//       if (userData === null) {
-//         response.error = ERROR.NOT_FOUND;
-//         return response;
-//       }
-//       const userSubscriptionTimeStamp = userData.subscription_map;
-//       const timeStampCollection = db.collection("time_stamp");
-//       for (let i = 0; i < data.subscriptionList.length; ++i) {
-//         const timeStampDoc = await timeStampCollection
-//           .doc(data.subscriptionList[i])
-//           .get();
-//         const timeStampData = timeStampDoc.data();
-//         if (!timeStampData) {
-//           response.error = ERROR.NOT_FOUND;
-//           return response;
-//         }
-//         const lastTimeStamp = timeStampData["count"];
-//       }
-//       return response;
-//     } catch (error) {
-//       response.error = ERROR.FIRESTORE_ERROR;
-//       return response;
-//     }
-//   }
-// );
+exports.getSubscriptionUpdateNumbers = functions.https.onCall(
+  async (data, _context) => {
+    let response: Response = {
+      resp: null,
+      error: ERROR.NO_ERROR,
+    };
+    try {
+      if (data.userId === null || data.userId === "") {
+        response.error = ERROR.UNAUTHENTICATED;
+        return response;
+      }
+      if (data.subscriptionList.length === 0) {
+        return response;
+      }
+      const userEntry = db.collection("user").doc(data.userId);
+      const userData = (await userEntry.get()).data() || null;
+      if (userData === null) {
+        response.error = ERROR.NOT_FOUND;
+        return response;
+      }
+      let resp = {};
+      const userSubscriptionTimeStamps = userData.subscription;
+      const subsCompanies = Object.keys(userSubscriptionTimeStamps);
+      const timeStampCollection = db.collection("time_stamp");
+      for (let i = 0; i < subsCompanies.length; ++i) {
+        const timeStampDoc = await timeStampCollection
+          .doc(subsCompanies[i])
+          .get();
+        const timeStampData = timeStampDoc.data();
+        if (!timeStampData) {
+          response.error = ERROR.NOT_FOUND;
+          return response;
+        }
+        const newTimeStamp: number = timeStampData["count"];
+        const lastTimeStamp: number = userSubscriptionTimeStamps[subsCompanies[i]];
+        if (newTimeStamp > lastTimeStamp) {
+          resp = {
+            ...resp,
+            [subsCompanies[i]]: newTimeStamp - lastTimeStamp,
+          }
+        }
+      }
+      response.resp = resp;
+      return response;
+    } catch (error) {
+      response.error = ERROR.FIRESTORE_ERROR;
+      return response;
+    }
+  }
+);
