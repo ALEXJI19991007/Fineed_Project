@@ -12,10 +12,10 @@ const { persistAtom } = recoilPersist({
 // 3. google
 // 4. microsoft
 
-const subscriptionList: boolean[] = [false, false, false, false, false];
+export const INITIAL_SUBS_LIST: boolean[] = [false, false, false, false, false];
 
 export const userSubscriptionStatusAtom = atom({
   key: "userSubscriptionStatusAtom",
-  default: subscriptionList,
+  default: INITIAL_SUBS_LIST,
   effects_UNSTABLE: [persistAtom],
 });

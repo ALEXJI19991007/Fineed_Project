@@ -18,7 +18,7 @@ import { ERROR } from "../../atoms/constants";
 import { useEffect, useState } from "react";
 import { Snackbar} from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { curUserInfoAtom } from "../../atoms/UsernameAtom";
+import { curUserInfoAtom } from "../../atoms/UserInfoAtom";
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;

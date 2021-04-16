@@ -7,6 +7,7 @@ const { persistAtom } = recoilPersist({
 });
 
 const emptyList: string[] = [];
+const emptyJson = {};
 export const curUserInfoAtom = atom({
   key: "curUserInfoAtom",
   default: {
@@ -16,6 +17,7 @@ export const curUserInfoAtom = atom({
     email: "",
     favorite: emptyList,
     history: emptyList,
+    subscription: emptyJson,
     verified: false,
   },
   effects_UNSTABLE: [persistAtom],

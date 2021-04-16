@@ -12,7 +12,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import { ERROR } from "../../atoms/constants";
-import { curUserInfoAtom } from "../../atoms/UsernameAtom";
+import { curUserInfoAtom } from "../../atoms/UserInfoAtom";
 import firebase from "firebase";
 
 const theme = createMuiTheme({
@@ -67,6 +67,7 @@ export function EditProfileForm(props: any) {
       return;
     }
     const newUserInfo = {
+      ...userInfo,
       firstName: firstName,
       lastName: lastName,
       username: username,
@@ -74,9 +75,6 @@ export function EditProfileForm(props: any) {
     }
     setUserInfo(newUserInfo);
     setMsg("Successfully updated profile!");
-    // setFirstName("");
-    // setLastName("");
-    // setUsername("");
     history.push("/profile");
   };
 

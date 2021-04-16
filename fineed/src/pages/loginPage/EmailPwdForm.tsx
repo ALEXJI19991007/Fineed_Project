@@ -8,7 +8,7 @@ import { getUserInfo } from "../../firebase/FirebaseFunction";
 import { useHistory } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { ERROR } from "../../atoms/constants";
-import { curUserInfoAtom } from "../../atoms/UsernameAtom";
+import { curUserInfoAtom } from "../../atoms/UserInfoAtom";
 
 // expected props:
 // { userHookFunc: function, prompt: string, errorMsg: string, buttonText: string }

@@ -14,7 +14,7 @@ import {
 import { Search } from "@trejgun/material-ui-icons-google";
 import { EmailPwdForm } from "./EmailPwdForm";
 import Typography from "@material-ui/core/Typography";
-import { curUserInfoAtom } from "../../atoms/UsernameAtom";
+import { curUserInfoAtom } from "../../atoms/UserInfoAtom";
 import { getUserInfo } from "../../firebase/FirebaseFunction";
 import { ERROR } from "../../atoms/constants";
 

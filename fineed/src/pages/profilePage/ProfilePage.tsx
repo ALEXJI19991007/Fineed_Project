@@ -4,7 +4,7 @@ import { ProfileTab } from "./ProfileTab";
 import { UserPageHeader } from "../../components/UserPageHeader";
 import { useRecoilValue } from "recoil";
 import { PinDropSharp } from "@material-ui/icons";
-import { curUserInfoAtom } from "../../atoms/UsernameAtom";
+import { curUserInfoAtom } from "../../atoms/UserInfoAtom";
 
 export function ProfilePage() {
   const userInfo = useRecoilValue(curUserInfoAtom);

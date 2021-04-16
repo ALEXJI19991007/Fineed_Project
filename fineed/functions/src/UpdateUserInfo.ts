@@ -223,7 +223,7 @@ exports.addUserSubscription_v2 = functions.https.onCall(
         users: admin.firestore.FieldValue.arrayUnion(data.userId),
       });
       response.resp = {
-        userId: data.userId,
+        [data.target]: companyTimeStampData.count,
       };
       return response;
     } catch (error) {
@@ -268,7 +268,7 @@ exports.removeUserSubscription = functions.https.onCall(
         users: admin.firestore.FieldValue.arrayRemove(data.userId),
       });
       response.resp = {
-        userId: data.userId,
+        [data.target]: -1,
       };
       return response;
     } catch (error) {

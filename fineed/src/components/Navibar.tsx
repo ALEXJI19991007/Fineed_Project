@@ -30,7 +30,8 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import Tooltip from '@material-ui/core/Tooltip';
 import { FirebaseAuth } from "../firebase/FirebaseAuth";
 import { ListItemIcon } from "@material-ui/core";
-import { curUserInfoAtom } from "../atoms/UsernameAtom";
+import { curUserInfoAtom } from "../atoms/UserInfoAtom";
+import { INITIAL_SUBS_LIST, userSubscriptionStatusAtom } from "../atoms/UserSubscriptionStatusAtom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -90,6 +91,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
+const emptyList: string[] = [];
+const emptyJson = {};
 export function NaviBar() {
   let location = useLocation();
   const classes = useStyles();
@@ -102,6 +106,7 @@ export function NaviBar() {
   const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
   const setCurUserInfo = useSetRecoilState(curUserInfoAtom);
   const setNaviDrawerState = useSetRecoilState(NaviDrawerOpenStateAtom);
+  const setUserSubscriptionStatus = useSetRecoilState(userSubscriptionStatusAtom);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -138,8 +143,13 @@ export function NaviBar() {
       lastName: "",
       firstName: "",
       email: "",
+      favorite: emptyList,
+      history: emptyList,
+      subscription: emptyJson,
+      verified: false,
     };
     setCurUserInfo(emptyUserInfo);
+    setUserSubscriptionStatus(INITIAL_SUBS_LIST);
     handleMenuClose();
     history.push("/home");
   };

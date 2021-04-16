@@ -26,6 +26,7 @@ exports.getUserInfo = functions.https.onCall(async (data, _context) => {
       email: userData.email,
       favorite: userData.favorite,
       history: userData.history,
+      subscription: userData.subscription,
       verified: userData.verified,
     };
     return response;

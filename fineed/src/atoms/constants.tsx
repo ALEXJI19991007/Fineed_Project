@@ -10,8 +10,6 @@ export enum ERROR {
   FIRESTORE_ERROR = "Firestore error",
 }
 
-export const COMPANY_LIST: string[] = ["amazon", "apple", "facebook", "google", "microsoft"];
-
 export const COMPANY_NUMBER_MAP: Map<string, number> = new Map([
   ["news_amazon", 0],
   ["news_apple", 1],

@@ -21,6 +21,7 @@ import { makeStyles,
   createMuiTheme, } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
+import { curUserInfoAtom } from "../../atoms/UserInfoAtom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,33 +53,22 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
   const [subscriptionStatus, setSubscriptionStatus] = useRecoilState(
     userSubscriptionStatusAtom
   );
-  // const setSubscriptionStatus = useSetRecoilState(userSubscriptionStatusAtom);
+  const [userInfo, setUserInfo] = useRecoilState(curUserInfoAtom);
   const [filter, setFilter] = useRecoilState(newsListFilterState);
   const userId = useRecoilValue(curUserUidAtom);
 
   // We change the state of the atom when Home page is loaded
   useEffect(() => {
-    const fetchUserSubscription = async () => {
-      const getUserSubscriptionResp = (
-        await getUserSubscription({ userId: userId })
-      ).data;
-      if (getUserSubscriptionResp.error !== ERROR.NO_ERROR) {
-        console.log(getUserSubscriptionResp.error);
-        return;
-      }
+    const fetchUserSubscription = () => {
       // console.log(getUserSubscriptionResp.resp.subscriptionList);
       // The list of companies that user subscribes to.
-      const subscriptionList: string[] = Object.keys(getUserSubscriptionResp.resp.subscriptionList);
+      const subscriptionList: string[] = Object.keys(userInfo.subscription);
       // The current subscription list (the atom); We need to modify it according to subscriptionList
       let newSubscriptionList: boolean[] = [...subscriptionStatus];
       subscriptionList.forEach((company: string) => {
         const index: number = COMPANY_NUMBER_MAP.get(`news_${company}`) || 0;
         newSubscriptionList[index] = true;
-      })
-      // for (let sub of subscriptionList) {
-      //   const index: number = COMPANY_NUMBER_MAP.get(sub) || 0;
-      //   newSubscriptionList[index] = true;
-      // }
+      });
       const currentNewsState = {
         target: "amazon",
       };
@@ -112,6 +102,28 @@ export function NewsFilterAndSubscriber(props: NewsFilterAndSubscriberProps) {
       console.log(modifySubscriptionResp.error);
       return;
     }
+    const modifyResult = modifySubscriptionResp.resp;
+    if (modifyResult[sub] === -1) {
+      // if we are removing a particular subscrition, we need to 
+      // delete the entry in subscription in curUserInfoAtom.
+      let newSubscription = {...userInfo.subscription};
+      delete newSubscription[sub];
+      setUserInfo({
+        ...userInfo,
+        subscription: newSubscription,
+      });
+    } else {
+      // if we are adding a particular subscription, we need to
+      // add an entry in subscription in curUserInfoAtom.
+      setUserInfo({
+        ...userInfo,
+        subscription: {
+          ...userInfo.subscription,
+          [sub]: modifyResult[sub],
+        }
+      })
+    }
+    
   };
 
   const getIconColor = (index: number): ColorType => {
