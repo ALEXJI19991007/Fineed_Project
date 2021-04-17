@@ -278,6 +278,45 @@ exports.removeUserSubscription = functions.https.onCall(
   }
 );
 
+exports.updateSubscriptionReadingNumber = functions.https.onCall(
+  async (data, _context) => {
+    let response: Response = {
+      resp: null,
+      error: ERROR.NO_ERROR,
+    };
+    try {
+      if (data.userId === null || data.userId === "") {
+        response.error = ERROR.UNAUTHENTICATED;
+        return response;
+      }
+      const userEntry = db.collection("user").doc(data.userId);
+      const currentUserData = (await userEntry.get()).data() || null;
+      if (currentUserData === null) {
+        response.error = ERROR.NOT_FOUND;
+        return response;
+      }
+      const companyTimeStampEntry = db.collection("time_stamp").doc(data.target);
+      const companyTimeStampData = (await companyTimeStampEntry.get()).data() || null;
+      if (companyTimeStampData === null) {
+        response.error = ERROR.PARAM_ERROR;
+        return response;
+      }
+      userEntry.set({
+        "subscription": {
+          [data.target]: companyTimeStampData.count,
+        },
+      }, {merge: true});
+      response.resp = {
+        [data.target]: companyTimeStampData.count,
+      };
+      return response;
+    } catch (error) {
+      response.error = ERROR.FIRESTORE_ERROR;
+      return response;
+    }
+  }
+);
+
 // set a user's verified field to true
 // @param data.userId -- string   The id of the user to update
 exports.verifyUser = functions.https.onCall(

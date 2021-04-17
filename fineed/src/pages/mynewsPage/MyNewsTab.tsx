@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { HistoryPage } from "./history & favorite page/HistoryPage";
 import { FavoritePage } from "./history & favorite page/FavoritePage";
-import { SubscriptionPage } from "./SubscriptionPage";
+import { SubscriptionPage } from "./subscription page/SubscriptionPage";
 
 const thm = createMuiTheme({
   palette: {

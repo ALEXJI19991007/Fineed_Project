@@ -25,3 +25,11 @@ export const COMPANY_COMPANY_SHOWN_NAME_MAP: Map<string, string> = new Map([
   ["news_google", "Google"],
   ["news_microsoft", "Microsoft"],
 ]);
+
+export const COMPANY_IMAGEURL_MAP: Map<string, string> = new Map([
+  ["amazon", "../imageSrc/mynewspage/amazon.jpeg"],
+  ["apple", "../imageSrc/mynewspage/apple.jpeg"],
+  ["facebook", "../imageSrc/mynewspage/facebook.jpeg"],
+  ["google", "../imageSrc/mynewspage/google.jpeg"],
+  ["microsoft", "../imageSrc/mynewspage/microsoft.jpeg"],
+]);
