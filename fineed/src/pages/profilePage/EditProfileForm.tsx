@@ -177,6 +177,7 @@ export function EditProfileForm(props: any) {
                 variant="contained"
                 color="primary"
                 onClick={handleVerify}
+                disabled={userInfo.verified}
               >
                 Verify
               </Button>

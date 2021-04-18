@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { Snackbar} from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { curUserInfoAtom } from "../../atoms/UserInfoAtom";
+import {ShareNewsDialogs} from "./ShareNewsDialog";
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -70,6 +71,7 @@ export function NewsCard(props: News) {
   const [sharedNewsID, setSharedNewsID] = useState('');
   const [open, setOpen] = useState(false);
   const [exist, setExist] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const newsOnClick = async () => {
     window.open(props.link, "_blank");
@@ -114,6 +116,7 @@ export function NewsCard(props: News) {
   };
 
   const shareNews = async () => {
+    setDialogOpen(true);
     let newsId = '';
     const clickData = {
       isNormalClick: true,
@@ -267,6 +270,8 @@ export function NewsCard(props: News) {
           News already existed in favorite list.
         </Alert>
       </Snackbar>
+      <ShareNewsDialogs link={props.link} open={dialogOpen} 
+        handleClose={() => setDialogOpen(false)}/>
     </Card>
   );
 }

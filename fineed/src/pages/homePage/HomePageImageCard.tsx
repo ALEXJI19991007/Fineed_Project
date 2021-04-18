@@ -46,7 +46,7 @@ const imgCardStyle = makeStyles({
  }
 });
 
-export function HomePageImageCard() {
+export function HomePageImageCard(props: any) {
   const classes = imgCardStyle();
   const scrollY = useScrollPosition(60 /*fps*/);
   const [imgHeight, setImgHeight] = useState(INITIALHEIGHT);
@@ -73,6 +73,27 @@ export function HomePageImageCard() {
       setLoginButtonPaddingLeft(loginButtonPaddingLeft);
     }
   }, [scrollY,scrollState]);
+
+  const StartNowButton = () => {
+    return (
+      <ThemeProvider theme={theme}>
+          <Button variant="contained" color="primary" onClick={()=> {history.push('/register')}}>
+            Start Now
+          </Button>
+      </ThemeProvider>
+    );
+  }
+  
+  const LogInButton = () => {
+    return (
+      <div style={{ margin: "10px" }}>
+        <Link to="/login" style={{ color: "black", fontFamily: "-apple-system" }}>
+          LOG IN
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <Card elevation={0} style={{height:imgHeight}}>
       <CardMedia className={classes.cardImg} component="img" image={HomePageImagePic}/>
@@ -80,18 +101,10 @@ export function HomePageImageCard() {
       <Grid container spacing={0} className={classes.loginButton} style={{bottom:loginButtonBottom,paddingLeft: loginButtonPaddingLeft}}>
       <Grid item xs={2}></Grid>
       <Grid item xs={5}>
-        <ThemeProvider theme={theme}>
-          <Button variant="contained" color="primary" onClick={()=> {history.push('/register')}}>
-            Start Now
-          </Button>
-        </ThemeProvider>
+        {props.uid ? null : <StartNowButton/>}
       </Grid>
       <Grid item xs={3}>
-        <div style={{ margin: "10px" }}>
-          <Link to="/login" style={{ color: "black", fontFamily: "-apple-system" }}>
-            LOG IN
-          </Link>
-        </div>
+        {props.uid ? null : <LogInButton/>}
       </Grid>
       <Grid item xs={2}></Grid>
     </Grid>

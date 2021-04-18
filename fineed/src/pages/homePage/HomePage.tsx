@@ -3,12 +3,13 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import * as Atoms from "../../atoms/NewsListFilterAtom";
 import { HomePageImageCard } from "./HomePageImageCard";
 import { NewsCardContainer } from "./homePageContainer/NewsCardContainer";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Grow from '@material-ui/core/Grow';
 import Fade from '@material-ui/core/Fade';
 import Collapse from '@material-ui/core/Collapse';
 import lightGreen from '@material-ui/core/colors/lightGreen';
 import green from '@material-ui/core/colors/green';
+import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,6 +26,7 @@ export function HomePage() {
   const classes = useStyles();
   const [, setFilter] = useRecoilState(Atoms.newsListFilterState);
   const [checked, setChecked] = useState(true);
+  const uid = useRecoilValue(curUserUidAtom);
 
   // We change the state of the atom when Home page is loaded
   useEffect(() => {
@@ -37,7 +39,7 @@ export function HomePage() {
   return (
     <Fade in={checked} timeout={FADETIMEOUT}>
     <div className={classes.root}>
-      <HomePageImageCard />
+      <HomePageImageCard uid={uid}/>
       <div>
         <NewsCardContainer />
       </div>
