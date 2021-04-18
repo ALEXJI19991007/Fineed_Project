@@ -11,6 +11,7 @@ import { useRecoilValue } from "recoil";
 import { curUserUidAtom } from "../../atoms/FirebaseUserAtom";
 import { ERROR } from "../../atoms/constants";
 import { Typography } from "@material-ui/core";
+import firebase from "firebase"
 
 const theme = createMuiTheme({
   palette: {
@@ -26,7 +27,7 @@ const theme = createMuiTheme({
     },
   },
 });
-export function EditPwdForm() {
+/*export function EditPwdForm() {
   const pwdReg = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   const [oldPwd, setOldPwd] = useState("");
   const [newPwd, setNewPwd] = useState("");
@@ -122,6 +123,53 @@ export function EditPwdForm() {
               </Button>
               </Grid>
         </form>
+        </Grid>
+      </ThemeProvider>
+    </div>
+  );
+}*/
+
+export function EditPwdForm(props: any) {
+
+  let [msg, setMsg] = useState("");
+
+  const handleSubmit = () => {
+    setMsg("");
+    
+    let auth = firebase.auth();
+    let emailAddress = props.userInfo.email;
+
+    auth.sendPasswordResetEmail(emailAddress).then(() => {
+      setMsg("Password reset email sent!");
+    });
+  }
+  
+  return (
+    <div>
+      <ThemeProvider theme={theme}>
+        <Grid
+          container
+          spacing={3}
+          direction="column"
+          alignItems="center"
+          justify="center"
+        >
+          <Typography>Click below to reset your password</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            Reset Password
+          </Button>
+          <Typography            
+            style={{ marginTop: "15px" }}
+            variant="body2"
+            color="textSecondary"
+            align="center"
+          >
+          {msg}  
+          </Typography>
         </Grid>
       </ThemeProvider>
     </div>
