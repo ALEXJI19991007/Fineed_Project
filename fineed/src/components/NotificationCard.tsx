@@ -11,6 +11,11 @@ import { COMPANY_COMPANY_SHOWN_NAME_MAP, ERROR } from "../atoms/constants";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { curUserInfoAtom } from "../atoms/UserInfoAtom";
 import { curUserUidAtom } from "../atoms/FirebaseUserAtom";
+import microsoft from "../imageSrc/mynewspage/microsoft.jpeg";
+import amazon from "../imageSrc/mynewspage/amazon.jpeg";
+import facebook from "../imageSrc/mynewspage/facebook.jpeg";
+import google from "../imageSrc/mynewspage/google.jpeg";
+import apple from "../imageSrc/mynewspage/apple.jpeg";
 import { updateSubscriptionReadingNumber } from "../firebase/FirebaseFunction";
 
 export type NotificationCardProps = {
