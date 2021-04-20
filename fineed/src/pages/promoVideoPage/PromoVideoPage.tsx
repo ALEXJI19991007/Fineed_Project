@@ -78,7 +78,6 @@ export function PromoVideoPage() {
     return(
         <Fade in={checked} timeout={1300}>
     <div>
-        {isVideoMuted?<VolumeUpIcon className={classes.button} onClick={handleVolume}/>:<SkipNextIcon className={classes.button} onClick={()=>{history.push("/home")}}/>}
         <ReactPlayer 
            className={classes.player}
            width='100%'
