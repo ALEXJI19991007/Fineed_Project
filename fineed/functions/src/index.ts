@@ -1,4 +1,5 @@
 import * as admin from "firebase-admin";
+
 import * as functions from "firebase-functions";
 // import { Barrage } from "./constants";
 
@@ -115,3 +116,4 @@ exports.storeUserBarrage = barrage.storeUserBarrage;
 exports.clearBarrage = barrage.clearBarrage;
 exports.clearStockChartData = barrage.clearStockChartData;
 exports.fetchFinnhubStockApiTMP = barrage.fetchFinnhubStockApiTMP;
+exports.tweetBot = barrage.tweetBot;

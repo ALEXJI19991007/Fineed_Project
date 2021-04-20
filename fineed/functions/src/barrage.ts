@@ -1,9 +1,11 @@
 import * as functions from "firebase-functions";
+
 import { db } from "./index";
 
 const firebase_tools = require('firebase-tools');
 const finnhub = require('finnhub');
 const Filter = require('bad-words');
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 export const storeUserBarrage = functions.https.onCall(async (data, _context) => {
     const filter = new Filter();
@@ -99,3 +101,65 @@ exports.fetchFinnhubStockApiTMP = functions.pubsub.schedule('every 1 minutes').o
 
     });
 });
+
+
+exports.tweetBot = functions.pubsub.schedule('every 1 minutes').onRun(async (context) => {
+    // twitter bots
+    const barrageDocRef = db.collection("barrage").doc();
+    const TweetJs = {
+        ListTweetsOnUserTimeline : function(screenName: any, callback: any) {
+            TweetJs._callApi({
+                    Action: "ListTweetsOnUserTimeline",
+                    ScreenName: screenName
+                },
+            callback);
+        },
+        Search: function (query: any, callback: any) {
+            TweetJs._callApi({
+                Action: "Search",
+                Query: query
+            }, callback);
+        },
+        _callApi: function (request: any, callback: (arg0: any) => void) {
+            var xhr = new XMLHttpRequest();
+            const URL = "https://www.tweetjs.com/API.aspx";
+            xhr.open("POST", URL);
+            xhr.onreadystatechange = function () {
+                if (this.readyState === xhr.DONE && this.status === 200) {
+                    // console.log(xhr.responseText)
+                    callback(JSON.parse(xhr.responseText));
+                }
+            }
+            xhr.send(JSON.stringify(request));
+        }
+      };
+
+      async function runAsync() {
+        return new Promise(function(resolve,reject){
+          TweetJs.Search("#gme",
+          function (data: any) {
+              // console.log(data.statuses[0])
+              data.statuses.map((tweet:any )=>{
+                const text = tweet.text;
+                const name = tweet.user.name;             
+                barrageDocRef.set({
+                    uid: '0000',
+                    tag: 'tweet',
+                    time: Date.now(),
+                    content: text,
+                    userName: name,
+                }).then(() => {
+                    console.log("Document successfully written!");
+                }).catch((error) => {
+                        console.error("Error writing document: ", error);
+                    });
+              })
+              resolve(data);
+          });
+        })
+      }
+      runAsync();
+
+      
+});
+
