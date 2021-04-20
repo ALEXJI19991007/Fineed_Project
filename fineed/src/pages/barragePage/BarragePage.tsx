@@ -84,9 +84,9 @@ const useStyles = makeStyles((theme: Theme)=>createStyles({
     },
     chatSection: {
         borderRadius: 8,
-        width: '70vh',
-        float: 'right',
-        marginRight: '5%'
+        width: '80vh',
+        float: 'left',
+        marginLeft: '5%'
     },
     headBG: {
         backgroundColor: '#e0e0e0'
@@ -339,12 +339,15 @@ export function BarragePage() {
                             <BarrageBox barrageArray={barragesAtom} />
                             <Divider />
                             <Grid container className={classes.sendMessageArea}>
-                                <Grid item xs={11}>
+                                <Grid item xs={10}>
                                     <TextField id="outlined-basic-email" label="Type Barrage!" fullWidth value={textContent} onChange={(event) => { setTextContent(event.target.value) }} />
                                 </Grid>
                                 <Grid xs={1} >
                                     <div >
-                                        <Fab color="primary" aria-label="add" size='large' onClick={async () => { sendBarrage() }}><SendIcon /></Fab>
+                                        {/* <Fab color="primary" aria-label="add" size='large' onClick={async () => { sendBarrage() }}><SendIcon /></Fab> */}
+                                        <Button variant="outlined" color="primary" onClick={async () => { sendBarrage() }} style={{marginLeft:'4vh',marginTop:'0.8vh'}}>
+                                            send
+                                        </Button>
                                     </div>
                                 </Grid>
                             </Grid>
