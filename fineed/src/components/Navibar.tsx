@@ -27,11 +27,14 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from "@material-ui/core/Tooltip";
 import { FirebaseAuth } from "../firebase/FirebaseAuth";
 import { ListItemIcon } from "@material-ui/core";
 import { curUserInfoAtom } from "../atoms/UserInfoAtom";
-import { INITIAL_SUBS_LIST, userSubscriptionStatusAtom } from "../atoms/UserSubscriptionStatusAtom";
+import {
+  INITIAL_SUBS_LIST,
+  userSubscriptionStatusAtom,
+} from "../atoms/UserSubscriptionStatusAtom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -106,7 +109,9 @@ export function NaviBar() {
   const [currentUserUid, setCurUserUid] = useRecoilState(curUserUidAtom);
   const setCurUserInfo = useSetRecoilState(curUserInfoAtom);
   const setNaviDrawerState = useSetRecoilState(NaviDrawerOpenStateAtom);
-  const setUserSubscriptionStatus = useSetRecoilState(userSubscriptionStatusAtom);
+  const setUserSubscriptionStatus = useSetRecoilState(
+    userSubscriptionStatusAtom
+  );
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -223,23 +228,52 @@ export function NaviBar() {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button
-              className={classes.topMenu}
-              color="secondary"
-              onClick={companyNewsOnClick}
-            >
-              <Typography
-                className={classes.typography}
-                variant="subtitle1"
-                noWrap
-              >
-                COMPANY NEWS
-              </Typography>
-            </Button>
-            {!currentUserUid ? <Tooltip title="You should login first">
+            {!currentUserUid ? (
+              <Tooltip title="You should login first">
+                <Button className={classes.topMenu} color="secondary">
+                  <Typography
+                    className={classes.typography}
+                    variant="subtitle1"
+                    noWrap
+                  >
+                    COMPANY NEWS
+                  </Typography>
+                </Button>
+              </Tooltip>
+            ) : (
               <Button
                 className={classes.topMenu}
                 color="secondary"
+                onClick={companyNewsOnClick}
+              >
+                <Typography
+                  className={classes.typography}
+                  variant="subtitle1"
+                  noWrap
+                >
+                  COMPANY NEWS
+                </Typography>
+              </Button>
+            )}
+            {!currentUserUid ? (
+              <Tooltip title="You should login first">
+                <Button className={classes.topMenu} color="secondary">
+                  <Typography
+                    className={classes.typography}
+                    variant="subtitle1"
+                    noWrap
+                  >
+                    Barrage
+                  </Typography>
+                </Button>
+              </Tooltip>
+            ) : (
+              <Button
+                className={classes.topMenu}
+                color="secondary"
+                onClick={() => {
+                  history.push("/barrage");
+                }}
               >
                 <Typography
                   className={classes.typography}
@@ -247,23 +281,9 @@ export function NaviBar() {
                   noWrap
                 >
                   Barrage
-              </Typography>
+                </Typography>
               </Button>
-            </Tooltip> : <Button
-              className={classes.topMenu}
-              color="secondary"
-              onClick={() => {
-                history.push("/barrage");
-              }}
-            >
-              <Typography
-                className={classes.typography}
-                variant="subtitle1"
-                noWrap
-              >
-                Barrage
-              </Typography>
-            </Button>}
+            )}
             {currentUserUid ? (
               <IconButton
                 edge="end"

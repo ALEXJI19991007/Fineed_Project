@@ -56,6 +56,7 @@ exports.addUserSubscription = UpdateUserInfo.addUserSubscription;
 exports.addUserSubscription_v2 = UpdateUserInfo.addUserSubscription_v2;
 exports.removeUserSubscription = UpdateUserInfo.removeUserSubscription;
 exports.updateSubscriptionReadingNumber = UpdateUserInfo.updateSubscriptionReadingNumber;
+exports.batchUpdateSubscriptionReadingNumber = UpdateUserInfo.batchUpdateSubscriptionReadingNumber;
 exports.verifyUser = UpdateUserInfo.verifyUser;
 
 const UpdateNewsInfo = require("./UpdateNewsInfo");
@@ -93,6 +94,7 @@ exports.createNewUser_v3 = CreateNewUser.createNewUser_v3;
 const CompanyNewsCache = require("./CompanyNewsCache");
 exports.companyNewsAccumulate = CompanyNewsCache.companyNewsAccumulate;
 exports.companyNewsClear = CompanyNewsCache.companyNewsClear;
+exports.userSubscriptionNumberClear = CompanyNewsCache.userSubscriptionNumberClear;
 
 const GetCompanyNews = require("./GetCompanyNews");
 exports.fetchCompanyNews = GetCompanyNews.fetchCompanyNews;

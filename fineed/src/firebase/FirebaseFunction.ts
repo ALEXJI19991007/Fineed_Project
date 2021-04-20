@@ -31,6 +31,7 @@ export const updateUserPassword_v2 = FirebaseFunction("updateUserPassword_v2");
 export const addUserSubscription_v2 = FirebaseFunction("addUserSubscription_v2");
 export const removeUserSubscription = FirebaseFunction("removeUserSubscription");
 export const updateSubscriptionReadingNumber = FirebaseFunction("updateSubscriptionReadingNumber");
+export const batchUpdateSubscriptionReadingNumber = FirebaseFunction("batchUpdateSubscriptionReadingNumber");
 export const verifyUser = FirebaseFunction("verifyUser");
 
 export const fetchCompanyNews = FirebaseFunction("fetchCompanyNews");

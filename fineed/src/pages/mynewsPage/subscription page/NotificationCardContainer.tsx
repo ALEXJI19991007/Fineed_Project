@@ -3,13 +3,11 @@ import { List } from "immutable";
 import { NotificationCard } from "../../../components/NotificationCard";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { useRecoilValueLoadable, useRecoilState } from "recoil";
+import { useRecoilValueLoadable } from "recoil";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grow from "@material-ui/core/Grow";
-import { Pagination } from "@material-ui/lab";
-import * as NewsAtoms from "../../../atoms/NewsListFilterAtom";
 import { SubsNotificationSelector } from "../../../selectors/SubscriptionNotificationSelector";
 
 type SubsNotification = {
@@ -25,7 +23,7 @@ type NotificationCardContainerProps = {
 //simualte the backend existed data
 function NotificationList(props: NotificationCardContainerProps): List<SubsNotification> {
   const arr: any = [];
-  props.subsList.map((company: string) => {
+  props.subsList.forEach((company: string) => {
     const updateNumber = props.subsNotifications.get(company) || 0;
     if (updateNumber > 0) {
         let oneNotification = {
@@ -192,28 +190,4 @@ export const NotificationCardContainer = () => {
       );
   }
   
-};
-
-type pageDisplayProp = {
-  pageCount: number;
-};
-
-const PageDisplay = (props: pageDisplayProp) => {
-  const [pageIndexState, setPageIndexState] = useRecoilState(
-    NewsAtoms.headlinePageIndexState
-  );
-
-  const handleChange = (_event: any, value: number) => {
-    setPageIndexState(value);
-  };
-
-  return (
-    <Grid container justify="center">
-      <Pagination
-        count={props.pageCount}
-        defaultPage={pageIndexState}
-        onChange={handleChange}
-      />
-    </Grid>
-  );
 };

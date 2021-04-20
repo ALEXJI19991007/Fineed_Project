@@ -33,6 +33,27 @@ exports.companyNewsClear = functions.pubsub
     return null;
   });
 
+exports.userSubscriptionNumberClear = functions.pubsub
+.schedule("every monday 00:00")
+.timeZone("America/Chicago")
+.onRun(async (_context) => {
+  try {
+    const userCollection = await db.collection("user").get();
+    userCollection.forEach(doc => {
+      let curUserSubscription = doc.data().subscription;
+      const subscriptions = Object.keys(curUserSubscription);
+      subscriptions.forEach((company: string) => {
+        curUserSubscription[company] = 0;
+      })
+      doc.ref.update({
+        "subscription": curUserSubscription
+      });
+    });
+  } catch (error) {
+    functions.logger.info(error);
+  }
+})
+
 // Cache company news feed every 15 minutes
 exports.companyNewsAccumulate = functions.pubsub
   .schedule("every 15 minutes") // run every 15 minute
