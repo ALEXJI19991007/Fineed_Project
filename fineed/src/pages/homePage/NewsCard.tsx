@@ -144,7 +144,12 @@ export function NewsCard(props: News) {
   }
 
   const markNewsFavorite = async () => {
-    setOpen(true);
+    if (curUserInfo.favorite.includes(props.id)){
+      setExist(true);
+      return;
+    } else {
+      setOpen(true);
+    }
     const clickData = {
       isNormalClick: false,
       id: props.id,
@@ -204,6 +209,7 @@ export function NewsCard(props: News) {
     }
     setExist(false);
   };
+
 
   return (
     <Card className={classes.root}>
