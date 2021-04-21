@@ -272,7 +272,7 @@ export function NewsCard(props: News) {
         </Alert>
       </Snackbar>
       <Snackbar open={exist} autoHideDuration={3000} onClose={handleCloseWarn}>
-        <Alert onClose={handleClose} severity="warning">
+        <Alert onClose={handleCloseWarn} severity="warning">
           News already existed in favorite list.
         </Alert>
       </Snackbar>
