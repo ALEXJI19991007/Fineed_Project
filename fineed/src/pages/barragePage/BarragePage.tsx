@@ -344,7 +344,6 @@ export function BarragePage() {
                                 </Grid>
                                 <Grid xs={1} >
                                     <div >
-                                        {/* <Fab color="primary" aria-label="add" size='large' onClick={async () => { sendBarrage() }}><SendIcon /></Fab> */}
                                         <Button variant="outlined" color="primary" onClick={async () => { sendBarrage() }} style={{marginLeft:'4vh',marginTop:'0.8vh'}}>
                                             send
                                         </Button>

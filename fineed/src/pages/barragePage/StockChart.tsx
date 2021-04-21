@@ -88,7 +88,6 @@ export function StockChart() {
       borderRadius: 10,
       height: 450,
       width: 650,
-      backgroundColor: '#DEB887'
     },
     title: {
       text: 'GameStop Inc.'
@@ -133,7 +132,6 @@ export function StockChart() {
         name: 'Price USD',
         data: chartData,
         showInLegend: false,
-        color: '#FFFF00',
         lineWidth: 3,
         step: true
       }

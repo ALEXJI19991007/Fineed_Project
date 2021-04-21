@@ -183,8 +183,9 @@ export function NewsCard(props: News) {
     }
   };
   useEffect(() => {
+    console.log('copy id: ',sharedNewsID)
     const el = document.createElement('textarea');
-    el.value = sharedNewsID;
+    el.value = sharedNewsID.trim();
     document.body.appendChild(el);
     el.select();
     document.execCommand('copy');
